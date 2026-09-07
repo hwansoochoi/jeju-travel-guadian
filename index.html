@@ -1196,47 +1196,116 @@
       </div>
     </section>
 
-    <!-- 14번 슬라이드: OS별 제약 및 불가능한 항목 검토 [NEW] -->
+    <!-- 14번 슬라이드: OS별 제약 및 불가능한 항목 심층 검토 [ENHANCED] -->
     <section class="slide">
-      <span class="badge red">OS POLICY & LIMITATION ANALYSIS</span>
-      <h2>iOS / Android OS별 기술적 제약 및 우회 해결책 검토</h2>
-      <p class="desc">모바일 OS의 샌드박스 및 보안 정책상 직면하는 불가능한 요소와 이를 돌파하기 위한 우회 설계를 명시합니다.</p>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        <span class="badge red">OS POLICY & FEASIBILITY ANALYSIS</span>
+        <span class="badge cyan" style="font-size:11px;">⚠️ 핵심 기술 현실성 & 컴플라이언스 검증</span>
+      </div>
+      <h2>iOS / Android OS별 기술적 제약, 법적 한계 및 우회 해결책 종합 검토</h2>
+      <p class="desc">숙소 불법촬영(IR/Wi-Fi) 점검의 기술적 현실성을 포함하여, 모바일 OS 보안 샌드박스와 국내 법률상 직면하는 불가능 요소를 돌파하기 위한 공학적 우회 설계를 명시합니다.</p>
+
+      <!-- [포커스 심층 분석] 숙소 불법촬영 점검 기술 현실성 & 구현 계획 -->
+      <div style="margin-bottom: 18px; background: rgba(15, 23, 42, 0.75); border: 1px solid #1e293b; border-radius: 12px; padding: 15px;">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; border-bottom: 1px solid #1e293b; padding-bottom: 8px;">
+          <h3 style="font-size: 15px; color: #38bdf8; display: flex; align-items: center; gap: 8px;">
+            🔍 [핵심 검증] 숙소 불법촬영 점검 (IR 적외선 렌즈 & Wi-Fi IP 스캐닝) 현실성 및 구현 계획
+          </h3>
+          <span style="font-size: 11px; padding: 3px 10px; border-radius: 20px; background: rgba(16, 185, 129, 0.15); color: #34d399; font-weight: 700;">현실적 구현성: 조건부 75~85% 실효 검출</span>
+        </div>
+        
+        <div class="grid-2" style="gap: 14px;">
+          <!-- 1) IR 적외선 렌즈 탐지 -->
+          <div style="background: rgba(17, 24, 39, 0.9); border: 1px solid #334155; border-radius: 10px; padding: 13px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <strong style="color:#f43f5e; font-size:13px;">① IR 적외선 렌즈 광학 탐지 (하드웨어/센서)</strong>
+              <span class="tag-diff-med">조건부 가능</span>
+            </div>
+            <ul style="font-size:11.5px; color:#cbd5e1; line-height:1.6; list-style:none; display:flex; flex-direction:column; gap:5px;">
+              <li>• <strong>물리적 한계:</strong> 스마트폰 <em>후면 메인 렌즈</em>는 사진 왜곡 방지용 하드웨어 IR-Cut 필터로 850/940nm 적외선 투과 차단.</li>
+              <li>• <strong>야간 발광 탐지 (전면 카메라):</strong> 조명을 끈 방에서 <em>전면 셀피 카메라(TrueDepth)</em>를 비추면 IR 필터가 없거나 얇아 몰카 자체의 야간 IR LED(보라색/적색 발광점)를 즉각 포착.</li>
+              <li>• <strong>재귀반사(Retro-reflection) AI 파이프라인:</strong> 플래시를 켠 채 카메라 프리뷰 영상에서 렌즈 곡면 코팅의 특이 반사광점(Red/White Reflex)을 OpenCV(Blob/Hough)로 실시간 포착하여 AR 타겟팅.</li>
+              <li>• <strong>LiDAR / ToF 센서 융합 (iPhone Pro / 최신 Galaxy):</strong> 905nm 레이저 펄스 반사율 이상치(Reflectivity anomaly) 및 미세 핀홀 구멍의 심도 맵 왜곡을 추출하여 콘센트/환풍구 의심 장비 식별.</li>
+            </ul>
+          </div>
+
+          <!-- 2) Wi-Fi 비인가 IP 카메라 스캐닝 -->
+          <div style="background: rgba(17, 24, 39, 0.9); border: 1px solid #334155; border-radius: 10px; padding: 13px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <strong style="color:#38bdf8; font-size:13px;">② Wi-Fi 비인가 IP 카메라 스캔 (네트워크)</strong>
+              <span class="tag-diff-med">조건부 가능</span>
+            </div>
+            <ul style="font-size:11.5px; color:#cbd5e1; line-height:1.6; list-style:none; display:flex; flex-direction:column; gap:5px;">
+              <li>• <strong>실현 조건 & 한계:</strong> 동일 Wi-Fi 망 내에 몰카가 연결되어 있고 공유기 AP Isolation(기기간 격리)이 꺼진 펜션/에어비앤비에서 100% 탐지. 엔터프라이즈 호텔 AP 격리망 또는 SD카드 로컬 저장형/LTE 에그 몰카는 탐지 불가.</li>
+              <li>• <strong>OS 보안 제약:</strong> iOS 14+ '로컬 네트워크 검색 권한' 팝업 동의 필수, 커널 ARP 테이블 MAC 주소 마스킹으로 단순 OUI 제조사 조회 불가.</li>
+              <li>• <strong>우회 구현 아키텍처:</strong> C클래스(192.168.x.0/24) 비동기 소켓 초고속 스캔 + 비디오 전용 포트(554 RTSP, 80/8080 HTTP-FLV, 1935 RTMP, 3702 ONVIF) 프로빙.</li>
+              <li>• <strong>벤더 핑거프린트 매칭:</strong> mDNS/Bonjour 및 SSDP(UPnP) 질의 응답 패킷에서 IP 카메라 벤더 서명(Hikvision, Dahua, Tuya, Ezviz 등) 매칭 시 즉각 경보.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7대 핵심 기능 OS별 기술·법적 제약 및 우회 해결 매트릭스 -->
+      <h3 style="font-size: 14px; color: #f1f5f9; margin-bottom: 8px;">📊 7대 핵심 기능 OS별 기술·법적 제약 및 실무 우회 해결 매트릭스</h3>
       <table class="spec-table">
         <thead>
           <tr>
-            <th style="width: 20%;">기능 항목</th>
-            <th style="width: 22%;">Android 환경</th>
-            <th style="width: 25%;">iOS (iPhone) 환경</th>
-            <th style="width: 33%;">기술적 한계 & 실무 우회 방안</th>
+            <th style="width: 18%;">기능 항목</th>
+            <th style="width: 17%;">Android 환경</th>
+            <th style="width: 18%;">iOS (iPhone) 환경</th>
+            <th style="width: 47%;">기술적·법적 한계 & 실무 엔지니어링 우회 방안</th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <td><strong>스텔스 SOS (전원 5회 클릭)</strong></td>
-            <td><span class="tag-diff-low">가능</span> (AccessibilityService 또는 MediaButton 트리거)</td>
-            <td><span class="tag-diff-high">불가</span> (화면 꺼짐 시 하드웨어 전원키 이벤트 접근 차단)</td>
-            <td><strong>우회:</strong> iOS는 '뒷면 탭하기(Back Tap)', 잠금화면 위젯, 볼륨키 롱프레스, 애플워치 액션버튼 연동으로 대체</td>
+            <td><strong>1. 숙소 불법촬영 (IR 렌즈 & Wi-Fi IP)</strong></td>
+            <td><span class="tag-diff-med">제한적 가능</span> (전면카메라 + OpenCV 반사광, Wi-Fi 포트 스캔)</td>
+            <td><span class="tag-diff-med">제한적 가능</span> (전면카메라 + LiDAR, Local Network 권한 후 RTSP 스캔)</td>
+            <td><strong>한계:</strong> 후면 IR-Cut 필터 및 호텔 AP Isolation 격리망 한계.<br><strong>우회책:</strong> '소등 전면카메라 야간 LED 감지 + 플래시 재귀반사 OpenCV 필터 + C클래스 RTSP(554)/ONVIF(3702) 포트 스캔' 3단계 하이브리드 파이프라인 구축</td>
           </tr>
           <tr>
-            <td><strong>무음모드 강제돌파 최대사이렌</strong></td>
-            <td><span class="tag-diff-low">가능</span> (NotificationManager 방해금지 해제 권한)</td>
-            <td><span class="tag-diff-high">제한적</span> (물리 무음 스위치 켜짐 시 AVAudioSession 우회 제한)</td>
-            <td><strong>우회:</strong> Apple에 <strong>'Critical Alerts(긴급재난경보)'</strong> Entitlement 정식 신청/승인 또는 오디오 세션 카테고리 `.playback` 설정</td>
+            <td><strong>2. 스텔스 무음 SOS (물리버튼 5회 연타)</strong></td>
+            <td><span class="tag-diff-low">가능 (우회)</span> (AccessibilityService 볼륨/전원키 수신)</td>
+            <td><span class="tag-diff-high">불가 (OS 원천 차단)</span> (화면 잠금 시 전원키 앱 이벤트 차단)</td>
+            <td><strong>한계:</strong> Apple 샌드박스 정책상 잠금 상태 하드웨어 키 가로채기 불가 (기본 긴급구조 112 충돌).<br><strong>우회책:</strong> iOS는 '뒷면 탭하기(Back Tap)' 단축어 연동, Siri 음성 비상 트리거, 잠금화면 Live Activities 위젯, 애플워치 액션버튼으로 우회</td>
           </tr>
           <tr>
-            <td><strong>숙소 Wi-Fi 몰카 IP 스캔</strong></td>
-            <td><span class="tag-diff-med">제한적</span> (Android 11+ MAC 주소 마스킹)</td>
-            <td><span class="tag-diff-high">제한적</span> (로컬 네트워크 접근 권한 & ARP 테이블 차단)</td>
-            <td><strong>우회:</strong> mDNS/Bonjour 프로토콜 기반 RTSP/ONVIF 카메라 포트(554, 8080) 열림 여부만 스캐닝하는 네트워크 분석 방식으로 전환</td>
+            <td><strong>3. 무음·진동 돌파 120dB 사이렌</strong></td>
+            <td><span class="tag-diff-low">가능</span> (NotificationManager DND 해제 권한)</td>
+            <td><span class="tag-diff-high">제한적 (사전승인 필수)</span> (물리 무음 토글 시 오디오 차단)</td>
+            <td><strong>한계:</strong> iOS 하드웨어 무음 스위치 켜짐 시 백그라운드 오디오 차단 원칙.<br><strong>우회책:</strong> Apple Developer 정식 'Critical Alerts(긴급재난경보)' Entitlement 심사 승인 획득 (인명구조 앱 전용 허용), 미승인 시 `AVAudioSession.playback` 카테고리 설정</td>
           </tr>
           <tr>
-            <td><strong>성범죄자 알림e 지도 표기</strong></td>
-            <td><span class="tag-diff-low">앱 구현 가능</span></td>
-            <td><span class="tag-diff-low">앱 구현 가능</span></td>
-            <td><strong>법적 한계:</strong> 아청법상 성범죄자 신상정보 재배포·스크래핑은 5년 이하 징역. ➔ <strong>해결:</strong> 개별 주소가 아닌 '지자체 치안 취약 등급 지오펜스'로 가공 표출</td>
+            <td><strong>4. 성범죄자 알림e 및 주거지 지도 표출</strong></td>
+            <td><span class="tag-diff-low">기술적 구현 가능</span></td>
+            <td><span class="tag-diff-low">기술적 구현 가능</span></td>
+            <td><span style="color:#f43f5e; font-weight:700;">⚠️ 법적 전면 불가 (아청법 제55조 제5항 위반 시 5년 이하 징역)</span>.<br><strong>우회책:</strong> 개인 신상·주소 노출을 전면 배제하고, 행안부/경찰청 '생활안전지도 5대 범죄 발생통계' 및 '야간 안심귀갓길 지오펜스 폴리곤'으로 100% 합법 가공 표출</td>
+          </tr>
+          <tr>
+            <td><strong>5. 오프라인 음영지역 BLE 메시 릴레이</strong></td>
+            <td><span class="tag-diff-low">가능</span> (Nearby Connections 상시 백그라운드)</td>
+            <td><span class="tag-diff-high">제한적</span> (화면 꺼짐 시 백그라운드 BLE 광고 주기 15분 지연)</td>
+            <td><strong>한계:</strong> iOS 배터리 정책상 백그라운드 BLE Advertising 간격 급증으로 실시간 패킷 전달 지연.<br><strong>우회책:</strong> Android 기기가 상시 브리지 중계 노드(Relay Node)로 작동하도록 비대칭 메시(Asymmetric Mesh) 토폴로지 설계, iOS는 화면 유지 모드 권고</td>
+          </tr>
+          <tr>
+            <td><strong>6. 야생동물(들개·멧돼지) 기피 고주파</strong></td>
+            <td><span class="tag-diff-med">제한적 (스피커 하드웨어 한계)</span></td>
+            <td><span class="tag-diff-med">제한적 (스피커 하드웨어 한계)</span></td>
+            <td><strong>한계:</strong> 스마트폰 마이크로 스피커는 18kHz 이상 고주파 재생 시 음압(SPL)이 40dB 이하로 급감하여 야외 동물 퇴치 실효성 미흡.<br><strong>우회책:</strong> 단순 초음파 지양 ➔ 맹수(호랑이/표범) 포효 및 파열음(가청 2~4kHz 최대 SPL 방출) + 카메라 플래시 고속 스트로보(Strobe Flash) 결합 복합 방어</td>
+          </tr>
+          <tr>
+            <td><strong>7. 모빌리티 이상 감지 (택시/렌터카)</strong></td>
+            <td><span class="tag-diff-low">가능</span> (GPS + 센서 융합)</td>
+            <td><span class="tag-diff-low">가능</span> (CoreLocation + CoreMotion)</td>
+            <td><strong>한계:</strong> 산간 터널/도로에서 GPS 튀는 현상(Multipath)으로 인한 오경보 및 폰 단순 낙하(Drop) 오인.<br><strong>우회책:</strong> 택시 이탈은 OSRM 맵 매칭 + 칼만 필터(5회 연속 100m 이탈 시 경보), 렌터카 전복은 '감속도 >4G + 자이로 전복각 >60° + 주행속도 급감' 3중 융합 필터 적용</td>
           </tr>
         </tbody>
       </table>
+
+      <div style="margin-top: 14px; background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 11.5px; color: #cbd5e1;">
+        <strong style="color: #fbbf24;">💡 실무 가이드라인 요약:</strong> 
+        모바일 네이티브 앱 개발 시 OS 샌드박스의 한계(iOS 하드웨어 키/BLE 주기, 스마트폰 스피커 대역폭)와 법률 리스크(아청법 제55조)를 명확히 인지하고, <strong>'센서 융합(Sensor Fusion) + 공공 통계 가공 + 합법적 대체 UX(Back Tap/전면카메라/맵매칭)'</strong> 전략을 관철해야 애플/구글 스토어 심사를 무사히 통과할 수 있습니다.
+      </div>
     </section>
 
     <!-- 15번 슬라이드: 백엔드 & 통합 관제 관리자 기능 명세 [NEW] -->
