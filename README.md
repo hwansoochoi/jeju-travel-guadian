@@ -120,7 +120,25 @@ graph TD
 - **슬라이드 15~17**: 통합 관제탑(Admin) 명세, 모바일 코어 모듈 구현 기법 및 총 32MM 공수 산정표 확인
 
 ### 2. Cloudflare Workers 배포
-`worker.js` 코드를 Cloudflare Workers 대시보드에 붙여넣고 `Save and Deploy`를 진행하거나 Wrangler CLI로 배포합니다.
+---
+
+## 🌐 연동 정부 및 민간 OpenAPI 명세 (OpenAPI Registry)
+
+본 플랫폼은 위기 예방 및 실시간 구난을 위해 정부 및 민간의 핵심 OpenAPI를 실시간 연동합니다.
+
+| 연동 서비스명 | 제공 기관 / 기업 | 엔드포인트 / 서비스 URL | 주요 기능 | 인증 방식 |
+|---|---|---|---|---|
+| **기상특보 & 단기예보** | 기상청 (KMA) | `data.go.kr/1360000/VilageFcstInfoService_2.0` | 호우/강풍/대설 특보 및 시간별 강수 확률 | 공공데이터포털 일반 인증키 |
+| **일출·일몰 영력정보** | 한국천문연구원 (KASI) | `data.go.kr/B090041/RiseSetInfoService` | 위치 기반 당일 일몰시각 산출 (일몰 30분 전 하산 권고) | 공공데이터포털 일반 인증키 |
+| **바다누리 조석예보** | 국립해양조사원 (KHOA) | `khoa.go.kr/api/oceangrid/tideObsPreTab` | 고조(만조) 시각 산출 (만조 40분 전 갯바위 대피 경보) | 해양정보포털 ServiceKey |
+| **생활안전지도 (Safemap)** | 행정안전부 / 국립재난안전연구원 | `safemap.go.kr/openApi` | 치안 5대 범죄 밀집도 WMS 레이어 및 여성안심귀갓길 폴리곤 | Open API Key |
+| **응급실 실시간 가용병상** | 국립중앙의료원 (E-Gen) | `data.go.kr/B552657/ErmctInfoInqireService` | 제주대병원/한라병원 실시간 중환자실/응급실 가용병상 | 공공데이터포털 일반 인증키 |
+| **공공 자동심장충격기(AED)** | 국립중앙의료원 (E-Gen) | `data.go.kr/B552657/AedInfoInqireService` | 반경 200m 내 공공 AED 비치함 실시간 핀포인트 안내 | 공공데이터포털 일반 인증키 |
+| **산악 국가지점번호 변환** | 한국국토정보공사 (LX) | `data.go.kr/1611000/nsdi/GisPosService` | WGS84 ➔ UTM-K / 국가지점번호 100km 한글 격자 변환 | 공공데이터포털 일반 인증키 |
+| **카카오 로컬 장소검색** | 카카오 (Kakao Developers) | `dapi.kakao.com/v2/local/search/category.json` | 안심편의점(`CS2`), 안심주유소(`OL7`), 병원(`HP8`) 검색 | KakaoAK REST API Key |
+| **카카오내비 최적 경로** | 카카오 모빌리티 | `apis-navi.kakaomobility.com/v1/directions` | 택시 권장경로 폴리라인(이탈 판정) 및 도보 대피로 | KakaoAK REST API Key |
+| **카카오 알림톡 게이트웨이** | 카카오 비즈메시지 | `api.bizmsg.kr/v2/sender/send` | 보호자 상황별 맞춤 비상 템플릿 및 실시간 궤적 전송 | API Key + Profile Key |
+| **119 다매체 긴급신고** | 소방청 종합상황실 | `119.go.kr` 표준 긴급구조 E-Call 인터페이스 | 국가지점번호, 기저질환, 배터리, 암호화 오디오 S3 패킷 | mTLS 상호 인증 |
 
 ---
 

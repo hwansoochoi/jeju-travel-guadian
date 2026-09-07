@@ -399,6 +399,32 @@
       margin: -3px 0;
     }
 
+    /* OpenAPI 연동 스펙 콜아웃 */
+    .api-callout {
+      margin-top: 10px;
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.92);
+      border: 1px dashed rgba(56, 189, 248, 0.4);
+      border-radius: 6px;
+      font-size: 11px;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .api-callout strong {
+      color: #38bdf8;
+      font-size: 11px;
+      display: inline-block;
+      margin-bottom: 2px;
+    }
+    .api-callout code {
+      font-family: monospace;
+      color: #34d399;
+      background: rgba(16, 185, 129, 0.1);
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-size: 10px;
+    }
+
     /* UI 목업 */
     .mockup {
       background: #0f172a;
@@ -866,28 +892,48 @@
       <p class="desc">정부 공공데이터 포털 및 경찰청/여가부 API를 실시간 융합하여 여행자 주변의 위험을 사전 차단합니다.</p>
       <div class="grid-3">
         <div class="card">
-          <div style="font-size:26px; margin-bottom:12px;">🌅</div>
+          <div style="font-size:26px; margin-bottom:10px;">🌅</div>
           <h3>기상 & 일출·일몰·만조 연동</h3>
           <p>
             <strong>기상청 & 한국천문연구원:</strong> 당일 일몰 30분 전 산악 하산 권고 알림 발송.<br>
             <strong>국립해양조사원:</strong> 갯바위 낚시나 해변 도보 시 만조 40분 전 긴급 대피 경보.
           </p>
+          <div class="api-callout">
+            <strong>🔗 연동 OpenAPI 접속 정보</strong><br>
+            • 기상특보: <code>data.go.kr/1360000/VilageFcstInfoService_2.0</code><br>
+            • 출몰영력: <code>data.go.kr/B090041/RiseSetInfoService</code><br>
+            • 조석예보: <code>khoa.go.kr/api/oceangrid/tideObsPreTab</code><br>
+            <em>* 인증: 공공데이터포털 ServiceKey / 1시간 주기 Redis 캐싱</em>
+          </div>
         </div>
         <div class="card">
-          <div style="font-size:26px; margin-bottom:12px;">🚨</div>
+          <div style="font-size:26px; margin-bottom:10px;">🚨</div>
           <h3>범죄다수 발생지역 지오펜싱</h3>
           <p>
             지자체 안전지도 및 경찰청 치안통계를 결합하여, 야간 조도 미비 골목이나 우범 지역 진입 시<br>
             스마트폰에 <strong>주의 햅틱 및 안전 우회로 제안</strong>을 실시간 발송합니다.
           </p>
+          <div class="api-callout">
+            <strong>🔗 연동 OpenAPI 접속 정보</strong><br>
+            • 생활안전지도: <code>safemap.go.kr/openApi</code><br>
+            • 레이어: 5대 범죄 밀집도 WMS / 여성안심귀갓길 폴리곤<br>
+            • 공간엔진: PostGIS <code>ST_Contains</code> 기반 지오펜스 판정<br>
+            <em>* 포맷: GeoServer WMS/WFS / 실시간 공간 버퍼 연산</em>
+          </div>
         </div>
         <div class="card">
-          <div style="font-size:26px; margin-bottom:12px;">🛡️</div>
+          <div style="font-size:26px; margin-bottom:10px;">🛡️</div>
           <h3>성범죄자 주거지 접근 알림</h3>
           <p>
             여성가족부 <strong>성범죄자 알림e 데이터</strong> 기반으로 체류지 및 도보 반경 내 고위험자 주거 밀집구역 통과 시<br>
             프라이버시를 침해하지 않는 반경 가이드로 사전 경각심을 고취합니다.
           </p>
+          <div class="api-callout">
+            <strong>🔗 연동 규격 & 컴플라이언스</strong><br>
+            • 데이터 출처: 여성가족부 성범죄자 알림e 공개정보<br>
+            • ⚠️ <strong>아청법 제55조 준수:</strong> 개인 신상 API 직접 노출 차단<br>
+            • 변환 가공: 지자체 <strong>'치안 취약등급 폴리곤(GeoJSON)'</strong>으로 익명 공간 인덱싱 변환 후 안전 알림 연동
+          </div>
         </div>
       </div>
     </section>
@@ -995,24 +1041,36 @@
         <div class="card">
           <div class="card-tag" style="background:rgba(99,102,241,0.15); color:#818cf8;">안심포인트 4대 거점</div>
           <h3>비상 시 즉시 몸을 숨기는 안전 대피처</h3>
-          <p style="margin-bottom:12px;">반경 500m 이내 최단거리 거점을 자동 선별하여 원터치 도보 내비게이션을 지원합니다.</p>
-          <ul style="list-style:none; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:8px;">
+          <p style="margin-bottom:10px;">반경 500m 이내 최단거리 거점을 자동 선별하여 원터치 도보 내비게이션을 지원합니다.</p>
+          <ul style="list-style:none; font-size:12px; color:#cbd5e1; display:flex; flex-direction:column; gap:6px;">
             <li>🏫 <strong>학교지킴이집:</strong> 전담 보안관 상주 및 아동/여성 긴급 피난 공간</li>
             <li>🏪 <strong>24시 안심편의점:</strong> 112 직결 비상벨 및 카운터 내 대피 시설 구비</li>
             <li>⛽ <strong>안심 주유소:</strong> 24시간 조명 점등 및 상주 인력 비상 지원망</li>
             <li>👮 <strong>관공서 & 지구대/파출소:</strong> 최우선 안전 피난 및 경찰 현장 대응</li>
           </ul>
+          <div class="api-callout">
+            <strong>🔗 연동 OpenAPI 접속 정보</strong><br>
+            • 카카오 로컬 카테고리 검색: <code>dapi.kakao.com/v2/local/search/category.json</code><br>
+            • 검색 코드: 편의점(<code>CS2</code>), 주유소(<code>OL7</code>) / 지구대·관공서는 지자체 공공데이터 CSV<br>
+            • 카카오내비 최적 경로: <code>apis-navi.kakaomobility.com/v1/directions</code> (도보 최단선)
+          </div>
         </div>
         <div class="card">
           <div class="card-tag" style="background:rgba(244,63,94,0.15); color:#fb7185;">의료 응급망</div>
           <h3>인근 병원, 권역 응급센터 & AED 안내</h3>
-          <p style="margin-bottom:12px;">야간이나 휴일에도 진료 중인 가장 가까운 응급실과 의료기관을 직통 연결합니다.</p>
-          <ul style="list-style:none; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:8px;">
+          <p style="margin-bottom:10px;">야간이나 휴일에도 진료 중인 가장 가까운 응급실과 의료기관을 직통 연결합니다.</p>
+          <ul style="list-style:none; font-size:12px; color:#cbd5e1; display:flex; flex-direction:column; gap:6px;">
             <li>🏥 <strong>야간·휴일 진료 병의원:</strong> 실시간 진료 가능 여부 및 도보/차량 소요시간 표시</li>
             <li>🚑 <strong>권역 응급의료센터:</strong> 중증 외상 및 심정지 대비 응급실 직통 다이얼</li>
             <li>⚡ <strong>자동심장충격기(AED) 위치:</strong> 반경 200m 내 공공 AED 비치함 핀포인트 안내</li>
             <li>🩺 <strong>의료정보 사전공유:</strong> 지병, 알레르기, 혈액형 정보 응급대원 자동 전송</li>
           </ul>
+          <div class="api-callout">
+            <strong>🔗 연동 OpenAPI 접속 정보</strong><br>
+            • 응급실 실시간 가용병상: <code>data.go.kr/B552657/getEmrrmRltmUsefulSckbdInfoInqire</code><br>
+            • 공공 AED 위치조회: <code>data.go.kr/B552657/getAedLcinfoInqire</code><br>
+            • 제공: 국립중앙의료원 중앙응급의료센터 (E-Gen) / 5분 주기 실시간 병상 동기화
+          </div>
         </div>
       </div>
     </section>
@@ -1065,6 +1123,11 @@
           <div class="card">
             <h3 style="color:#38bdf8;">주변 안심포인트 & 응급실 자동 병합</h3>
             <p>구조대 출동 시 최기 거리의 거점 및 진입로 정보를 소방 상황실 단말기로 자동 전송</p>
+          </div>
+          <div class="api-callout" style="margin-top: 10px;">
+            <strong>🔗 119 상황실 연동 OpenAPI & 변환 규격</strong><br>
+            • 국가지점번호 변환: <code>data.go.kr/1611000/nsdi/GisPosService</code> (LX 국토정보공사)<br>
+            • 119 다매체 긴급신고: 소방청 종합상황실 표준 긴급구조 E-Call 인터페이스 (UTM-K 좌표 / 기저질환 / 녹음음성 S3 패킷 직결)
           </div>
         </div>
 

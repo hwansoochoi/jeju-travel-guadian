@@ -277,4 +277,43 @@ graph TD
 [M6: 스토어 심사, 보안 감사 & 정식 런칭]
   ├─ Apple Critical Alerts 심사 및 구글 스토어 정식 등록
   └─ 제주도청/소방본부 공동 시범 서비스 개시
-```\n
+```
+
+---
+
+## 6. 정부 및 민간 공공 OpenAPI 접속 규격 및 연동 명세 (OpenAPI Integration Specifications)
+
+본 플랫폼은 정부 공공기관(기상청, 천문연구원, 해양조사원, 행정안전부, 경찰청, 국립중앙의료원, 국토정보공사, 소방청) 및 민간 테크 기업(카카오, 통신사)의 공공/상용 OpenAPI를 실시간 연동합니다.
+
+### 6.1 공공데이터포털(data.go.kr) 기반 정부 공공 OpenAPI 연동 규격
+
+| 서비스명 | 제공 기관 | 기본 요청 URL 및 엔드포인트 | 인증 방식 | 요청 파라미터 (주요) | 응답 포맷 | 수집 주기 / 캐시 TTL |
+|---|---|---|---|---|---|---|
+| **기상특보 조회서비스** | 기상청 (KMA) | `http://apis.data.go.kr/1360000/WthrWrnInfoService/getWthrWrnList` | 일반 인증키 (`serviceKey`) | `pageNo=1&numOfRows=10&dataType=JSON` | JSON | 30분 / Redis 1800s |
+| **단기예보 조회서비스** | 기상청 (KMA) | `http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/getVilageFcst` | 일반 인증키 (`serviceKey`) | `base_date=YYYYMMDD&base_time=HHMM&nx=52&ny=38` (제주) | JSON | 1시간 / Redis 3600s |
+| **출몰영력정보 (일출·일몰)** | 한국천문연구원 (KASI) | `http://apis.data.go.kr/B090041/openapi/service/RiseSetInfoService/getAreaRiseSetInfo` | 일반 인증키 (`serviceKey`) | `locdate=YYYYMMDD&location=제주` | XML/JSON | 1일 1회 (자정) / 24h |
+| **조석예보 (만조·간조)** | 국립해양조사원 (KHOA) | `http://www.khoa.go.kr/api/oceangrid/tideObsPreTab/search.do` | 서비스키 (`ServiceKey`) | `ObsCode=DT_0004(제주)&Date=YYYYMMDD` | JSON | 1일 1회 / Redis 24h |
+| **생활안전지도 (Safemap)** | 행정안전부 / 국립재난안전연구원 | `https://www.safemap.go.kr/openApi/sub.do` | Open API Key | `layers=A2SM_CRIME_ALL&styles=A2SM_CRIME_ALL` (WMS/WFS) | GeoJSON / WMS 타일 | 월 1회 동기화 (PostGIS 저장) |
+| **응급실 실시간 가용병상** | 국립중앙의료원 (E-Gen) | `http://apis.data.go.kr/B552657/ErmctInfoInqireService/getEmrrmRltmUsefulSckbdInfoInqire` | 일반 인증키 (`serviceKey`) | `STAGE1=제주&STAGE2=제주시` | XML/JSON | 5분 / Redis 300s |
+| **공공 자동심장충격기(AED)** | 국립중앙의료원 (E-Gen) | `http://apis.data.go.kr/B552657/AedInfoInqireService/getAedLcinfoInqire` | 일반 인증키 (`serviceKey`) | `WGS84_LON=126.5&WGS84_LAT=33.3&pageNo=1` | XML/JSON | 주 1회 동기화 (PostGIS 공간 인덱스) |
+| **산악 국가지점번호 변환** | 한국국토정보공사 (LX) | `http://apis.data.go.kr/1611000/nsdi/GisPosService` | 일반 인증키 (`serviceKey`) | `coordType=WGS84&x=126.5&y=33.3` | JSON | 실시간 변환 (내장 알고리즘 병행) |
+
+---
+
+### 6.2 민간 테크 플랫폼 및 긴급 출동 연계 OpenAPI
+
+| 서비스명 | 제공사 / 기관 | 기본 요청 URL 및 엔드포인트 | 인증 방식 | 주요 기능 및 전달 데이터 | 호출 트리거 / 응답 속도 |
+|---|---|---|---|---|---|
+| **카카오 로컬 카테고리 검색** | 카카오 (Kakao Developers) | `https://dapi.kakao.com/v2/local/search/category.json` | Header: `Authorization: KakaoAK {REST_API_KEY}` | 안심편의점(`CS2`), 안심주유소(`OL7`), 병원(`HP8`), 약국(`PM9`) 반경 500m 검색 | 위기 발생 또는 지도 이동 시 / 0.1초 |
+| **카카오내비 최적 경로** | 카카오 모빌리티 | `https://apis-navi.kakaomobility.com/v1/directions` | Header: `Authorization: KakaoAK {REST_API_KEY}` | 택시 권장 경로 폴리라인(경로이탈 판정 기준선) 및 안심포인트 최단 대피로 산출 | 경로 생성 시 / 0.2초 |
+| **카카오 알림톡 게이트웨이** | 카카오 i 커넥트 / 비즈엠 | `https://api.bizmsg.kr/v2/sender/send` | API Key + Sender Profile Key | 보호자 상황별 맞춤 템플릿(정체, 이탈, 조난 SOS) 및 실시간 궤적 조회 링크 발송 | 2단계 체크인 3분 무응답 시 / 0.5초 |
+| **소방청 119 다매체 긴급신고** | 소방청 종합상황실 (119.go.kr) | 국가재난안전 E-Call 게이트웨이 표준 인터페이스 | mTLS 상호 인증 + 지자체 전용 암호화 토큰 | 신고자 신원, 성별, 위경도, UTM-K 국가지점번호, 기저질환, 배터리 잔량, 암호화 오디오 S3 URL 패킷 전송 | 원클릭 119 전송 버튼 또는 낙상/전복 확정 시 / 즉시 전송 |
+
+---
+
+### 6.3 OpenAPI 장애 대응 (Fail-over) 및 쿼터 관리 정책
+1. **공공데이터포털 트래픽 쿼터 방어**:
+   - 일일 10,000건 기본 제한을 초과하지 않도록 Redis 인메모리 캐시를 적용하여 기상/특보/만조/일출몰 데이터를 수만 명의 사용자에게 1회 호출로 서빙.
+2. **네트워크 장애 및 지연 대비 로컬 오프라인 Fallback**:
+   - 국가지점번호: 외부 API 서버 장애 시 앱 내장 `UTM-K ➔ 국가지점번호 100km 격자 수식 연산 엔진(Swift/Kotlin)`으로 네트워크 없이 0.001초 만에 로컬 산출.
+   - 4대 안심포인트: 제주도 내 24시 편의점, 주유소, 지구대 좌표를 SQLite/Room/CoreData에 사전 임베딩하여 오프라인에서도 즉시 최단 피난처 안내.\n
