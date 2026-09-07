@@ -125,7 +125,7 @@
       align-items: center;
       justify-content: center;
       position: relative;
-      min-height: calc(100vh - 130px);
+      min-height: calc(100vh - 140px);
     }
     .slide {
       display: none;
@@ -540,11 +540,14 @@
       width: 100%;
       padding: 12px 28px;
       border-top: 1px solid var(--border-color);
-      background-color: var(--bg-main);
+      background-color: rgba(9, 13, 22, 0.95);
+      backdrop-filter: blur(12px);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      z-index: 10;
+      position: sticky;
+      bottom: 0;
+      z-index: 100;
     }
     .key-tip {
       font-size: 12px;
@@ -556,29 +559,42 @@
       gap: 8px;
     }
     button.nav-btn {
-      padding: 7px 15px;
+      padding: 8px 18px;
       border-radius: 8px;
-      font-size: 12.5px;
-      font-weight: 600;
+      font-size: 13px;
+      font-weight: 700;
       cursor: pointer;
       border: none;
-      transition: opacity 0.2s, transform 0.1s;
+      transition: all 0.2s;
     }
     button.nav-btn:active {
-      transform: scale(0.97);
+      transform: scale(0.96);
     }
     .btn-prev {
       background: #1e293b;
       color: #cbd5e1;
+      border: 1px solid #334155;
+    }
+    .btn-prev:hover:not(:disabled) {
+      background: #334155;
+      color: #fff;
     }
     .btn-next {
       background: var(--emerald);
       color: #ffffff;
+      box-shadow: 0 2px 10px rgba(16, 185, 129, 0.3);
+    }
+    .btn-next:hover {
+      background: #059669;
     }
     .btn-full {
       background: #1e293b;
       color: #cbd5e1;
-      padding: 7px 11px;
+      padding: 8px 12px;
+      border: 1px solid #334155;
+    }
+    .btn-full:hover {
+      background: #334155;
     }
     button:disabled {
       opacity: 0.35;
@@ -795,7 +811,7 @@
       </div>
     </section>
 
-    <!-- 6번 슬라이드: 신변 위협 & 범죄 차단 특화 (NEW) -->
+    <!-- 6번 슬라이드: 신변 위협 & 범죄 차단 특화 -->
     <section class="slide">
       <span class="badge red">DEEP DIVE 03 : STEALTH & AI DEFENSE</span>
       <h2>주머니 속 스텔스 무음 SOS, AI 가상 동행 & 숙소 안전 점검</h2>
@@ -825,7 +841,7 @@
       </div>
     </section>
 
-    <!-- 7번 슬라이드: 극한 자연 & 모빌리티 세이프티 (NEW) -->
+    <!-- 7번 슬라이드: 극한 자연 & 모빌리티 세이프티 -->
     <section class="slide">
       <span class="badge purple">DEEP DIVE 04 : NATURE & MOBILITY</span>
       <h2>오프라인 BLE 메시 릴레이, 블랙박스 비콘 & 모빌리티 e-Call</h2>
@@ -1146,46 +1162,79 @@
   <footer>
     <div class="key-tip">단축키: 키보드 [←] [→] 또는 [Space] | 11번 슬라이드에서 라이브 인터랙티브 데모 체험 가능</div>
     <div class="btn-group">
-      <button id="prevBtn" class="nav-btn btn-prev">이전</button>
-      <button id="nextBtn" class="nav-btn btn-next">다음</button>
-      <button id="fullBtn" class="nav-btn btn-full">⛶ 전체화면</button>
+      <button id="prevBtn" class="nav-btn btn-prev" onclick="prev()">이전</button>
+      <button id="nextBtn" class="nav-btn btn-next" onclick="next()">다음</button>
+      <button id="fullBtn" class="nav-btn btn-full" onclick="toggleFullScreen()">⛶ 전체화면</button>
     </div>
   </footer>
 
   <!-- 슬라이드 제어 및 인터랙티브 자바스크립트 -->
   <script>
-    const slides = document.querySelectorAll('.slide');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const fullBtn = document.getElementById('fullBtn');
-    const counter = document.getElementById('slideCounter');
-    const progBar = document.getElementById('progressBar');
+    let slides = [];
+    let prevBtn = null;
+    let nextBtn = null;
+    let fullBtn = null;
+    let counter = null;
+    let progBar = null;
 
     let current = 0;
-    const total = slides.length;
+    let total = 0;
 
     function render(idx) {
+      if (!slides || slides.length === 0) return;
+      current = idx;
       slides.forEach((s, i) => s.classList.toggle('active', i === idx));
-      counter.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
-      progBar.style.width = `${((idx + 1) / total) * 100}%`;
-      prevBtn.disabled = (idx === 0);
-      nextBtn.textContent = (idx === total - 1) ? '처음으로' : '다음';
+      if (counter) {
+        counter.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+      }
+      if (progBar) {
+        progBar.style.width = `${((idx + 1) / total) * 100}%`;
+      }
+      if (prevBtn) {
+        prevBtn.disabled = (idx === 0);
+      }
+      if (nextBtn) {
+        nextBtn.textContent = (idx === total - 1) ? '처음으로' : '다음';
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function next() {
+      if (total === 0) return;
       current = (current + 1) % total;
       render(current);
     }
 
     function prev() {
+      if (total === 0) return;
       if (current > 0) {
         current--;
         render(current);
       }
     }
 
-    nextBtn.addEventListener('click', next);
-    prevBtn.addEventListener('click', prev);
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        document.exitFullscreen().catch(() => {});
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initSlides();
+    });
+
+    function initSlides() {
+      slides = document.querySelectorAll('.slide');
+      prevBtn = document.getElementById('prevBtn');
+      nextBtn = document.getElementById('nextBtn');
+      fullBtn = document.getElementById('fullBtn');
+      counter = document.getElementById('slideCounter');
+      progBar = document.getElementById('progressBar');
+      total = slides.length;
+      render(0);
+    }
 
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
@@ -1198,15 +1247,8 @@
       }
     });
 
-    fullBtn.addEventListener('click', () => {
-      if (!document.fullscreenElement) {
-        document.documentElement.requestFullscreen().catch(() => {});
-      } else {
-        document.exitFullscreen().catch(() => {});
-      }
-    });
-
-    render(0);
+    // 즉시 실행
+    initSlides();
 
     /* ========================================================
        인터랙티브 가디언 콘솔 (Web Audio API 사이렌 및 시뮬레이터)
@@ -1217,12 +1259,12 @@
     let sirenLfo = null;
     let isSirenPlaying = false;
 
-    // 야생동물 기피 고주파
     let animalOsc = null;
     let isAnimalPlaying = false;
 
     function logEvent(msg) {
       const log = document.getElementById('simLog');
+      if (!log) return;
       const time = new Date().toLocaleTimeString('ko-KR', { hour12: false });
       log.innerHTML = `[${time}] ${msg}<br>` + log.innerHTML;
     }
@@ -1307,7 +1349,7 @@
           animalOsc = actx.createOscillator();
           const gain = actx.createGain();
           animalOsc.type = 'sine';
-          animalOsc.frequency.setValueAtTime(19500, actx.currentTime); // 19.5kHz 고주파
+          animalOsc.frequency.setValueAtTime(19500, actx.currentTime);
           gain.gain.setValueAtTime(0.2, actx.currentTime);
           animalOsc.connect(gain);
           gain.connect(actx.destination);
@@ -1323,11 +1365,7 @@
 
     function triggerStealthSos() {
       logEvent('🕵️ [스텔스 SOS] 화면 꺼진 상태 전원버튼 5회 감지 ➔ 30초 현장 오디오 녹음 및 좌표 백그라운드 전송 완료!');
-      alert('🕵️ [주머니 속 스텔스 무음 SOS 작동]
-
-화면을 켜지 않은 상태에서 은밀히 작동되었습니다.
-- 30초 현장 오디오 녹음 시작
-- 실시간 좌표(33.5134° N, 126.5270° E) 112 및 보호자 자동 전송');
+      alert(`🕵️ [주머니 속 스텔스 무음 SOS 작동]\n\n화면을 켜지 않은 상태에서 은밀히 작동되었습니다.\n- 30초 현장 오디오 녹음 시작\n- 실시간 좌표(33.5134° N, 126.5270° E) 112 및 보호자 자동 전송`);
     }
 
     function openFakeCallModal() {
@@ -1337,60 +1375,38 @@
 
     function triggerTaxiOffRoute() {
       logEvent('🚕 [택시 경로이탈] 권장 경로 25% 이탈 감지! 인적 드문 외딴길 진입 ➔ 보호자 알림');
-      alert('🚕 [택시 비정상 경로 이탈 감지]
-
-설정된 목적지 권장 경로 대비 25% 이상 벗어났습니다.
-현재 경로가 보호자에게 실시간 중계되며, 위기 시 즉시 사이렌을 작동하세요.');
+      alert(`🚕 [택시 비정상 경로 이탈 감지]\n\n설정된 목적지 권장 경로 대비 25% 이상 벗어났습니다.\n현재 경로가 보호자에게 실시간 중계되며, 위기 시 즉시 사이렌을 작동하세요.`);
     }
 
     function triggerBleMeshRelay() {
       logEvent('📶 [BLE 메시] LTE 기지국 두절 감지 ➔ 반경 45m 내 등산객 B씨 단말과 P2P 패킷 릴레이 연결 성공');
-      alert('📶 [오프라인 BLE 메시 릴레이 가동]
-
-통신 음영 구역에 진입했습니다.
-주변 45m 지점의 다른 탐방객 스마트폰과 블루투스 P2P 연결이 완료되어 조난 신호 전달 대기 중입니다.');
+      alert(`📶 [오프라인 BLE 메시 릴레이 가동]\n\n통신 음영 구역에 진입했습니다.\n주변 45m 지점의 다른 탐방객 스마트폰과 블루투스 P2P 연결이 완료되어 조난 신호 전달 대기 중입니다.`);
     }
 
     function triggerCrimeAlert() {
       logEvent('⚠️ [치안경보] 범죄주의구역(야간 조도 취약지) 반경 50m 진입! 햅틱 진동 및 안전 우회로 권고');
-      alert('🚨 [위험알림] 범죄주의구역 진입 감지!
-
-현재 구역은 최근 야간 절도/폭행 다발 및 가로등 미설치 구간입니다.
-주변 140m 지점의 [아동지킴이집] 또는 대로변으로 우회 이동하십시오.');
+      alert(`🚨 [위험알림] 범죄주의구역 진입 감지!\n\n현재 구역은 최근 야간 절도/폭행 다발 및 가로등 미설치 구간입니다.\n주변 140m 지점의 [아동지킴이집] 또는 대로변으로 우회 이동하십시오.`);
     }
 
     function triggerSexOffenderAlert() {
       logEvent('🛡️ [여가부 연계] 성범죄자 알림e 반경 200m 경계구역 통과 감지 (지능형 사전 주의 가이드 발송)');
-      alert('🛡️ [성범죄자 알림e 안내]
-
-반경 200m 내 신상공개 대상자 거주 구역을 통과 중입니다.
-이어폰 착용을 자제하고 대로변 및 안심 귀갓길을 이용해 주십시오.');
+      alert(`🛡️ [성범죄자 알림e 안내]\n\n반경 200m 내 신상공개 대상자 거주 구역을 통과 중입니다.\n이어폰 착용을 자제하고 대로변 및 안심 귀갓길을 이용해 주십시오.`);
     }
 
     function triggerSunsetTideAlert() {
       logEvent('🌅 [기상청/천문연] 오늘 일몰 시각(18:35) 30분 전! 산악 등반객 하산 권고 발송');
       logEvent('🌊 [국립해양조사원] 제주 용두암 해안 만조 40분 전! 갯바위 접근 금지 및 대피 경보');
-      alert('🌅 [기관데이터 실시간 알림]
-
-1. [천문연구원] 당일 일몰 30분 전 도달: 산간 조난 위험, 하산 권고.
-2. [해양조사원] 해안 만조 시간 40분 전: 갯바위 밀물 침수 위험 대피 권고.');
+      alert(`🌅 [기관데이터 실시간 알림]\n\n1. [천문연구원] 당일 일몰 30분 전 도달: 산간 조난 위험, 하산 권고.\n2. [해양조사원] 해안 만조 시간 40분 전: 갯바위 밀물 침수 위험 대피 권고.`);
     }
 
     function guideRoute(name, dist, min, isHospital = false) {
       logEvent(`📍 [최단경로 안내] [${name}]까지 최단 대피 경로 탐색 완료 (${dist}m, 도보 ${min}분 소요)`);
-      alert(`📍 [최단 대피로 안내]
-
-목적지: ${name}
-거리: ${dist}m (예상 소요시간: ${min}분)
-
-가장 밝은 대로변을 경유하는 최단 안전 대피 경로 내비게이션을 활성화합니다.`);
+      alert(`📍 [최단 대피로 안내]\n\n목적지: ${name}\n거리: ${dist}m (예상 소요시간: ${min}분)\n\n가장 밝은 대로변을 경유하는 최단 안전 대피 경로 내비게이션을 활성화합니다.`);
     }
 
     function triggerPeerSos() {
       logEvent('👥 [피어 SOS] 반경 1km 내 동일 가디언 앱 이용자 4명에게 긴급 원조 요청 푸시 전송 완료!');
-      alert('👥 [피어 SOS 전파 완료]
-
-반경 1km 내 가디언 이용자 4명 및 인근 안심편의점 점주에게 도움 요청 알림이 발송되었습니다.');
+      alert(`👥 [피어 SOS 전파 완료]\n\n반경 1km 내 가디언 이용자 4명 및 인근 안심편의점 점주에게 도움 요청 알림이 발송되었습니다.`);
     }
 
     function openGuardianModal() {
@@ -1410,12 +1426,8 @@
     function sendGuardianAlert(type, text) {
       closeModal('guardianModal');
       logEvent(`📱 [보호자 전송] 상황: [${type}] - 좌표(33.5134° N, 126.5270° E) 및 배터리 정보 전송됨`);
-      alert(`📱 [보호자 긴급 문자 전송 완료]
-
-유형: ${type}
-내용: "${text}"
-첨부: 실시간 GPS 위치 지도 링크, 배터리 잔량 78%`);
+      alert(`📱 [보호자 긴급 문자 전송 완료]\n\n유형: ${type}\n내용: "${text}"\n첨부: 실시간 GPS 위치 지도 링크, 배터리 잔량 78%`);
     }
   </script>
 </body>
-</html>\n
+</html>
