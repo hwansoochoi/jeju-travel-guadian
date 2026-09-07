@@ -108,7 +108,8 @@ graph TD
 ## 📂 프로젝트 구성
 
 - `index.html`: 18개의 인터랙티브 프레젠테이션 슬라이드 (11번 슬라이드: **라이브 가디언 시뮬레이터**, 13~18번 슬라이드: **iOS/Android 네이티브 개발 명세, 7대 기능 OS 제약 및 불법촬영 현실성 검토, 웹 관제탑(Admin), 코어 모듈 구현, 32MM WBS 공수 산정(예상)**)
-- `worker.js`: Cloudflare Workers 배포용 초경량 CDN 서빙 스크립트
+- `vercel.json`: Vercel 무설정 정적 호스팅 설정 파일
+- `cloudflare/worker.js`: Cloudflare Workers 배포용 초경량 CDN 서빙 스크립트
 - `TECHNICAL_SPEC.md`: 모바일 네이티브(iOS/Android), 백엔드, 웹 관제탑, OS별 기술적·법적 제약 우회책, 6개월 개발 WBS 및 32MM 공수 산정(예상)이 명시된 공식 엔지니어링 명세서
 
 ---
@@ -122,7 +123,11 @@ graph TD
 - **슬라이드 14**: 숙소 불법촬영(IR/Wi-Fi) 기술 현실성 및 7대 핵심 기능 OS 제약·우회 매트릭스 검토
 - **슬라이드 15~17**: 통합 관제탑(Admin) 명세, 모바일 코어 모듈 구현 기법 및 총 32MM 공수 산정(예상)표 확인
 
-### 2. Cloudflare Workers 배포
+### 2. Vercel 배포 (권장)
+GitHub 저장소를 Vercel에 연동하면 별도 빌드 과정 없이 `index.html`이 전 세계 글로벌 CDN을 통해 초고속 정적 웹사이트로 자동 배포됩니다.
+
+### 3. Cloudflare Workers 배포 (선택)
+`cloudflare/worker.js` 코드를 Cloudflare Workers 대시보드에 붙여넣고 배포하거나 Wrangler CLI로 배포합니다.
 ---
 
 ## 🌐 연동 정부 및 민간 OpenAPI 명세 (OpenAPI Registry)
