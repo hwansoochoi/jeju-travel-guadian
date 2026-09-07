@@ -116,25 +116,36 @@ graph TD
 - **위치 관제**: `CoreLocation`
   - 평상시: `startMonitoringSignificantLocationChanges` (기지국/Wi-Fi 기반 배터리 소모 1% 미만)
   - 올레길/위험구역 진입 시: `kCLLocationAccuracyBestForNavigation` (초정밀 GPS 자동 승격)
-- **오프라인 BLE 메시**: `CoreBluetooth`
-  - 기지국 통신 두절 감지 시 앱이 `CBPeripheralManager`와 `CBCentralManager`를 동시 활성화하여 백그라운드 BLE 비콘 및 패킷 송수신 릴레이 구동
+- **오프라인 P2P 메시 릴레이**: `CoreBluetooth`
+  - 기지국 통신 두절(`NWPathMonitor.currentPath.status != .satisfied`) 감지 시 `CBCentralManager` 및 `CBPeripheralManager` 듀얼 가동
+  - **iOS 제약 회피:** 백그라운드 BLE 광고 지연 방어를 위해 `ActivityKit` 라이브 액티비티 킵얼라이브 세션 연동
+  - 안드로이드 기기가 마스터 브리지(Relay Node)로 주로 동작하도록 비대칭 메시(Asymmetric Mesh) 토폴로지 채택
+- **라스트 블랙박스 비콘 (배터리 3% 방전 직전)**:
+  - `UIDevice.current.isBatteryMonitoringEnabled = true` 상시 감시
+  - 배터리 3% 도달 시 OS 셧다운 직전 **'블랙박스 모드'** 진입:
+    - 고전력 GPS 칩셋 및 백그라운드 태스크 전면 차단 (마지막 정상 좌표 Flash 메모리 동결)
+    - `CBPeripheralManager.startAdvertising`으로 iBeacon/Eddystone 초저전력 펄스(TxPower 4dBm) 방출 (배터리 3% 전력으로 3~5시간 수색 드론용 비콘 유지)
 - **무음 돌파 사이렌**: `AVAudioSession`
-  - `.playback` 카테고리 + `.duckOthers` 설정
-  - 정식 출시 시 Apple의 **`Critical Alerts` (긴급 재난 경보)** Entitlement 승인 필요
+  - `.playback` 카테고리 + `.duckOthers` 설정 (Apple 공식 `Critical Alerts` Entitlement 승인 연동)
 - **잠금화면 상태 중계**: `ActivityKit` (Live Activities & Dynamic Island)
-  - 2단계 체크인 타이머, 현재 안심 구간, 배터리 상태를 잠금화면 위젯으로 실시간 표시
 
 ### 2.2 Android 클라이언트 개발 명세
 - **언어/프레임워크**: Kotlin 2.x, Jetpack Compose, Coroutines/Flow
-- **백그라운드 지속 보장**: `Foreground Service` + `TYPE_LOCATION`
-  - 배터리 최적화 예외(Doze Mode Whitelist) 권한 획득
-- **오프라인 통신**: `Google Nearby Connections API`
-  - Wi-Fi Direct 및 BLE 기반 P2P 스타(Star)/메시(Mesh) 토폴로지 구성
+- **백그라운드 지속 보장**: `Foreground Service` + `TYPE_LOCATION` & `TYPE_CONNECTED_DEVICE`
+  - Doze 모드 화이트리스트(`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`) 획득
+- **오프라인 P2P 메시 릴레이**: `Google Nearby Connections API` (Strategy: `P2P_CLUSTER`)
+  - 기지국 없이 Wi-Fi Direct 및 BLE 듀얼 링크로 반경 100m 내 주변 여행자 단말과 애드혹(Ad-hoc) 메시 망 구성
+  - 조난 패킷 발생 시 인접 단말로 다중 홉(Multi-hop) 자동 전파 ➔ LTE 가용 구역 진입 단말이 서버로 대리 업로드
+- **라스트 블랙박스 비콘 (배터리 3% 방전 직전)**:
+  - `ACTION_BATTERY_LOW` / `ACTION_BATTERY_CHANGED` 브로드캐스트 리시버 연동
+  - 배터리 3% 감지 시 `BluetoothLeAdvertiser` 즉시 활성화:
+    - `AdvertiseData.Builder().addManufacturerData()` 활용
+    - 8바이트 압축 페이로드: `[위경도 6바이트 + 혈액형/기저질환 1바이트 + 배터리잔량 1바이트]`
+    - 비연결형(Non-connectable) 1초 주기 브로드캐스팅 ➔ 119 수색 드론 및 구조대원이 페어링 없이 스캔만으로 조난자 식별
 - **무음/방해금지 돌파 사이렌**:
-  - `NotificationManager.isNotificationPolicyAccessGranted()`
-  - 방해금지(DND) 모드를 임시 해제하거나 `AudioAttributes.USAGE_ALARM` 채널 스트림으로 최대 볼륨 사운드 방출
+  - `NotificationManager.isNotificationPolicyAccessGranted()`로 DND 해제 및 `AudioAttributes.USAGE_ALARM` 최대 볼륨 방출
 - **스텔스 SOS 감지**:
-  - `AccessibilityService` 또는 `MediaSession` 볼륨/미디어 버튼 리스너를 통해 화면 꺼짐 상태의 물리키 연속 클릭 캡처
+  - `AccessibilityService` 전원/볼륨키 5회 연속 클릭 캡처
 
 ### 2.3 통합 관제 시스템 (Web Admin Dashboard) 개발 명세
 - **프레임워크**: Next.js 15 (App Router), TypeScript, TailwindCSS, Zustand
@@ -199,7 +210,7 @@ graph TD
 | **2. 스텔스 무음 SOS (물리키 5회 연타)** | **가능 (우회)**<br>AccessibilityService로 전원/볼륨키 가로채기 가능 | **불가능 (OS 원천 차단)**<br>Apple 샌드박스 정책상 화면 잠금 시 전원키 이벤트 앱 전달 원천 차단 | **[한계]** Apple 보안 정책상 하드웨어 키 가로채기 불가 (기본 긴급구조 112 충돌).<br>**[우회]** iOS '뒷면 탭하기(Back Tap)' 단축어 연동, Siri 음성 비상 트리거, 잠금화면 Live Activities 위젯, 애플워치 액션버튼으로 우회 |
 | **3. 무음·진동 돌파 120dB 사이렌** | **가능**<br>NotificationManager 방해금지 해제 및 Alarm 채널 최대 볼륨 | **제한적 (사전승인 필수)**<br>물리 무음 토글 스위치 켜짐 시 일반 앱의 오디오 출력 차단 | **[한계]** iOS 하드웨어 무음 스위치 켜짐 시 백그라운드 오디오 차단 원칙.<br>**[우회]** Apple Developer 공식 `Critical Alerts(중대 경보)` Entitlement 심사 승인 획득 (인명구조 앱 전용 허용), 미승인 시 `AVAudioSession.playback` 카테고리 설정 |
 | **4. 성범죄자 알림e 및 주거지 지도 표출** | **기술적 구현 가능** | **기술적 구현 가능** | **[⚠️ 법적 전면 불가 (아청법 위반)]**<br>아동·청소년의 성보호에 관한 법률 제55조 제5항 위반 시 **5년 이하의 징역 또는 5천만원 이하의 벌금**.<br>**[우회]** 성범죄자 개인정보 표기를 전면 배제하고, 행안부/경찰청 '생활안전지도 5대 범죄 발생통계' 및 '야간 안심귀갓길 지오펜스 폴리곤'으로 100% 합법 가공 표출 |
-| **5. 오프라인 음영지역 BLE 메시 릴레이** | **가능**<br>Nearby Connections 및 BLE 백그라운드 상시 수신 | **제한적**<br>화면 꺼짐 시 백그라운드 BLE Advertising 주기 15분 이상 지연 | **[한계]** iOS 배터리 정책상 백그라운드 BLE 패킷 전달 주기 급증으로 실시간 중계 지연.<br>**[우회]** Android 기기를 상시 브리지 중계 노드(Relay Node)로 작동하도록 비대칭 메시(Asymmetric Mesh) 토폴로지 설계, iOS는 포그라운드 유지 유도 |
+| **5. 오프라인 P2P 메시 & 라스트 비콘 (배터리 3%)** | **가능**<br>Nearby Connections(P2P Cluster) + Foreground Service + BLE Advertiser | **제한적**<br>CoreBluetooth 백그라운드 지연 & 방전 SIGKILL 종료 | **[한계]** iOS 화면 꺼짐 시 광고 주기 15분 지연 및 배터리 0% 방전 시 앱 프로세스 강제 종료.<br>**[회피법]** ① **비대칭 메시(Asymmetric Mesh):** 안드로이드 단말을 상시 브리지(Relay Node)로 지정하고 iOS는 수신 위주 동작. ② **배터리 3% 사전 비콘(Pre-Shutdown Trigger):** 0% 셧다운 전 3% 잔량 시 고전력 GPS 즉시 차단 ➔ iBeacon/Eddystone 초저전력 펄스 모드 진입으로 3~5시간 동안 수색 드론용 비콘 지속 방출. ③ **119 수색 연계:** 수색 드론/구조대원이 블루투스 페어링 없이 Manufacturer Data 스캔만으로 좌표·ID 즉시 판독 |
 | **6. 야생동물(들개·멧돼지) 기피 고주파** | **제한적**<br>모바일 스피커 18kHz 이상 출력 SPL 급감 | **제한적**<br>모바일 스피커 하드웨어 음압(SPL) 급감 | **[한계]** 스마트폰 마이크로 스피커는 18kHz 이상 초음파 재생 시 음압이 40dB 이하로 급감하여 야외 동물 퇴치 실효성 미흡.<br>**[우회]** 단순 초음파 지양 ➔ 맹수(호랑이/표범) 포효 및 파열음(가청 2~4kHz 최대 SPL 방출) + 카메라 플래시 고속 스트로보(Strobe Flash) 결합 복합 방어 |
 | **7. 모빌리티 이상 감지 (택시/렌터카)** | **가능**<br>GPS + 센서 융합 | **가능**<br>CoreLocation + CoreMotion | **[한계]** 산간 터널/도로에서 GPS 튀는 현상(Multipath)으로 인한 오경보 및 폰 단순 낙하(Drop) 오인.<br>**[우회]** 택시 이탈은 OSRM 맵 매칭 + 칼만 필터(5회 연속 100m 이탈 시 경보), 렌터카 전복은 '감속도 >4G + 자이로 전복각 >60° + 주행속도 급감' 3중 융합 필터 적용 |
 

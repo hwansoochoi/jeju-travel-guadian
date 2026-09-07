@@ -1013,11 +1013,16 @@
           <div class="card-tag" style="background:rgba(168,85,247,0.15); color:#c084fc;">통신 음영 & 자연 조난</div>
           <h3>기지국 두절 시 P2P 메시 & 야생동물 퇴치</h3>
           <p style="margin-bottom:10px;">인터넷이 끊겨도 작동하는 하드웨어 저전력 기술과 지역 생태계 데이터를 결합했습니다.</p>
-          <ul style="list-style:none; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:7px;">
-            <li>📶 <strong>오프라인 BLE 메시 릴레이:</strong> 통신 음영 시 반경 100m 내 타 등산객 단말과 블루투스 P2P 통신으로 조난 신호 연쇄 전달</li>
-            <li>🔋 <strong>배터리 3% 라스트 블랙박스 비콘:</strong> 방전 직전 초절전 모드 진입, 최소 전력 BLE 핑 방출로 수색 드론/수색견 탐지 유도</li>
-            <li>🐗 <strong>야생동물 출몰 경보 & 기피 주파수:</strong> 제주 중산간 들개 무리, 멧돼지 출몰지 경고 및 20kHz~25kHz 동물 기피 고주파 방출</li>
+          <ul style="list-style:none; font-size:12px; color:#cbd5e1; display:flex; flex-direction:column; gap:6px;">
+            <li>📶 <strong>오프라인 BLE 메시 릴레이:</strong> 통신 음영 시 반경 100m 내 타 등산객 단말과 블루투스 P2P 무선 그물망으로 조난 신호 다중 홉(Multi-hop) 연쇄 탈출</li>
+            <li>🔋 <strong>배터리 3% 라스트 블랙박스 비콘:</strong> 방전 셧다운 직전 초절전 비콘 모드 진입, 최소 전력 신호 방출로 119 수색 드론/수색견 탐지 유도</li>
+            <li>🐗 <strong>야생동물 출몰 경보 & 기피 주파수:</strong> 제주 들개·멧돼지 출몰지 경고 및 가청 맹수음+플래시 스트로보 복합 방어</li>
           </ul>
+          <div class="api-callout" style="border-color: rgba(168,85,247,0.5);">
+            <strong style="color:#c084fc;">🛠️ OS별 구현 방안 및 회피법 (Workaround)</strong><br>
+            • <strong>iOS (iPhone):</strong> 백그라운드 BLE 주기 지연 방어를 위해 <code>ActivityKit</code> 라이브 위젯 킵얼라이브 연동. 배터리 3% 시 셧다운 전 고전력 GPS 차단 ➔ <code>CBPeripheralManager</code> iBeacon 초절전 펄스 전환 (3~5시간 비콘 방출 유지).<br>
+            • <strong>Android:</strong> <code>Foreground Service</code>로 Doze 모드 방어, <code>Google Nearby Connections API</code>(P2P 클러스터)로 무인터넷 고속 릴레이. 배터리 3% 시 비연결형 BLE 브로드캐스팅(좌표·혈액형 8바이트 압축 송출).
+          </div>
         </div>
         <div class="card">
           <div class="card-tag" style="background:rgba(6,182,212,0.15); color:#38bdf8;">모빌리티 안심망</div>
@@ -1514,10 +1519,10 @@
             <td><span style="color:#f43f5e; font-weight:700;">⚠️ 법적 전면 불가 (아청법 제55조 제5항 위반 시 5년 이하 징역)</span>.<br><strong>우회책:</strong> 개인 신상·주소 노출을 전면 배제하고, 행안부/경찰청 '생활안전지도 5대 범죄 발생통계' 및 '야간 안심귀갓길 지오펜스 폴리곤'으로 100% 합법 가공 표출</td>
           </tr>
           <tr>
-            <td><strong>5. 오프라인 음영지역 BLE 메시 릴레이</strong></td>
-            <td><span class="tag-diff-low">가능</span> (Nearby Connections 상시 백그라운드)</td>
-            <td><span class="tag-diff-high">제한적</span> (화면 꺼짐 시 백그라운드 BLE 광고 주기 15분 지연)</td>
-            <td><strong>한계:</strong> iOS 배터리 정책상 백그라운드 BLE Advertising 간격 급증으로 실시간 패킷 전달 지연.<br><strong>우회책:</strong> Android 기기가 상시 브리지 중계 노드(Relay Node)로 작동하도록 비대칭 메시(Asymmetric Mesh) 토폴로지 설계, iOS는 화면 유지 모드 권고</td>
+            <td><strong>5. 오프라인 P2P 메시 & 라스트 비콘 (배터리 3%)</strong></td>
+            <td><span class="tag-diff-low">가능</span><br>Nearby Connections + Foreground Service + BLE Advertiser</td>
+            <td><span class="tag-diff-high">제한적</span><br>CoreBluetooth 백그라운드 지연 & 방전 SIGKILL 종료</td>
+            <td><strong>한계:</strong> iOS 화면 꺼짐 시 BLE 패킷 주기 15분 지연 및 배터리 0% 방전 시 앱 프로세스 강제 종료.<br><strong>회피법:</strong> ① <strong>비대칭 메시(Asymmetric Mesh):</strong> 안드로이드 단말을 상시 브리지(Relay Node)로 지정하고 iOS는 수신 위주 동작. ② <strong>배터리 3% 사전 비콘(Pre-Shutdown Trigger):</strong> 0% 셧다운 전 3% 잔량 시 고전력 GPS 즉시 차단 ➔ iBeacon/Eddystone 초저전력 펄스 모드 진입으로 3~5시간 동안 수색 드론용 비콘 지속 방출. ③ <strong>119 수색 연계:</strong> 수색 드론/구조대원이 블루투스 페어링 없이 Manufacturer Data 스캔만으로 좌표·ID 즉시 판독</td>
           </tr>
           <tr>
             <td><strong>6. 야생동물(들개·멧돼지) 기피 고주파</strong></td>
@@ -1586,9 +1591,10 @@
         </div>
         <div class="card">
           <div style="font-size:24px; margin-bottom:8px;">📶</div>
-          <h3 style="color:#38bdf8;">BLE 오프라인 메시 네트워크</h3>
+          <h3 style="color:#38bdf8;">BLE 오프라인 메시 & 라스트 비콘</h3>
           <p>
-            Android의 <strong>Nearby Connections API</strong>와 iOS의 <strong>CoreBluetooth Peripheral/Central 동시 모드</strong>를 활용하여 통신 음영 지대에서 초당 1회 조난 패킷을 주변 스마트폰으로 홉(Hop) 전파합니다.
+            <strong>P2P 릴레이:</strong> Android <code>Nearby Connections</code>(P2P Cluster) + iOS <code>CoreBluetooth</code> 듀얼 모드로 통신 두절 시 조난 패킷 다중 홉 전파.<br>
+            <strong>라스트 비콘(3%):</strong> 배터리 3% 감지 시 고전력 센서 즉시 차단 ➔ 비연결형 iBeacon/Eddystone 초저전력 펄스 방출(3~5시간 수색 드론 신호 유지).
           </p>
         </div>
         <div class="card">
