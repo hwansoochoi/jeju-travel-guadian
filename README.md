@@ -53,3 +53,12 @@
 
 ### 2. Cloudflare Workers 배포
 `worker.js` 코드를 Cloudflare Workers 대시보드에 붙여넣고 `Save and Deploy`를 진행하거나 Wrangler CLI로 배포합니다.
+
+---
+
+## 🔗 저장소 및 링크
+- **GitHub Repository**: [https://github.com/hwansoochoi/jeju-travel-guardian.git](https://github.com/hwansoochoi/jeju-travel-guardian.git)
+- **Clone Command**:
+  ```bash
+  git clone https://github.com/hwansoochoi/jeju-travel-guardian.git
+  ```
