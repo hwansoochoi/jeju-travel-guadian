@@ -332,6 +332,73 @@
       font-weight: 700;
     }
 
+    /* 시스템 구조도 전용 스타일 (슬라이드 13) */
+    .sys-arch-container {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      width: 100%;
+    }
+    .sys-arch-layer {
+      background: rgba(15, 23, 42, 0.75);
+      border: 1px solid #1e293b;
+      border-radius: 10px;
+      padding: 11px 14px;
+      transition: border-color 0.2s;
+    }
+    .sys-arch-layer:hover {
+      border-color: #334155;
+    }
+    .sys-layer-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 7px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    }
+    .sys-layer-sub {
+      font-size: 10.5px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+    .sys-node-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 8px;
+    }
+    .sys-node {
+      background: rgba(17, 24, 39, 0.9);
+      border: 1px solid #334155;
+      border-radius: 8px;
+      padding: 8px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .sys-node strong {
+      font-size: 11.8px;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .sys-node span {
+      font-size: 10.5px;
+      color: #cbd5e1;
+      line-height: 1.45;
+    }
+    .sys-connector {
+      text-align: center;
+      font-size: 10px;
+      color: #64748b;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      margin: -3px 0;
+    }
+
     /* UI 목업 */
     .mockup {
       background: #0f172a;
@@ -1163,35 +1230,137 @@
       </div>
     </section>
 
-    <!-- 13번 슬라이드: 네이티브 앱 & 통합 관제 아키텍처 [NEW] -->
+    <!-- 13번 슬라이드: 전체 시스템 아키텍처 & 데이터 흐름 구조도 [ENHANCED] -->
     <section class="slide">
-      <span class="badge cyan">TECHNICAL ARCHITECTURE</span>
-      <h2>아이폰/안드로이드 네이티브 앱 & 웹 통합 관제 아키텍처</h2>
-      <p class="desc">백그라운드 센서 제어의 정밀성을 위해 네이티브 모바일 코어와 대용량 실시간 관제 백엔드를 설계합니다.</p>
-      <div class="grid-3">
-        <div class="card">
-          <div class="card-tag" style="background:rgba(56,189,248,0.15); color:#38bdf8;">모바일 클라이언트</div>
-          <h3>iOS & Android 네이티브</h3>
-          <p>
-            <strong>iOS:</strong> Swift 6, CoreLocation(초절전 백그라운드), CoreBluetooth(BLE 메시), CallKit/AVAudioSession(사이렌), Live Activity.<br>
-            <strong>Android:</strong> Kotlin, Foreground Service, GeofencingClient, Nearby Connections, Accessibility/DND Bypass.
-          </p>
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:8px; margin-bottom:8px;">
+        <span class="badge cyan">END-TO-END SYSTEM ARCHITECTURE</span>
+        <span class="badge" style="background:rgba(56,189,248,0.15); color:#38bdf8; font-size:11px;">⚡ 4계층 전방위 데이터 파이프라인</span>
+      </div>
+      <h2>스마트 세이프 트래블 가디언 전체 시스템 구조도</h2>
+      <p class="desc">단독 여행자 모바일 단말(iOS/Android)부터 클라우드 백엔드, 실시간 이벤트 스트리밍, 공간 DB 및 웹 관제탑(119 상황실 직결)까지 유기적으로 연결된 엔터프라이즈 아키텍처입니다.</p>
+
+      <div class="sys-arch-container">
+        <!-- Layer 1: 모바일 클라이언트 & 오프라인 엣지 -->
+        <div class="sys-arch-layer" style="border-color: rgba(56,189,248,0.35);">
+          <div class="sys-layer-title" style="color: #38bdf8;">
+            <span>📱 Layer 1: 모바일 클라이언트 & 오프라인 엣지 (Mobile Edge Layer)</span>
+            <span class="sys-layer-sub">Swift 6 / Kotlin Compose / P2P Mesh</span>
+          </div>
+          <div class="sys-node-grid">
+            <div class="sys-node">
+              <strong style="color:#fff;">🍎 iOS 네이티브 앱</strong>
+              <span>CoreLocation(초절전 백그라운드 GPS) / CoreBluetooth(BLE 메시) / ActivityKit(잠금화면 라이브) / AVAudioSession(무음돌파 사이렌)</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🤖 Android 네이티브 앱</strong>
+              <span>Foreground Service(Doze 방어) / Nearby Connections(P2P 메시) / NotificationManager(DND 해제) / GeofencingClient</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">📡 P2P 메시 & 라스트 비콘</strong>
+              <span>통신음영 시 비콘 패킷 방출 / 라스트 핑 박제 / 배터리 3% 최소전력 신호 / 여행자 간 다중 홉(Multi-hop) 릴레이</span>
+            </div>
+          </div>
         </div>
-        <div class="card">
-          <div class="card-tag" style="background:rgba(16,185,129,0.15); color:#34d399;">클라우드 백엔드</div>
-          <h3>실시간 이벤트 파이프라인</h3>
-          <p>
-            <strong>엔진:</strong> FastAPI/Go 마이크로서비스, Redis Geo(반경 검색/지오펜싱), PostGIS(안심경로/공공데이터 공간연산).<br>
-            <strong>스트리밍:</strong> Kafka/RabbitMQ(119 E-Call 직결), WebRTC/WebSocket(실시간 위치 중계 및 피어 전파).
-          </p>
+
+        <!-- Connector 1 -->
+        <div class="sys-connector">
+          <span>▼ HTTPS / WSS / mTLS 1.3 (0.2s 초저지연 양방향 암호화 스트리밍) ▼</span>
         </div>
-        <div class="card">
-          <div class="card-tag" style="background:rgba(168,85,247,0.15); color:#c084fc;">통합 관제 시스템</div>
-          <h3>웹 관리자 대시보드 (Next.js)</h3>
-          <p>
-            <strong>GIS 상황판:</strong> Mapbox GL / Kakao Maps 연동, 실시간 위기 탐방객 핀포인트 모니터링.<br>
-            <strong>위기 대응:</strong> 10분 이상 정체자, 코스 이탈자, 피어 SOS 발생 현황 자동 경보 및 119/112 출동 이력 관리.
-          </p>
+
+        <!-- Layer 2: 게이트웨이 & 이벤트 버스 -->
+        <div class="sys-arch-layer" style="border-color: rgba(16,185,129,0.35);">
+          <div class="sys-layer-title" style="color: #34d399;">
+            <span>🛡️ Layer 2: 보안 게이트웨이 & 이벤트 스트리밍 (Gateway & Messaging)</span>
+            <span class="sys-layer-sub">Cloudflare WAF / Kong / WebSocket / Kafka</span>
+          </div>
+          <div class="sys-node-grid">
+            <div class="sys-node">
+              <strong style="color:#fff;">☁️ Cloudflare CDN & WAF</strong>
+              <span>DDoS 차단, Edge 캐싱, Anycast DNS, SSL 오프로딩</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🚪 Kong API Gateway</strong>
+              <span>JWT 토큰 검증, Rate Limiting, 로드밸런싱, 엔드포인트 보안</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">⚡ WebSocket / WebRTC 허브</strong>
+              <span>실시간 위치 스트리밍, 피어 SOS 1km 전파, 가상동행 음성</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">📨 Apache Kafka & RabbitMQ</strong>
+              <span>비동기 긴급 이벤트 큐, 119 E-Call 패킷 발행, 알림 큐</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connector 2 -->
+        <div class="sys-connector">
+          <span>▼ gRPC / Redis Protocol / PostGIS 공간 인덱싱 쿼리 ▼</span>
+        </div>
+
+        <!-- Layer 3: 코어 서비스 마이크로서비스 & 데이터 계층 -->
+        <div class="sys-arch-layer" style="border-color: rgba(168,85,247,0.35);">
+          <div class="sys-layer-title" style="color: #c084fc;">
+            <span>⚙️ Layer 3: 코어 마이크로서비스 & 공간 데이터 계층 (Core Engine & Storage)</span>
+            <span class="sys-layer-sub">FastAPI / Go / PostGIS / Redis 7 / AWS S3</span>
+          </div>
+          <div class="sys-node-grid">
+            <div class="sys-node">
+              <strong style="color:#fff;">📍 위치 & 궤적 추적 엔진 (Go)</strong>
+              <span>확장 칼만 필터(EKF), OSRM 맵매칭, 올레길 이탈 탐지</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">⚠️ 리스크 레이더 & 체크인 (Python)</strong>
+              <span>공간 지오펜싱, 2단계 체크인(데드맨 스위치), 10분 정체 알람</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🌐 공공데이터 파이프라인</strong>
+              <span>기상청 특보, 천문연 일출몰, 해양조사원 만조, 치안지도 수집</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🗺️ PostgreSQL 16 + PostGIS</strong>
+              <span>공간 쿼리(ST_DWithin), 올레길 코스 폴리곤, 4대 안심포인트</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">⚡ Redis 7 Cluster</strong>
+              <span>GeoSet 기반 반경 1km 피어 색인, 세션 캐시, 라스트 핑 저장</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🔒 AWS S3 / MinIO</strong>
+              <span>스텔스 SOS 30초 현장 오디오(M4A) AES-256 암호화 보관</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Connector 3 -->
+        <div class="sys-connector">
+          <span>▼ E-Call REST API / Web Push / 관제 웹소켓 동기화 ▼</span>
+        </div>
+
+        <!-- Layer 4: 통합 관제탑 & 유관기관 연계 계층 -->
+        <div class="sys-arch-layer" style="border-color: rgba(245,158,11,0.35);">
+          <div class="sys-layer-title" style="color: #fbbf24;">
+            <span>🚨 Layer 4: 웹 통합 관제탑 & 긴급 출동 연계망 (Admin & Emergency Dispatch)</span>
+            <span class="sys-layer-sub">Next.js 15 / Mapbox GL JS / 119·112 상황실 직결</span>
+          </div>
+          <div class="sys-node-grid">
+            <div class="sys-node">
+              <strong style="color:#fff;">🖥️ 웹 통합 관제탑 (Admin Console)</strong>
+              <span>Next.js 15, Mapbox GL JS 실시간 GIS 상황판, 이상 탐방객 팝업 경보, 현장 출동 지령기</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🚒 119 소방 종합상황실 E-Call</strong>
+              <span>산악·해안 UTM-K 국가지점번호 자동 변환, 부상 부위·기저질환·배터리 잔량 표준 리포트 발송</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">🚓 112 경찰 & 피어 지킴이망</strong>
+              <span>도심 신변위협 위치 순찰차 직결, 반경 1km 내 동행 여행자 및 등록 지킴이(상인/주민) 비상 푸시</span>
+            </div>
+            <div class="sys-node">
+              <strong style="color:#fff;">💬 보호자 긴급 통보 게이트웨이</strong>
+              <span>카카오 알림톡 및 통신사 재난 SMS 자동 연동, 실시간 이동경로 링크 즉각 전송</span>
+            </div>
+          </div>
         </div>
       </div>
     </section>

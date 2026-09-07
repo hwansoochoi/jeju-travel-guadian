@@ -5,29 +5,106 @@
 
 ---
 
-## 1. 시스템 전체 아키텍처 (System Architecture)
+## 1. 시스템 전체 아키텍처 및 데이터 흐름 구조도 (System Architecture)
+
+### 1.1 엔드투엔드 시스템 구조도 (Mermaid Flowchart)
+
+```mermaid
+graph TD
+    subgraph MobileEdge["📱 모바일 클라이언트 & 오프라인 엣지 (Mobile Edge Layer)"]
+        iOS["🍎 iOS 네이티브 앱<br>(Swift 6 / CoreLocation / CoreBluetooth / Live Activities / CallKit)"]
+        Android["🤖 Android 네이티브 앱<br>(Kotlin / Foreground Service / Nearby Connections / DND 우회)"]
+        BLE["📡 P2P 오프라인 메시 & BLE 비콘<br>(라스트 핑 / 배터리 3% 블랙박스 비콘 / 다중 홉 릴레이)"]
+    end
+
+    subgraph GatewayLayer["🛡️ 게이트웨이 & 보안 통신망 (API Gateway & Security Layer)"]
+        CF["☁️ Cloudflare CDN & WAF<br>(DDoS 차단 / Anycast DNS / SSL 오프로딩)"]
+        Kong["🚪 Kong / Envoy API Gateway<br>(mTLS 1.3 / JWT 인증 / Rate Limiting)"]
+        WS["⚡ WebSocket / WebRTC 허브<br>(0.2초 초저지연 양방향 위치 스트리밍 & 가상동행)"]
+        Kafka["📨 Apache Kafka & RabbitMQ<br>(비동기 이벤트 큐 / 긴급 119 패킷 버스)"]
+    end
+
+    subgraph CoreServices["⚙️ 코어 마이크로서비스 & 데이터 파이프라인 (Core Microservices)"]
+        LocEngine["📍 실시간 궤적 & 위치엔진<br>(Go / Kalman Filter / OSRM 맵매칭)"]
+        RiskRadar["⚠️ 지오펜싱 & 리스크 레이더<br>(FastAPI / PostGIS 공간인덱싱)"]
+        CheckIn["⏱️ 2단계 체크인 엔진<br>(Dead Man's Switch / 10분 정체 알람)"]
+        PublicData["🌐 공공데이터 파이프라인<br>(Airflow - 기상청 / 천문연 / 해양조사원 / 치안지도)"]
+    end
+
+    subgraph DataStorage["💾 데이터베이스 & 분산 스토리지 계층 (Data Persistence Layer)"]
+        PostGIS[("🗺️ PostgreSQL 16 + PostGIS<br>(궤적 / 올레길 지오펜스 / 4대 안심포인트)")]
+        Redis[("⚡ Redis 7 Cluster<br>(실시간 세션 / 반경 1km 피어 색인 / 라스트 핑)")]
+        S3[("🔒 AWS S3 / MinIO<br>(스텔스 녹음 30초 오디오 AES-256 암호화 보관)")]
+    end
+
+    subgraph DispatchAdmin["🚨 통합 관제탑 & 유관기관 연계 계층 (Admin & Emergency Integration)"]
+        AdminWeb["🖥️ 웹 통합 관제탑 (Next.js 15)<br>(Mapbox GL JS 실시간 GIS 상황판 / 현장 지령)"]
+        Fire119["🚒 119 소방 종합상황실<br>(UTM-K 국가지점번호 E-Call 구조 패킷 직결)"]
+        Police112["🚓 112 경찰 & 피어 지킴이망<br>(도심 우범지역 순찰차 직결 / 1km 피어 비상 푸시)"]
+        Kakao["💬 보호자 긴급 통보 게이트웨이<br>(카카오 알림톡 & 통신사 재난 SMS 실시간 링크)"]
+    end
+
+    iOS -->|HTTPS / WSS / mTLS| CF
+    Android -->|HTTPS / WSS / mTLS| CF
+    BLE -.->|오프라인 P2P 릴레이| iOS
+    BLE -.->|오프라인 P2P 릴레이| Android
+
+    CF --> Kong
+    Kong --> WS
+    Kong --> CoreServices
+
+    WS <--> LocEngine
+    CoreServices --> Kafka
+    Kafka --> LocEngine
+    Kafka --> RiskRadar
+    Kafka --> CheckIn
+    PublicData --> RiskRadar
+
+    LocEngine <--> Redis
+    LocEngine --> PostGIS
+    RiskRadar --> PostGIS
+    CheckIn --> PostGIS
+    CoreServices --> S3
+
+    Kafka --> AdminWeb
+    Kafka --> Fire119
+    Kafka --> Police112
+    Kafka --> Kakao
+    AdminWeb <--> WS
+```
+
+### 1.2 계층별 아키텍처 상세 다이어그램
 
 ```
-[ 모바일 클라이언트 ]
-  ├─ iOS App (Swift 6, SwiftUI, CoreLocation, CoreBluetooth, CallKit)
-  └─ Android App (Kotlin, Jetpack Compose, Foreground Service, Nearby Connections)
-          │ (HTTPS / WSS / mTLS)
-          ▼
-[ API Gateway & Security Layer ] (Kong / Cloudflare / Envoy)
-          │
-[ 마이크로서비스 백엔드 ]
-  ├─ Location & Tracking Engine (Go / Redis Geo / Kalman Filter)
-  ├─ Risk Radar & Geofencing (FastAPI / PostGIS 공간 인덱싱)
-  ├─ Emergency Dispatcher (Kafka / RabbitMQ / WebRTC)
-  └─ Public Data Pipeline (Airflow / Celery - 기상청, 천문연, 해양조사원, 경찰청)
-          │
-[ 데이터베이스 계층 ]
-  ├─ Spatial DB: PostgreSQL 16 + PostGIS (궤적, 안심포인트, 지오펜스)
-  ├─ In-Memory Cache: Redis 7 (실시간 핑, 세션, 라스트 핑)
-  └─ Object Storage: AWS S3 / MinIO (스텔스 녹음 음성 파일, 암호화 보관)
-          │
-[ 통합 관제탑 (Admin Dashboard) ]
-  └─ Web Admin (Next.js 15, React 19, Mapbox GL JS, TailwindCSS, WebSockets)
+[ Layer 1: 클라이언트 계층 (Mobile & User Edge) ]
+  ├── iOS 네이티브 앱 (Swift 6, CoreLocation, CoreBluetooth 메시, Live Activities, Critical Alerts)
+  ├── Android 네이티브 앱 (Kotlin, Foreground Service, Nearby Connections, DND 우회, 센서 융합)
+  └── IoT & P2P 오프라인 노드 (BLE 비콘 브리지, 비상 라스트 핑, 여행자 P2P 릴레이)
+             │
+             ▼ (HTTPS / WSS / mTLS 1.3)
+[ Layer 2: 게이트웨이 & 실시간 통신망 (API Gateway & Security Layer) ]
+  ├── Cloudflare CDN / DDoS 방어 / WAF
+  ├── Kong / Envoy API Gateway (JWT 인증, Rate Limiting, 로드밸런싱)
+  └── WebSocket & WebRTC 시그널링 허브 (0.2s 초저지연 양방향 위치 중계)
+             │
+             ▼ (gRPC / Async Event Bus - Kafka / RabbitMQ)
+[ Layer 3: 코어 서비스 마이크로서비스 (Core Microservices & Event Stream) ]
+  ├── 실시간 궤적 & 위치 추적 엔진 (Go, Kalman Filter, OSRM 맵 매칭)
+  ├── 지오펜싱 & 리스크 레이더 (FastAPI, PostGIS 공간 인덱싱, 위험구역 판정)
+  ├── 2단계 체크인 & 데드맨 스위치 (10분 정체자 이상 감지 알고리즘)
+  └── 공공데이터 파이프라인 (Airflow / Celery - 기상청, 천문연, 해양조사원, 경찰청)
+             │
+             ▼ (JDBC / Redis Protocol / S3 API)
+[ Layer 4: 데이터베이스 & 스토리지 계층 (Data Persistence Layer) ]
+  ├── 공간 DB: PostgreSQL 16 + PostGIS (궤적, 안심포인트, 코스 지오메트리)
+  ├── 인메모리 캐시: Redis 7 Cluster (실시간 핑, 세션, 반경 1km 피어 색인)
+  └── 암호화 스토리지: AWS S3 / MinIO (스텔스 녹음 음성 파일 AES-256 저장)
+             │
+             ▼ (WebSocket / E-Call REST API / SMS Gateway)
+[ Layer 5: 통합 관제탑 & 공공 연계망 (Admin & Emergency Integration) ]
+  ├── 웹 통합 관제탑 (Next.js 15, React 19, Mapbox GL JS, 실시간 GIS 상황판)
+  ├── 119 소방 종합상황실 & 112 경찰청 긴급 출동 지령 시스템 직결 (UTM-K 좌표)
+  └── 보호자 긴급 SMS & 카카오 알림톡 게이트웨이
 ```
 
 ---

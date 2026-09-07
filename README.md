@@ -34,6 +34,74 @@
 
 ---
 
+## 🏗️ 전체 시스템 구조도 (System Architecture)
+
+```mermaid
+graph TD
+    subgraph MobileEdge["📱 모바일 클라이언트 & 오프라인 엣지 (Mobile Edge Layer)"]
+        iOS["🍎 iOS 네이티브 앱<br>(Swift 6 / CoreLocation / CoreBluetooth / Live Activities / CallKit)"]
+        Android["🤖 Android 네이티브 앱<br>(Kotlin / Foreground Service / Nearby Connections / DND 우회)"]
+        BLE["📡 P2P 오프라인 메시 & BLE 비콘<br>(라스트 핑 / 배터리 3% 블랙박스 비콘 / 다중 홉 릴레이)"]
+    end
+
+    subgraph GatewayLayer["🛡️ 게이트웨이 & 보안 통신망 (API Gateway & Security Layer)"]
+        CF["☁️ Cloudflare CDN & WAF<br>(DDoS 차단 / Anycast DNS / SSL 오프로딩)"]
+        Kong["🚪 Kong / Envoy API Gateway<br>(mTLS 1.3 / JWT 인증 / Rate Limiting)"]
+        WS["⚡ WebSocket / WebRTC 허브<br>(0.2초 초저지연 양방향 위치 스트리밍 & 가상동행)"]
+        Kafka["📨 Apache Kafka & RabbitMQ<br>(비동기 이벤트 큐 / 긴급 119 패킷 버스)"]
+    end
+
+    subgraph CoreServices["⚙️ 코어 마이크로서비스 & 데이터 파이프라인 (Core Microservices)"]
+        LocEngine["📍 실시간 궤적 & 위치엔진<br>(Go / Kalman Filter / OSRM 맵매칭)"]
+        RiskRadar["⚠️ 지오펜싱 & 리스크 레이더<br>(FastAPI / PostGIS 공간인덱싱)"]
+        CheckIn["⏱️ 2단계 체크인 엔진<br>(Dead Man's Switch / 10분 정체 알람)"]
+        PublicData["🌐 공공데이터 파이프라인<br>(Airflow - 기상청 / 천문연 / 해양조사원 / 치안지도)"]
+    end
+
+    subgraph DataStorage["💾 데이터베이스 & 분산 스토리지 계층 (Data Persistence Layer)"]
+        PostGIS[("🗺️ PostgreSQL 16 + PostGIS<br>(궤적 / 올레길 지오펜스 / 4대 안심포인트)")]
+        Redis[("⚡ Redis 7 Cluster<br>(실시간 세션 / 반경 1km 피어 색인 / 라스트 핑)")]
+        S3[("🔒 AWS S3 / MinIO<br>(스텔스 녹음 30초 오디오 AES-256 암호화 보관)")]
+    end
+
+    subgraph DispatchAdmin["🚨 통합 관제탑 & 유관기관 연계 계층 (Admin & Emergency Integration)"]
+        AdminWeb["🖥️ 웹 통합 관제탑 (Next.js 15)<br>(Mapbox GL JS 실시간 GIS 상황판 / 현장 지령)"]
+        Fire119["🚒 119 소방 종합상황실<br>(UTM-K 국가지점번호 E-Call 구조 패킷 직결)"]
+        Police112["🚓 112 경찰 & 피어 지킴이망<br>(도심 우범지역 순찰차 직결 / 1km 피어 비상 푸시)"]
+        Kakao["💬 보호자 긴급 통보 게이트웨이<br>(카카오 알림톡 & 통신사 재난 SMS 실시간 링크)"]
+    end
+
+    iOS -->|HTTPS / WSS / mTLS| CF
+    Android -->|HTTPS / WSS / mTLS| CF
+    BLE -.->|오프라인 P2P 릴레이| iOS
+    BLE -.->|오프라인 P2P 릴레이| Android
+
+    CF --> Kong
+    Kong --> WS
+    Kong --> CoreServices
+
+    WS <--> LocEngine
+    CoreServices --> Kafka
+    Kafka --> LocEngine
+    Kafka --> RiskRadar
+    Kafka --> CheckIn
+    PublicData --> RiskRadar
+
+    LocEngine <--> Redis
+    LocEngine --> PostGIS
+    RiskRadar --> PostGIS
+    CheckIn --> PostGIS
+    CoreServices --> S3
+
+    Kafka --> AdminWeb
+    Kafka --> Fire119
+    Kafka --> Police112
+    Kafka --> Kakao
+    AdminWeb <--> WS
+```
+
+---
+
 ## 📂 프로젝트 구성
 
 - `index.html`: 18개의 인터랙티브 프레젠테이션 슬라이드 (11번 슬라이드: **라이브 가디언 시뮬레이터**, 13~18번 슬라이드: **iOS/Android 네이티브 개발 명세, 7대 기능 OS 제약 및 불법촬영 현실성 검토, 웹 관제탑(Admin), 코어 모듈 구현, 32MM WBS 공수 산정**)
