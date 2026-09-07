@@ -712,12 +712,12 @@
     button.nav-btn:active {
       transform: scale(0.96);
     }
-    .btn-prev {
+    .btn-first, .btn-prev {
       background: #1e293b;
       color: #cbd5e1;
       border: 1px solid #334155;
     }
-    .btn-prev:hover:not(:disabled) {
+    .btn-first:hover:not(:disabled), .btn-prev:hover:not(:disabled) {
       background: #334155;
       color: #fff;
     }
@@ -770,7 +770,7 @@
   <header>
     <div class="brand">
       <div class="pulse-dot"></div>
-      <span>JEJU TRAVEL GUARDIAN</span>
+      <span>SMART JEJU TRAVEL GUARDIAN</span>
       <span class="live-status-pill">● 4대 영역 16대 안전망 & 관리자 시스템 가동 중</span>
     </div>
     <div class="header-actions">
@@ -1157,7 +1157,7 @@
     <!-- 11번 슬라이드: 인터랙티브 가디언 콘솔 (Live Simulator) -->
     <section class="slide">
       <span class="badge" style="background:rgba(16,185,129,0.2); color:#34d399;">⚡ LIVE INTERACTIVE CONSOLE</span>
-      <h2>스마트 가디언 실시간 시뮬레이션 콘솔</h2>
+      <h2>스마트 제주 트래블 가디언 실시간 시뮬레이션 콘솔</h2>
       <p class="desc" style="margin-bottom:12px;">발표 및 시연 시 실제 동작과 음향, 지오펜스를 브라우저에서 직접 조작해 볼 수 있는 인터랙티브 패널입니다.</p>
 
       <div class="sim-panel">
@@ -1607,10 +1607,10 @@
       </div>
     </section>
 
-    <!-- 17번 슬라이드: 개발 난이도, 개발 기간 및 공수(MM) 산정표 [NEW] -->
+    <!-- 17번 슬라이드: 개발 난이도, 개발 기간 및 공수(MM) 산정표(예상) [NEW] -->
     <section class="slide">
       <span class="badge amber">WBS & MAN-MONTH ESTIMATION</span>
-      <h2>개발 난이도, 개발 기간 및 소요 공수(MM) 산정</h2>
+      <h2>개발 난이도, 개발 기간 및 소요 공수(MM) 산정(예상)</h2>
       <p class="desc">기능별 기술 난이도와 모바일 앱 2종(iOS/Android) + 백엔드 + 웹 관제 시스템 구축에 필요한 투입 공수입니다.</p>
       <table class="spec-table" style="margin-bottom:12px;">
         <thead>
@@ -1750,8 +1750,9 @@
 
   <!-- 하단 컨트롤 버튼 -->
   <footer>
-    <div class="key-tip">단축키: 키보드 [←] [→] 또는 [Space] | 총 18개 슬라이드 완비</div>
+    <div class="key-tip">단축키: 키보드 [←] [→] 또는 [Space] | [Home] 처음으로 | 총 18개 슬라이드 완비</div>
     <div class="btn-group">
+      <button id="firstBtn" class="nav-btn btn-first" onclick="goToFirst()">처음으로</button>
       <button id="prevBtn" class="nav-btn btn-prev" onclick="prev()">이전</button>
       <button id="nextBtn" class="nav-btn btn-next" onclick="next()">다음</button>
       <button id="fullBtn" class="nav-btn btn-full" onclick="toggleFullScreen()">⛶ 전체화면</button>
@@ -1761,6 +1762,7 @@
   <!-- 슬라이드 제어 및 인터랙티브 자바스크립트 -->
   <script>
     let slides = [];
+    let firstBtn = null;
     let prevBtn = null;
     let nextBtn = null;
     let fullBtn = null;
@@ -1780,6 +1782,9 @@
       if (progBar) {
         progBar.style.width = `${((idx + 1) / total) * 100}%`;
       }
+      if (firstBtn) {
+        firstBtn.disabled = (idx === 0);
+      }
       if (prevBtn) {
         prevBtn.disabled = (idx === 0);
       }
@@ -1787,6 +1792,11 @@
         nextBtn.textContent = (idx === total - 1) ? '처음으로' : '다음';
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function goToFirst() {
+      if (total === 0) return;
+      render(0);
     }
 
     function next() {
@@ -1817,6 +1827,7 @@
 
     function initSlides() {
       slides = document.querySelectorAll('.slide');
+      firstBtn = document.getElementById('firstBtn');
       prevBtn = document.getElementById('prevBtn');
       nextBtn = document.getElementById('nextBtn');
       fullBtn = document.getElementById('fullBtn');
@@ -1834,6 +1845,9 @@
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
         prev();
+      } else if (e.key === 'Home') {
+        e.preventDefault();
+        goToFirst();
       }
     });
 

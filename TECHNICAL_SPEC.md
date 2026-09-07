@@ -1,4 +1,4 @@
-# 스마트 제주 트래블 가디언 (Jeju Travel Guardian)
+# 스마트 제주 트래블 가디언 (SMART JEJU TRAVEL GUARDIAN)
 ## 기술 개발 명세서 & 시스템 구현 아키텍처 (Technical Specification)
 
 본 문서는 **스마트 제주 트래블 가디언** 플랫폼의 iOS 및 Android 모바일 네이티브 애플리케이션, 클라우드 백엔드, 웹 기반 통합 관제 시스템(Admin Dashboard)의 구축 방법, OS별 기술적/법적 제약 분석, 개발 난이도 및 소요 공수(MM)를 정의한 공식 엔지니어링 명세서입니다.
@@ -226,7 +226,7 @@ graph TD
 
 ---
 
-## 4. 모듈별 개발 난이도, 개발 기간 및 소요 공수(MM) 산정표
+## 4. 모듈별 개발 난이도, 개발 기간 및 소요 공수(MM) 산정(예상)표
 
 ### 4.1 개발 난이도 및 WBS (Work Breakdown Structure)
 
