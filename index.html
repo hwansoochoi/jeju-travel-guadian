@@ -24,6 +24,7 @@
       --rose: #f43f5e;
       --amber: #f59e0b;
       --indigo: #6366f1;
+      --purple: #a855f7;
     }
     body {
       background-color: var(--bg-main);
@@ -39,7 +40,7 @@
     /* 상단 헤더 */
     header {
       width: 100%;
-      padding: 14px 28px;
+      padding: 13px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -54,7 +55,7 @@
       display: flex;
       align-items: center;
       gap: 12px;
-      font-size: 14px;
+      font-size: 13.5px;
       font-weight: 700;
       letter-spacing: 0.05em;
       color: #cbd5e1;
@@ -94,7 +95,7 @@
       gap: 12px;
     }
     .progress-bar-bg {
-      width: 150px;
+      width: 160px;
       height: 6px;
       background-color: #1e293b;
       border-radius: 9999px;
@@ -102,7 +103,7 @@
     }
     .progress-bar-fill {
       height: 100%;
-      width: 10%;
+      width: 8.3%;
       background: linear-gradient(90deg, var(--emerald), var(--cyan));
       transition: width 0.3s ease;
     }
@@ -116,7 +117,7 @@
     /* 슬라이드 캔버스 */
     main {
       flex: 1;
-      max-width: 1120px;
+      max-width: 1140px;
       width: 100%;
       margin: 0 auto;
       padding: 24px 20px;
@@ -144,14 +145,14 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      padding: 6px 14px;
+      padding: 5px 13px;
       border-radius: 9999px;
       background: rgba(16, 185, 129, 0.12);
       border: 1px solid rgba(16, 185, 129, 0.3);
       color: #34d399;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       align-self: flex-start;
       gap: 6px;
     }
@@ -175,14 +176,19 @@
       border-color: rgba(99, 102, 241, 0.3);
       color: #818cf8;
     }
+    .badge.purple {
+      background: rgba(168, 85, 247, 0.12);
+      border-color: rgba(168, 85, 247, 0.3);
+      color: #c084fc;
+    }
     .center .badge {
       align-self: center;
     }
     h1 {
-      font-size: 44px;
+      font-size: 42px;
       font-weight: 800;
       line-height: 1.25;
-      margin-bottom: 18px;
+      margin-bottom: 16px;
       letter-spacing: -0.02em;
     }
     .gradient-text {
@@ -191,37 +197,43 @@
       -webkit-text-fill-color: transparent;
     }
     h2 {
-      font-size: 30px;
+      font-size: 28px;
       font-weight: 700;
-      margin-bottom: 16px;
+      margin-bottom: 14px;
       line-height: 1.3;
       letter-spacing: -0.01em;
     }
     p.desc {
-      font-size: 15px;
+      font-size: 14.5px;
       color: var(--text-muted);
       line-height: 1.65;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
     }
 
     /* 그리드 및 카드 디자인 */
     .grid-3 {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
+      gap: 16px;
       width: 100%;
     }
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
+      gap: 16px;
+      width: 100%;
+    }
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
       width: 100%;
     }
     .card {
       background-color: var(--bg-card);
       border: 1px solid var(--border-color);
       border-radius: 14px;
-      padding: 20px;
+      padding: 18px 20px;
       transition: transform 0.2s, border-color 0.2s;
     }
     .card:hover {
@@ -229,7 +241,7 @@
       transform: translateY(-2px);
     }
     .card h3 {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 700;
       color: #fff;
       margin-bottom: 8px;
@@ -238,73 +250,80 @@
       gap: 8px;
     }
     .card p {
-      font-size: 13px;
+      font-size: 12.8px;
       color: var(--text-muted);
       line-height: 1.55;
     }
     .card-tag {
-      font-size: 11px;
+      font-size: 10.5px;
       font-weight: 700;
       padding: 3px 8px;
       border-radius: 4px;
       background: rgba(16, 185, 129, 0.15);
       color: #34d399;
       display: inline-block;
-      margin-bottom: 10px;
+      margin-bottom: 8px;
     }
 
-    /* 9대 기능 매트릭스 (슬라이드 3) */
-    .feature-chip-grid {
+    /* 아키텍처 매트릭스 (슬라이드 3) */
+    .arch-matrix {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 14px;
       width: 100%;
     }
-    .feature-chip {
+    .arch-col {
       background: #0f172a;
       border: 1px solid #1e293b;
       border-radius: 12px;
-      padding: 14px 16px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 6px;
+      gap: 10px;
     }
-    .chip-num {
-      font-size: 10px;
-      font-weight: 800;
-      color: #38bdf8;
-      font-family: monospace;
-    }
-    .chip-title {
-      font-size: 14px;
-      font-weight: 700;
-      color: #f8fafc;
-    }
-    .chip-sub {
+    .arch-col-header {
       font-size: 12px;
-      color: #94a3b8;
-      line-height: 1.45;
+      font-weight: 800;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .arch-item {
+      background: #111827;
+      border: 1px solid #1f2937;
+      padding: 9px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+      color: #cbd5e1;
+      line-height: 1.4;
+    }
+    .arch-item strong {
+      color: #fff;
+      display: block;
+      margin-bottom: 2px;
     }
 
     /* 프로세스 스텝 */
     .step-container {
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 12px;
       width: 100%;
     }
     .step-box {
       flex: 1;
       background: var(--bg-card);
-      padding: 18px;
+      padding: 16px;
       border-radius: 12px;
       border: 1px solid var(--border-color);
     }
     .step-num {
-      font-size: 11px;
+      font-size: 10.5px;
       font-family: monospace;
       color: #64748b;
-      margin-bottom: 6px;
+      margin-bottom: 5px;
       display: block;
     }
     .arrow {
@@ -313,25 +332,25 @@
       font-weight: 700;
     }
 
-    /* UI 목업 (슬라이드 8) */
+    /* UI 목업 (슬라이드 10) */
     .mockup {
       background: #0f172a;
       border: 1px solid rgba(244, 63, 94, 0.4);
-      padding: 22px;
+      padding: 20px;
       border-radius: 16px;
       box-shadow: 0 0 30px rgba(244, 63, 94, 0.08);
     }
     .mockup-row {
       display: flex;
       justify-content: space-between;
-      padding: 7px 0;
+      padding: 6.5px 0;
       border-bottom: 1px solid #1e293b;
-      font-size: 12.5px;
+      font-size: 12px;
     }
     .btn-emergency {
       width: 100%;
       padding: 12px;
-      margin-top: 16px;
+      margin-top: 14px;
       background: #e11d48;
       color: white;
       border: none;
@@ -349,48 +368,48 @@
       background: #be123c;
     }
 
-    /* 9번 슬라이드: 인터랙티브 시뮬레이션 콘솔 전용 스타일 */
+    /* 11번 슬라이드: 인터랙티브 시뮬레이션 콘솔 전용 */
     .sim-panel {
       background: #0d1322;
       border: 1px solid #1e293b;
       border-radius: 16px;
-      padding: 20px;
+      padding: 18px;
       width: 100%;
       display: grid;
-      grid-template-columns: 1.1fr 1fr;
-      gap: 20px;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 16px;
       box-shadow: 0 8px 32px rgba(0,0,0,0.3);
     }
     .sim-box {
       background: #111827;
       border: 1px solid #1f2937;
       border-radius: 12px;
-      padding: 16px;
+      padding: 14px;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     .sim-box-title {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 700;
       color: #f1f5f9;
       display: flex;
       align-items: center;
       justify-content: space-between;
       border-bottom: 1px solid #1e293b;
-      padding-bottom: 8px;
+      padding-bottom: 6px;
     }
     .siren-btn {
-      padding: 14px;
+      padding: 12px;
       border-radius: 10px;
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       border: none;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       transition: all 0.2s;
     }
     .siren-btn.off {
@@ -422,12 +441,12 @@
       100% { background-color: #0044ff; }
     }
     .sim-btn {
-      padding: 9px 12px;
+      padding: 8px 10px;
       background: #1e293b;
       color: #e2e8f0;
       border: 1px solid #334155;
       border-radius: 6px;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
@@ -449,35 +468,35 @@
       background: #090d16;
       border: 1px solid #1e293b;
       border-radius: 8px;
-      padding: 10px;
+      padding: 8px 10px;
       font-family: monospace;
-      font-size: 11.5px;
+      font-size: 11px;
       color: #a7f3d0;
-      max-height: 120px;
+      max-height: 110px;
       overflow-y: auto;
-      line-height: 1.6;
+      line-height: 1.55;
     }
     .quick-list {
       display: flex;
       flex-direction: column;
-      gap: 6px;
-      max-height: 155px;
+      gap: 5px;
+      max-height: 130px;
       overflow-y: auto;
     }
     .quick-item {
       background: #0f172a;
       border: 1px solid #1e293b;
-      padding: 8px 10px;
+      padding: 7px 9px;
       border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 11.5px;
+      font-size: 11px;
     }
     .route-badge {
       background: rgba(16, 185, 129, 0.2);
       color: #34d399;
-      padding: 3px 6px;
+      padding: 2px 6px;
       border-radius: 4px;
       font-size: 10px;
       font-weight: 700;
@@ -492,7 +511,7 @@
     .sim-modal {
       position: fixed;
       inset: 0;
-      background: rgba(0,0,0,0.7);
+      background: rgba(0,0,0,0.75);
       display: none;
       align-items: center;
       justify-content: center;
@@ -502,12 +521,12 @@
       background: #111827;
       border: 1px solid #374151;
       border-radius: 14px;
-      padding: 24px;
+      padding: 22px;
       max-width: 440px;
-      width: 90%;
+      width: 92%;
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
@@ -519,7 +538,7 @@
     /* 하단 컨트롤러 */
     footer {
       width: 100%;
-      padding: 14px 28px;
+      padding: 12px 28px;
       border-top: 1px solid var(--border-color);
       background-color: var(--bg-main);
       display: flex;
@@ -534,12 +553,12 @@
     .btn-group {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
     }
     button.nav-btn {
-      padding: 8px 16px;
+      padding: 7px 15px;
       border-radius: 8px;
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 600;
       cursor: pointer;
       border: none;
@@ -559,7 +578,7 @@
     .btn-full {
       background: #1e293b;
       color: #cbd5e1;
-      padding: 8px 12px;
+      padding: 7px 11px;
     }
     button:disabled {
       opacity: 0.35;
@@ -567,8 +586,8 @@
     }
 
     /* 반응형 */
-    @media (max-width: 900px) {
-      .grid-3, .feature-chip-grid, .sim-panel {
+    @media (max-width: 960px) {
+      .grid-3, .arch-matrix, .sim-panel {
         grid-template-columns: 1fr;
       }
       .grid-2 {
@@ -580,8 +599,8 @@
       .arrow {
         transform: rotate(90deg);
       }
-      h1 { font-size: 32px; }
-      h2 { font-size: 24px; }
+      h1 { font-size: 30px; }
+      h2 { font-size: 22px; }
     }
   </style>
 </head>
@@ -594,14 +613,14 @@
     <div class="brand">
       <div class="pulse-dot"></div>
       <span>SAFE TRAVEL GUARDIAN</span>
-      <span class="live-status-pill">● 제주 & 전국 안심 관제망 가동 중</span>
+      <span class="live-status-pill">● 차세대 스마트 안심 관제망 가동 중</span>
     </div>
     <div class="header-actions">
       <div class="progress-wrap">
         <div class="progress-bar-bg">
           <div id="progressBar" class="progress-bar-fill"></div>
         </div>
-        <span id="slideCounter" class="slide-counter">01 / 10</span>
+        <span id="slideCounter" class="slide-counter">01 / 12</span>
       </div>
     </div>
   </header>
@@ -609,28 +628,28 @@
   <!-- 슬라이드 본체 -->
   <main>
     <!-- 1번 슬라이드: 커버 -->
-    <section class="slide active center" style="text-align: center; max-width: 860px;">
-      <div class="badge">📍 9대 전방위 스마트 안심 안전망 & 긴급 구난 플랫폼</div>
+    <section class="slide active center" style="text-align: center; max-width: 880px;">
+      <div class="badge">📍 4대 안전영역 & 16대 전방위 스마트 안심 생태계</div>
       <h1>스마트 세이프 <br><span class="gradient-text">트래블 가디언</span></h1>
       <p class="desc">
-        자연재해·조난부터 도심 범죄·신변 위협까지,<br>
+        자연재해·조난부터 도심 범죄·신변 위협, 모빌리티 및 숙소 안전까지,<br>
         <strong>상시 감시의 거부감</strong>은 지우고 <strong>단독 여행자의 위기 골든타임</strong>을 지키는 실시간 통합 수호자
       </p>
       <div class="grid-3" style="margin-top: 10px;">
         <div class="card">
-          <p style="color:#64748b; font-size:11px;">기관 데이터 100%</p>
-          <h3>기상청·천문연·치안 연동</h3>
-          <p style="font-size:12px; margin-top:4px;">날씨·일출몰·만조·범죄주의구역</p>
+          <p style="color:#64748b; font-size:11px;">사전 위험 차단</p>
+          <h3>기상·치안 레이더 & AI 동행</h3>
+          <p style="font-size:12px; margin-top:4px;">일출몰·만조·우범지대·성범죄자 알림 & 가짜 통화</p>
         </div>
         <div class="card">
-          <p style="color:#64748b; font-size:11px;">사전 조난·범죄 차단</p>
-          <h3>실시간 궤적 & 2단계 체크</h3>
-          <p style="font-size:12px; margin-top:4px;">오경보 90% 차단 데드맨 스위치</p>
+          <p style="color:#64748b; font-size:11px;">은밀 & 통신음영 대응</p>
+          <h3>스텔스 SOS & 오프라인 BLE</h3>
+          <p style="font-size:12px; margin-top:4px;">주머니 속 무음 신고 및 기지국 두절 시 P2P 메시</p>
         </div>
         <div class="card">
-          <p style="color:#64748b; font-size:11px;">위기 상황 탈출</p>
-          <h3>강제 사이렌 & 대피 안내</h3>
-          <p style="font-size:12px; margin-top:4px;">안심포인트·병원 최단경로 & 119 직결</p>
+          <p style="color:#64748b; font-size:11px;">초동 대피 & 119 직결</p>
+          <h3>안심포인트 & 119 리포트</h3>
+          <p style="font-size:12px; margin-top:4px;">학교·편의점·병원 최단 대피 & 소방청 원클릭 전송</p>
         </div>
       </div>
     </section>
@@ -638,7 +657,7 @@
     <!-- 2번 슬라이드: 문제점 -->
     <section class="slide">
       <span class="badge red">PROBLEM & CHALLENGE</span>
-      <h2>나홀로 여행객이 직면하는 3가지 복합 위기</h2>
+      <h2>나홀로 여행객이 직면하는 3대 현실적 복합 위기</h2>
       <p class="desc">1인 여행객이 급증하고 있으나, 기존 단순 위치공유 서비스는 사각지대를 해결하지 못합니다.</p>
       <div class="grid-3">
         <div class="card">
@@ -648,72 +667,67 @@
         </div>
         <div class="card">
           <div class="card-tag" style="color:#f59e0b; background:rgba(245,158,11,0.15);">02</div>
-          <h3>급변하는 자연 환경 & 통신 음영</h3>
-          <p>산간 지역의 급격한 일몰, 해안 만조(밀물), 곶자왈 숲속의 LTE/5G 통신 두절 등 현장 지리적 위험 변수를 반영하지 못합니다.</p>
+          <h3>자연 환경 급변 & 통신 음영</h3>
+          <p>산간 지역의 급격한 일몰, 해안 만조(밀물), 곶자왈 숲속의 LTE 통신 두절, 배터리 급방전 등 예측 불가능한 지리적 조난 변수가 존재합니다.</p>
         </div>
         <div class="card">
           <div class="card-tag" style="color:#38bdf8; background:rgba(56,189,248,0.15);">03</div>
-          <h3>치안 취약지 & 신변 위협 무방비</h3>
-          <p>외진 골목길, 범죄 다발 구역, 성범죄자 주거지 인근을 지날 때 사전 경고가 없고, 위기 순간 즉각적인 대피처를 찾지 못합니다.</p>
+          <h3>외진 골목 치안 & 신변 위협 무방비</h3>
+          <p>우범지대나 성범죄자 주거지 통과 시 사전 경각심이 없고, 위기 시 폰을 꺼내 신고하기 어려운 치한 대치 상황에 대피처를 찾지 못합니다.</p>
         </div>
       </div>
     </section>
 
-    <!-- 3번 슬라이드: 9대 통합 솔루션 매트릭스 -->
+    <!-- 3번 슬라이드: 4대 영역 16대 통합 아키텍처 매트릭스 -->
     <section class="slide">
-      <span class="badge cyan">COMPREHENSIVE FRAMEWORK</span>
-      <h2>스마트 세이프 가디언 9대 핵심 안전 체계</h2>
-      <p class="desc">사전 예방부터 이동 중 실시간 감시, 초동 대응, 소방/경찰 직결까지 빈틈없는 보호를 제공합니다.</p>
-      <div class="feature-chip-grid">
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 01</span>
-          <div class="chip-title">기관데이터 실시간 연동</div>
-          <div class="chip-sub">기상청 날씨/특보, 한국천문연구원 일출·일몰, 해양조사원 만조 조석 연동</div>
+      <span class="badge cyan">FULL ARCHITECTURE MATRIX</span>
+      <h2>차세대 가디언 4대 영역 & 16대 스마트 안전 체계</h2>
+      <p class="desc">사전 예방부터 이동 중 실시간 감시, 초동 대응, 모빌리티 및 커뮤니티 구난까지 빈틈없는 보호망을 제공합니다.</p>
+      <div class="arch-matrix">
+        <div class="arch-col">
+          <div class="arch-col-header" style="color:#34d399;">
+            <span>1. 사전 예방 레이더</span>
+            <span>PREVENT</span>
+          </div>
+          <div class="arch-item"><strong>기관데이터 연동</strong>기상청 날씨·특보, 천문연 일출몰, 해양조사원 만조</div>
+          <div class="arch-item"><strong>범죄위험 지오펜스</strong>경찰청 치안통계 기반 우범지대·취약골목 햅틱 경고</div>
+          <div class="arch-item"><strong>성범죄자 알림e 연계</strong>반경 200m 접근 시 지능형 사전 주의 가이드</div>
+          <div class="arch-item"><strong>숙소 불법촬영 점검</strong>IR 적외선 렌즈 탐지 & Wi-Fi 비인가 IP 스캐닝</div>
         </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 02</span>
-          <div class="chip-title">범죄위험지역 진입 알림</div>
-          <div class="chip-sub">경찰청 치안통계 기반 우범지대 및 가로등 취약로 진입 시 즉각 진동 경고</div>
+        <div class="arch-col">
+          <div class="arch-col-header" style="color:#38bdf8;">
+            <span>2. 지능형 모니터링</span>
+            <span>MONITOR</span>
+          </div>
+          <div class="arch-item"><strong>단독 궤적추적</strong>올레길·등산로 Breadcrumb 기록 & 코스 이탈 감지</div>
+          <div class="arch-item"><strong>2단계 데드맨 스위치</strong>10분 정체 본인확인 ➔ 3분 무응답 시에만 비상 전파</div>
+          <div class="arch-item"><strong>라스트 핑 & 블랙박스</strong>음영 직전 좌표 백업 & 방전 직전 저전력 BLE 비콘</div>
+          <div class="arch-item"><strong>야생동물 출몰 경보</strong>제주 들개·멧돼지 DB & 20kHz 퇴치 주파수</div>
         </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 03</span>
-          <div class="chip-title">인근 성범죄자 주거지 알림</div>
-          <div class="chip-sub">여성가족부 성범죄자 알림e 연계, 반경 접근 시 지능형 주의 가이드 발송</div>
+        <div class="arch-col">
+          <div class="arch-col-header" style="color:#fb7185;">
+            <span>3. 위기 대응 & 탈출</span>
+            <span>RESPONSE</span>
+          </div>
+          <div class="arch-item"><strong>주머니 속 스텔스 SOS</strong>화면 꺼진 채 전원 5회 클릭 ➔ 30초 녹음 & 은밀 신고</div>
+          <div class="arch-item"><strong>AI 가짜 통화 동행</strong>밤길 가상 동행 대화 연출로 범죄 시도 사전 억제</div>
+          <div class="arch-item"><strong>최대 볼륨 비상 사이렌</strong>진동/무음 강제 해제, 120dB 음향 & 스트로브 플래시</div>
+          <div class="arch-item"><strong>안심포인트 & 병원 대피</strong>학교·편의점·주유소·지구대 & 응급실 최단 대피로</div>
         </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 04</span>
-          <div class="chip-title">단독여행자 실시간 궤적추적</div>
-          <div class="chip-sub">올레길·등산로 안전 코스 이탈 감지 및 통신 음영 직전 Last Ping 자동 백업</div>
-        </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 05</span>
-          <div class="chip-title">2단계 체크인 (데드맨 스위치)</div>
-          <div class="chip-sub">위험지역 10분 정체 시 본인 확인 진동 ➔ 3분 무응답 시에만 보호자 비상 전파</div>
-        </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 06</span>
-          <div class="chip-title">강제 최대볼륨 비상 사이렌</div>
-          <div class="chip-sub">스마트폰 진동/무음 모드 강제 해제, 120dB급 소방/경찰 주파수 경보음 & 플래시</div>
-        </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 07</span>
-          <div class="chip-title">안심포인트 최단경로 안내</div>
-          <div class="chip-sub">학교지킴이집, 24시 안심편의점, 주유소, 지구대/파출소 즉각 대피 내비 연동</div>
-        </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 08</span>
-          <div class="chip-title">인근 병원 & 응급실 안내</div>
-          <div class="chip-sub">야간진료 병의원, 권역 응급센터, 심장충격기(AED) 위치 및 직통 긴급 호출</div>
-        </div>
-        <div class="feature-chip">
-          <span class="chip-num">SYSTEM 09</span>
-          <div class="chip-title">피어(동서비스 이용자) SOS</div>
-          <div class="chip-sub">반경 1km 내 동료 여행자 및 등록 로컬 세이프가드에게 즉각 구조 협조 타진</div>
+        <div class="arch-col">
+          <div class="arch-col-header" style="color:#c084fc;">
+            <span>4. 모빌리티 & 연대</span>
+            <span>ECOSYSTEM</span>
+          </div>
+          <div class="arch-item"><strong>피어(이용자) SOS</strong>반경 1km 내 동료 여행자 & 로컬 지킴이 긴급 협조</div>
+          <div class="arch-item"><strong>모빌리티 세이프티</strong>택시 비정상 이탈 감지 & 렌터카 전복 충격 e-Call</div>
+          <div class="arch-item"><strong>올레길 안심 동행 매칭</strong>PASS 신원 인증 기반 1인 여행자 세이프 버디</div>
+          <div class="arch-item"><strong>119 직결 & 다국어 TTS</strong>국가지점번호 리포트 & 외국인 음성 자동 번역</div>
         </div>
       </div>
     </section>
 
-    <!-- 4번 슬라이드: 딥다이브 1 (공공데이터 & 위험 지오펜싱) -->
+    <!-- 4번 슬라이드: 공공데이터 & 위험 지오펜싱 -->
     <section class="slide">
       <span class="badge amber">DEEP DIVE 01 : RISK RADAR</span>
       <h2>공공데이터 기반 동적 환경 & 범죄·치안 위험 지오펜스</h2>
@@ -746,7 +760,7 @@
       </div>
     </section>
 
-    <!-- 5번 슬라이드: 딥다이브 2 (단독여행자 실시간 추적 & 2단계 체크인) -->
+    <!-- 5번 슬라이드: 단독여행자 실시간 추적 & 2단계 체크인 -->
     <section class="slide">
       <span class="badge">DEEP DIVE 02 : SMART TRACKING</span>
       <h2>단독여행자 실시간 궤적추적 & 2단계 체크인 (Dead Man's Switch)</h2>
@@ -781,9 +795,68 @@
       </div>
     </section>
 
-    <!-- 6번 슬라이드: 딥다이브 3 (안심포인트 & 인근 병원 최단경로 안내) -->
+    <!-- 6번 슬라이드: 신변 위협 & 범죄 차단 특화 (NEW) -->
     <section class="slide">
-      <span class="badge indigo">DEEP DIVE 03 : SAFE HAVEN</span>
+      <span class="badge red">DEEP DIVE 03 : STEALTH & AI DEFENSE</span>
+      <h2>주머니 속 스텔스 무음 SOS, AI 가상 동행 & 숙소 안전 점검</h2>
+      <p class="desc">가해자에게 들키지 않고 은밀하게 신고하거나, 으슥한 길에서 심리적 안전과 방어막을 형성합니다.</p>
+      <div class="grid-3">
+        <div class="card" style="border-color:rgba(244,63,94,0.4);">
+          <div style="font-size:26px; margin-bottom:10px;">🕵️</div>
+          <h3 style="color:#fb7185;">주머니 속 스텔스 무음 SOS</h3>
+          <p>
+            화면을 켜지 않고 주머니 속에서 <strong>전원 버튼 5회 연속 클릭</strong> 시, 화면은 꺼진 상태를 유지하며 <strong>주변 현장 오디오 30초 자동 녹음 + 실시간 정밀 좌표</strong>를 보호자 및 112 상황실에 은밀히 자동 전송합니다.
+          </p>
+        </div>
+        <div class="card" style="border-color:rgba(99,102,241,0.4);">
+          <div style="font-size:26px; margin-bottom:10px;">📞</div>
+          <h3 style="color:#a5b4fc;">AI 가짜 통화 & 가상 동행</h3>
+          <p>
+            어두운 골목길을 지날 때 치한 접근을 차단하기 위해, "응 나 지금 숙소 다 왔어~" 등 자연스러운 <strong>AI 음성 대화형 가짜 통화 화면</strong>을 원터치 실행하여 통화 중인 상황을 연출하고 위치를 실시간 중계합니다.
+          </p>
+        </div>
+        <div class="card" style="border-color:rgba(168,85,247,0.4);">
+          <div style="font-size:26px; margin-bottom:10px;">🔍</div>
+          <h3 style="color:#d8b4fe;">숙소 안심 & 몰카 탐지 모드</h3>
+          <p>
+            게스트하우스·모텔·에어비앤비 체크인 시, 스마트폰 카메라 적외선(IR) 센서를 활용한 <strong>불법촬영 렌즈 탐지 가이드</strong> 및 숙소 공유 와이파이 내 비인가 IP 카메라 실시간 스캐닝 기능을 제공합니다.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7번 슬라이드: 극한 자연 & 모빌리티 세이프티 (NEW) -->
+    <section class="slide">
+      <span class="badge purple">DEEP DIVE 04 : NATURE & MOBILITY</span>
+      <h2>오프라인 BLE 메시 릴레이, 블랙박스 비콘 & 모빌리티 e-Call</h2>
+      <p class="desc">통신이 터지지 않는 극한 산악부터 렌터카 야간 주행까지 전천후 이동 안전을 보장합니다.</p>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-tag" style="background:rgba(168,85,247,0.15); color:#c084fc;">통신 음영 & 자연 조난</div>
+          <h3>기지국 두절 시 P2P 메시 & 야생동물 퇴치</h3>
+          <p style="margin-bottom:10px;">인터넷이 끊겨도 작동하는 하드웨어 저전력 기술과 지역 생태계 데이터를 결합했습니다.</p>
+          <ul style="list-style:none; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:7px;">
+            <li>📶 <strong>오프라인 BLE 메시 릴레이:</strong> 통신 음영 시 반경 100m 내 타 등산객 단말과 블루투스 P2P 통신으로 조난 신호 연쇄 전달</li>
+            <li>🔋 <strong>배터리 3% 라스트 블랙박스 비콘:</strong> 방전 직전 초절전 모드 진입, 최소 전력 BLE 핑 방출로 수색 드론/수색견 탐지 유도</li>
+            <li>🐗 <strong>야생동물 출몰 경보 & 기피 주파수:</strong> 제주 중산간 들개 무리, 멧돼지 출몰지 경고 및 20kHz~25kHz 동물 기피 고주파 방출</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="card-tag" style="background:rgba(6,182,212,0.15); color:#38bdf8;">모빌리티 안심망</div>
+          <h3>택시 경로이탈 감지 & 렌터카 사고 e-Call</h3>
+          <p style="margin-bottom:10px;">나홀로 여행자가 이용하는 대중교통과 렌터카의 이동 중 위기 상황을 감지합니다.</p>
+          <ul style="list-style:none; font-size:12.5px; color:#cbd5e1; display:flex; flex-direction:column; gap:7px;">
+            <li>🚕 <strong>택시 비정상 경로 이탈 감지:</strong> 목적지 권장 경로에서 20% 이상 벗어나거나 외딴길 진입 시 자동 진동 및 경로 보호자 공유</li>
+            <li>🚗 <strong>렌터카 충격/전복 감지 e-Call:</strong> 스마트폰 자이로 센서로 급격한 충돌·전복 감지 시 30초 내 미해제 시 119/렌터카사 자동 접수</li>
+            <li>🤝 <strong>올레길 안심 동행 매칭:</strong> 본인 확인(PASS) 인증 1인 여행자 간 안전 버디 매칭으로 외진 숲길 동행 걷기 지원</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8번 슬라이드: 안심포인트 & 인근 병원 최단 대피망 -->
+    <section class="slide">
+      <span class="badge indigo">DEEP DIVE 05 : SAFE HAVEN</span>
       <h2>여행자 안심포인트 & 응급의료기관 최단경로 대피망</h2>
       <p class="desc">위기나 신변 위협을 감지했을 때, 당황하지 않고 가장 안전한 피난처로 즉시 도보 이동할 수 있도록 안내합니다.</p>
       <div class="grid-2">
@@ -812,9 +885,9 @@
       </div>
     </section>
 
-    <!-- 7번 슬라이드: 딥다이브 4 (비상 사이렌, 보호자 상황별 연락, 피어 SOS) -->
+    <!-- 9번 슬라이드: 위기 탈출 3대 대응책 & 피어 SOS -->
     <section class="slide">
-      <span class="badge red">DEEP DIVE 04 : CRISIS RESPONSE</span>
+      <span class="badge red">DEEP DIVE 06 : CRISIS RESPONSE</span>
       <h2>위기 탈출 3대 대응책: 강제 사이렌, 상황별 연락, 피어 SOS</h2>
       <p class="desc">가장 위험한 현장에서 여행자의 생명을 구하는 능동적이고 즉각적인 구난 인터랙션입니다.</p>
       <div class="grid-3">
@@ -842,7 +915,7 @@
       </div>
     </section>
 
-    <!-- 8번 슬라이드: 119 원클릭 전송 목업 -->
+    <!-- 10번 슬라이드: 119 원클릭 전송 목업 -->
     <section class="slide">
       <span class="badge red">RESCUE PACKAGE MOCKUP</span>
       <h2>소방관이 오차 없이 출동하는 119 통합 리포트</h2>
@@ -854,8 +927,8 @@
             <p>도로명 주소가 없는 야생 숲속에서도 119 상황실 지리정보시스템(GIS)에 직결되는 고유 좌표번호를 0.1초 만에 산출</p>
           </div>
           <div class="card" style="margin-bottom: 12px;">
-            <h3 style="color:#34d399;">낙상 및 충격 센서 감지</h3>
-            <p>스마트폰 가속도계 센서를 통해 실족, 절벽 추락 충격 후 1분간 움직임이 없으면 비상 구난 알고리즘 작동</p>
+            <h3 style="color:#34d399;">외국인 관광객 다국어 TTS 음성 번역</h3>
+            <p>외국인 여행자가 터치 시 한국어로 자동 변환된 조난 음성 리포트가 119 상황실 요원에게 즉각 송출</p>
           </div>
           <div class="card">
             <h3 style="color:#38bdf8;">주변 안심포인트 & 응급실 자동 병합</h3>
@@ -881,161 +954,159 @@
       </div>
     </section>
 
-    <!-- 9번 슬라이드: 인터랙티브 가디언 콘솔 (Live Simulator) -->
+    <!-- 11번 슬라이드: 인터랙티브 가디언 콘솔 (Live Simulator) -->
     <section class="slide">
       <span class="badge" style="background:rgba(16,185,129,0.2); color:#34d399;">⚡ LIVE INTERACTIVE CONSOLE</span>
       <h2>스마트 가디언 실시간 시뮬레이션 콘솔</h2>
-      <p class="desc" style="margin-bottom:14px;">발표 및 데모 시 실제 동작을 브라우저에서 직접 테스트해 볼 수 있는 인터랙티브 체험 패널입니다.</p>
+      <p class="desc" style="margin-bottom:12px;">발표 및 시연 시 실제 동작과 음향, 지오펜스를 브라우저에서 직접 조작해 볼 수 있는 인터랙티브 패널입니다.</p>
 
       <div class="sim-panel">
-        <!-- 좌측: 비상 사이렌 & 레이더 알림 시뮬레이션 -->
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <!-- 사이렌 컨트롤러 -->
+        <!-- 1열: 비상 경보 & 스텔스 / AI 동행 -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
           <div class="sim-box" style="border-color:rgba(244,63,94,0.3);">
             <div class="sim-box-title">
-              <span style="color:#fb7185;">📢 강력 경보기능 (비상 사이렌)</span>
-              <span style="font-size:11px; color:#94a3b8;">Web Audio API 음향합성</span>
+              <span style="color:#fb7185;">📢 최대 볼륨 사이렌</span>
+              <span style="font-size:10.5px; color:#94a3b8;">Web Audio API</span>
             </div>
             <button id="sirenBtn" class="siren-btn off" onclick="toggleSiren()">
-              <span id="sirenIcon" style="font-size:20px;">🚨</span>
+              <span id="sirenIcon" style="font-size:18px;">🚨</span>
               <span id="sirenText">비상 사이렌 최대 볼륨 작동</span>
             </button>
-            <div style="font-size:11.5px; color:#94a3b8; display:flex; justify-content:space-between;">
-              <span>진동/무음 강제 무력화</span>
-              <span>120dB 주파수 스위프</span>
-            </div>
           </div>
 
-          <!-- 위험 지오펜스 시뮬레이션 버튼들 -->
           <div class="sim-box">
             <div class="sim-box-title">
-              <span>⚠️ 위험 지오펜스 진입 감지 시뮬레이션</span>
+              <span style="color:#fb7185;">🕵️ 스텔스 & AI 가상동행</span>
             </div>
-            <div style="display:flex; flex-direction:column; gap:8px;">
-              <button class="sim-btn danger" onclick="triggerCrimeAlert()">
-                <span>🚨 범죄주의구역 진입 시뮬레이션</span>
-                <span style="color:#fb7185; font-size:11px;">위험알림 발생</span>
-              </button>
-              <button class="sim-btn danger" onclick="triggerSexOffenderAlert()">
-                <span>🛡️ 인근 성범죄자 주거지 접근 시뮬레이션</span>
-                <span style="color:#fbbf24; font-size:11px;">사전주의 알림</span>
-              </button>
-              <button class="sim-btn" onclick="triggerSunsetTideAlert()">
-                <span>🌅 일몰 30분 전 & 해안 만조 알림</span>
-                <span style="color:#34d399; font-size:11px;">공공데이터</span>
-              </button>
-            </div>
-          </div>
-
-          <!-- 실시간 콘솔 이벤트 로그 -->
-          <div class="sim-box" style="padding:10px;">
-            <div style="font-size:11px; color:#64748b; margin-bottom:4px; font-weight:700;">REALTIME GUARDIAN EVENT LOG</div>
-            <div id="simLog" class="sim-log">
-              [시스템] 스마트 세이프 가디언 엔진 정상 가동 중<br>
-              [GPS] 현재 위치: 제주 제주시 삼도이동 (안심 트래킹 활성)<br>
-              [기상청] 제주 북부 기온 21°C / 강수확률 10% (맑음)
-            </div>
+            <button class="sim-btn danger" onclick="triggerStealthSos()">
+              <span>🕵️ 주머니 속 스텔스 무음 SOS</span>
+              <span style="color:#fb7185; font-size:10px;">30초 녹음</span>
+            </button>
+            <button class="sim-btn" onclick="openFakeCallModal()">
+              <span>📞 AI 가짜 통화 동행 시작</span>
+              <span style="color:#38bdf8; font-size:10px;">치한 퇴치</span>
+            </button>
+            <button class="sim-btn" onclick="toggleAnimalFrequency()">
+              <span id="freqBtnText">🐗 야생동물 기피 고주파 (20kHz)</span>
+              <span style="color:#fbbf24; font-size:10px;">음향방출</span>
+            </button>
           </div>
         </div>
 
-        <!-- 우측: 안심포인트 탐색 & 피어/보호자 SOS -->
-        <div style="display:flex; flex-direction:column; gap:12px;">
-          <!-- 최단 대피로 안내 -->
+        <!-- 2열: 지오펜스 레이더 & 모빌리티 감지 -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
           <div class="sim-box">
             <div class="sim-box-title">
-              <span style="color:#38bdf8;">📍 여행자 안심포인트 & 병원 최단경로</span>
-              <span style="font-size:11px; color:#34d399;">반경 1km 내 자동 검색</span>
+              <span style="color:#fbbf24;">⚠️ 위험 지오펜스 감지</span>
+            </div>
+            <button class="sim-btn danger" onclick="triggerCrimeAlert()">
+              <span>🚨 범죄주의구역 진입 감지</span>
+              <span style="color:#fb7185; font-size:10px;">우회로 권고</span>
+            </button>
+            <button class="sim-btn danger" onclick="triggerSexOffenderAlert()">
+              <span>🛡️ 성범죄자 주거지 반경 접근</span>
+              <span style="color:#fbbf24; font-size:10px;">여가부 알림e</span>
+            </button>
+            <button class="sim-btn" onclick="triggerSunsetTideAlert()">
+              <span>🌅 일몰 30분 전 & 만조 경보</span>
+              <span style="color:#34d399; font-size:10px;">기상/해양</span>
+            </button>
+          </div>
+
+          <div class="sim-box">
+            <div class="sim-box-title">
+              <span style="color:#c084fc;">🚗 모빌리티 & BLE 메시</span>
+            </div>
+            <button class="sim-btn" onclick="triggerTaxiOffRoute()">
+              <span>🚕 택시 경로 20% 이탈 감지</span>
+              <span style="color:#f87171; font-size:10px;">비정상 주행</span>
+            </button>
+            <button class="sim-btn" onclick="triggerBleMeshRelay()">
+              <span>📶 오프라인 BLE 메시 릴레이</span>
+              <span style="color:#38bdf8; font-size:10px;">음영극복</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3열: 안심포인트 탐색 & 피어/보호자 SOS & 로그 -->
+        <div style="display:flex; flex-direction:column; gap:10px;">
+          <div class="sim-box">
+            <div class="sim-box-title">
+              <span style="color:#38bdf8;">📍 안심포인트 최단경로</span>
             </div>
             <div class="quick-list">
               <div class="quick-item">
-                <div>
-                  <strong>🏫 삼도2동 아동지킴이집</strong>
-                  <div style="color:#94a3b8; font-size:10.5px;">도보 2분 (140m) · 전담요원 상주</div>
-                </div>
-                <span class="route-badge" onclick="guideRoute('삼도2동 아동지킴이집', 140, 2)">최단경로 안내</span>
+                <div><strong>🏫 아동지킴이집</strong> (140m)</div>
+                <span class="route-badge" onclick="guideRoute('삼도2동 아동지킴이집', 140, 2)">안내</span>
               </div>
               <div class="quick-item">
-                <div>
-                  <strong>🏪 GS25 제주탑동안심점</strong>
-                  <div style="color:#94a3b8; font-size:10.5px;">도보 3분 (210m) · 112 직결 비상벨</div>
-                </div>
-                <span class="route-badge" onclick="guideRoute('GS25 제주탑동안심점', 210, 3)">최단경로 안내</span>
+                <div><strong>🏪 GS25 안심편의점</strong> (210m)</div>
+                <span class="route-badge" onclick="guideRoute('GS25 제주탑동안심점', 210, 3)">안내</span>
               </div>
               <div class="quick-item">
-                <div>
-                  <strong>👮 제주동부경찰서 중앙지구대</strong>
-                  <div style="color:#94a3b8; font-size:10.5px;">도보 6분 (420m) · 순찰차 즉시 출동</div>
-                </div>
-                <span class="route-badge" onclick="guideRoute('중앙지구대', 420, 6)">최단경로 안내</span>
-              </div>
-              <div class="quick-item">
-                <div>
-                  <strong>🏥 제주한국병원 응급의료센터</strong>
-                  <div style="color:#94a3b8; font-size:10.5px;">차량 4분 (1.2km) · 24시 응급실/AED</div>
-                </div>
-                <span class="route-badge" style="background:rgba(244,63,94,0.2); color:#fb7185;" onclick="guideRoute('제주한국병원 응급실', 1200, 4, true)">응급실 연결</span>
+                <div><strong>🏥 한국병원 응급실</strong> (1.2km)</div>
+                <span class="route-badge" style="background:rgba(244,63,94,0.2); color:#fb7185;" onclick="guideRoute('한국병원 응급실', 1200, 4, true)">응급실</span>
               </div>
             </div>
           </div>
 
-          <!-- 피어 SOS & 보호자 상황별 긴급연락 -->
           <div class="sim-box">
             <div class="sim-box-title">
-              <span style="color:#fde68a;">👥 피어(이용자) SOS & 보호자 연락</span>
+              <span style="color:#fde68a;">👥 피어 & 보호자 연락</span>
             </div>
-            <div style="display:flex; gap:8px;">
-              <button class="sim-btn" style="flex:1; background:#1e1b4b; border-color:#4338ca; color:#a5b4fc;" onclick="triggerPeerSos()">
-                <span>👥 인근 동서비스 이용자<br><strong>도움요청 (피어 SOS)</strong></span>
+            <div style="display:flex; gap:6px;">
+              <button class="sim-btn" style="flex:1; background:#1e1b4b; border-color:#4338ca;" onclick="triggerPeerSos()">
+                <span>👥 피어 SOS</span>
               </button>
-              <button class="sim-btn" style="flex:1; background:#312e81; border-color:#4f46e5; color:#c7d2fe;" onclick="openGuardianModal()">
-                <span>📱 보호자 상황별<br><strong>긴급 연락 템플릿</strong></span>
+              <button class="sim-btn" style="flex:1; background:#312e81; border-color:#4f46e5;" onclick="openGuardianModal()">
+                <span>📱 보호자 템플릿</span>
               </button>
             </div>
-            <div id="peerStatus" style="font-size:11.5px; color:#94a3b8; min-height:28px;">
-              대기 상태: 버튼을 클릭하여 주변 동료 여행자 및 보호자 긴급 연락을 시뮬레이션해 보세요.
+            <div id="simLog" class="sim-log">
+              [시스템] 세이프 가디언 엔진 정상 가동 중<br>
+              [GPS] 제주시 삼도이동 (안심 궤적 추적 중)
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- 10번 슬라이드: 비전 및 로드맵 -->
-    <section class="slide center" style="text-align: center; max-width: 860px;">
+    <!-- 12번 슬라이드: 비전 및 로드맵 -->
+    <section class="slide center" style="text-align: center; max-width: 880px;">
       <span class="badge">FUTURE ROADMAP</span>
       <h2>혼자 와도 두려움 없는 안심 대한민국</h2>
       <p class="desc">
-        제주특별자치도, 행정안전부, 경찰청, 여성가족부 공공데이터를 유기적으로 연계하여<br>
+        제주특별자치도, 행정안전부, 경찰청, 소방청, 여성가족부 공공데이터를 유기적으로 연계하여<br>
         <strong>'사후 수색' 중심에서 '사전 차단 & 실시간 초동 구난'</strong>으로 안전 패러다임을 대전환합니다.
       </p>
       <div class="grid-3" style="text-align: left; margin-top: 10px;">
         <div class="card">
           <span class="card-tag">Phase 1 (MVP)</span>
           <h3>제주 특화 안전 실증</h3>
-          <p>날씨·일몰·만조 및 올레길 2단계 체크인, 최대볼륨 사이렌 및 119 리포트 구축 완료</p>
+          <p>날씨·일몰·만조, 올레길 2단계 체크인, 스텔스 SOS, 사이렌 및 119 구조 리포트 구축 완료</p>
         </div>
         <div class="card">
           <span class="card-tag">Phase 2 (확장)</span>
-          <h3>전국 안심망 & 치안 연동</h3>
-          <p>경찰청 범죄지도, 여성가족부 성범죄자 알림, 지자체 24시 안심포인트 전국 인프라 통합</p>
+          <h3>전국 안심망 & 모빌리티</h3>
+          <p>경찰청 범죄지도, 성범죄자 알림, 택시·렌터카 e-Call, 안심포인트 24시 거점 전국 인프라 통합</p>
         </div>
         <div class="card">
           <span class="card-tag">Phase 3 (글로벌)</span>
-          <h3>외국인 관광객 세이프 가디언</h3>
-          <p>영어·중국어·일본어 다국어 지원 및 해외 관광객 대상 K-Safety 프리미엄 투어 솔루션화</p>
+          <h3>외국인 K-Safety 솔루션</h3>
+          <p>다국어 119 음성 통역, 공항 안심 스마트 밴드 대여 및 글로벌 관광객 필수 안심 플랫폼 도약</p>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- 보호자 상황별 연락 모달 다이얼로그 -->
-  <div id="guardianModal" class="sim-modal" onclick="closeModalOnBackdrop(event)">
+  <!-- 보호자 상황별 연락 모달 -->
+  <div id="guardianModal" class="sim-modal" onclick="closeModalOnBackdrop(event, 'guardianModal')">
     <div class="sim-modal-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-size:16px; color:#fff;">📱 보호자 상황별 긴급 연락</h3>
-        <button onclick="closeGuardianModal()" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+        <h3 style="font-size:15px; color:#fff;">📱 보호자 상황별 긴급 연락</h3>
+        <button onclick="closeModal('guardianModal')" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
       </div>
-      <p style="font-size:12.5px; color:#94a3b8;">상황을 선택하면 현재 GPS 위치와 맞춤형 문구가 보호자에게 원클릭 전송됩니다.</p>
-      
+      <p style="font-size:12px; color:#94a3b8;">상황을 선택하면 현재 실시간 GPS 위치와 맞춤형 문구가 보호자에게 원클릭 전송됩니다.</p>
       <div style="display:flex; flex-direction:column; gap:8px;">
         <button class="sim-btn" onclick="sendGuardianAlert('단순 귀가지연', '현재 안전하게 이동 중이며 예상보다 30분 늦어지고 있습니다.')">
           <span>🕒 1. 단순 귀가지연 (안심 확인)</span>
@@ -1053,9 +1124,27 @@
     </div>
   </div>
 
+  <!-- AI 가짜 통화 모달 -->
+  <div id="fakeCallModal" class="sim-modal" onclick="closeModalOnBackdrop(event, 'fakeCallModal')">
+    <div class="sim-modal-content" style="background:#0b1320; border-color:#38bdf8; text-align:center;">
+      <div style="font-size:42px; margin-top:8px;">📱</div>
+      <h3 style="color:#38bdf8; font-size:17px; margin-top:4px;">AI 가상 동행 통화 중...</h3>
+      <div style="font-size:13px; color:#94a3b8; margin-bottom:10px;">수신자: 엄마 (가상 음성 가이드)</div>
+      
+      <div style="background:#1e293b; border-radius:10px; padding:12px; text-align:left; font-size:12.5px; color:#e2e8f0; line-height:1.6;">
+        <span style="color:#34d399; font-weight:700;">AI:</span> "응, 거의 다 왔어? 지금 편의점 앞 골목이지? 내가 대문 열어놓을 테니까 천천히 들어와~"
+      </div>
+      <p style="font-size:11.5px; color:#64748b;">(가해자에게 통화 중임을 인식시키며 실시간 위치가 보호자에게 자동 중계되고 있습니다)</p>
+
+      <button class="btn-emergency" style="background:#334155; margin-top:10px;" onclick="closeModal('fakeCallModal')">
+        통화 종료 (안심 복귀)
+      </button>
+    </div>
+  </div>
+
   <!-- 하단 컨트롤 버튼 -->
   <footer>
-    <div class="key-tip">단축키: 키보드 [←] [→] 또는 [Space] | 9번 슬라이드에서 인터랙티브 데모 체험 가능</div>
+    <div class="key-tip">단축키: 키보드 [←] [→] 또는 [Space] | 11번 슬라이드에서 라이브 인터랙티브 데모 체험 가능</div>
     <div class="btn-group">
       <button id="prevBtn" class="nav-btn btn-prev">이전</button>
       <button id="nextBtn" class="nav-btn btn-next">다음</button>
@@ -1128,6 +1217,10 @@
     let sirenLfo = null;
     let isSirenPlaying = false;
 
+    // 야생동물 기피 고주파
+    let animalOsc = null;
+    let isAnimalPlaying = false;
+
     function logEvent(msg) {
       const log = document.getElementById('simLog');
       const time = new Date().toLocaleTimeString('ko-KR', { hour12: false });
@@ -1147,7 +1240,6 @@
         const AudioContext = window.AudioContext || window.webkitAudioContext;
         audioCtx = new AudioContext();
 
-        // 메인 발진기 (주파수 스위프용)
         sirenOsc = audioCtx.createOscillator();
         sirenGain = audioCtx.createGain();
         sirenLfo = audioCtx.createOscillator();
@@ -1156,7 +1248,6 @@
         sirenOsc.type = 'sawtooth';
         sirenOsc.frequency.setValueAtTime(750, audioCtx.currentTime);
 
-        // LFO로 사이렌 피치 변조 (소방/경찰차 사이렌 효과: 600Hz ~ 1200Hz)
         sirenLfo.type = 'sine';
         sirenLfo.frequency.setValueAtTime(1.2, audioCtx.currentTime);
         lfoGain.gain.setValueAtTime(350, audioCtx.currentTime);
@@ -1164,7 +1255,6 @@
         sirenLfo.connect(lfoGain);
         lfoGain.connect(sirenOsc.frequency);
 
-        // 볼륨 최대화
         sirenGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
 
         sirenOsc.connect(sirenGain);
@@ -1174,13 +1264,12 @@
         sirenLfo.start();
         isSirenPlaying = true;
 
-        // UI 상태 업데이트
         document.getElementById('sirenBtn').className = 'siren-btn on';
         document.getElementById('sirenIcon').textContent = '⏹️';
         document.getElementById('sirenText').textContent = '비상 사이렌 중지 (120dB 경보 중)';
         document.getElementById('screenStrobe').style.display = 'block';
 
-        logEvent('🚨 [긴급경보] 최대 볼륨 비상 사이렌 및 스트로브 플래시 작동 시작');
+        logEvent('🚨 [긴급경보] 최대 볼륨 비상 사이렌 및 스트로브 플래시 작동');
       } catch (e) {
         alert('브라우저 오디오 권한이 필요합니다: ' + e.message);
       }
@@ -1200,57 +1289,133 @@
       document.getElementById('sirenText').textContent = '비상 사이렌 최대 볼륨 작동';
       document.getElementById('screenStrobe').style.display = 'none';
 
-      logEvent('⏹️ [경보해제] 비상 사이렌이 정상 중지되었습니다.');
+      logEvent('⏹️ [경보해제] 비상 사이렌 정상 중지');
     }
 
-    // 위험지역 / 지오펜스 시뮬레이터 함수들
+    function toggleAnimalFrequency() {
+      if (isAnimalPlaying) {
+        if (animalOsc) {
+          try { animalOsc.stop(); } catch(e){}
+        }
+        isAnimalPlaying = false;
+        document.getElementById('freqBtnText').textContent = '🐗 야생동물 기피 고주파 (20kHz)';
+        logEvent('⏹️ [기피음 해제] 고주파 방출 중지');
+      } else {
+        try {
+          const AudioContext = window.AudioContext || window.webkitAudioContext;
+          const actx = new AudioContext();
+          animalOsc = actx.createOscillator();
+          const gain = actx.createGain();
+          animalOsc.type = 'sine';
+          animalOsc.frequency.setValueAtTime(19500, actx.currentTime); // 19.5kHz 고주파
+          gain.gain.setValueAtTime(0.2, actx.currentTime);
+          animalOsc.connect(gain);
+          gain.connect(actx.destination);
+          animalOsc.start();
+          isAnimalPlaying = true;
+          document.getElementById('freqBtnText').textContent = '⏹️ 기피 고주파 방출 중 (정지)';
+          logEvent('🐗 [야생동물 기피] 들개·멧돼지 기피 고주파(19.5kHz) 방출 중');
+        } catch(e) {
+          alert('오디오 권한 필요: ' + e.message);
+        }
+      }
+    }
+
+    function triggerStealthSos() {
+      logEvent('🕵️ [스텔스 SOS] 화면 꺼진 상태 전원버튼 5회 감지 ➔ 30초 현장 오디오 녹음 및 좌표 백그라운드 전송 완료!');
+      alert('🕵️ [주머니 속 스텔스 무음 SOS 작동]
+
+화면을 켜지 않은 상태에서 은밀히 작동되었습니다.
+- 30초 현장 오디오 녹음 시작
+- 실시간 좌표(33.5134° N, 126.5270° E) 112 및 보호자 자동 전송');
+    }
+
+    function openFakeCallModal() {
+      document.getElementById('fakeCallModal').style.display = 'flex';
+      logEvent('📞 [가상 동행] AI 가짜 통화 화면 실행 ➔ 실시간 위치 보호자 중계 중');
+    }
+
+    function triggerTaxiOffRoute() {
+      logEvent('🚕 [택시 경로이탈] 권장 경로 25% 이탈 감지! 인적 드문 외딴길 진입 ➔ 보호자 알림');
+      alert('🚕 [택시 비정상 경로 이탈 감지]
+
+설정된 목적지 권장 경로 대비 25% 이상 벗어났습니다.
+현재 경로가 보호자에게 실시간 중계되며, 위기 시 즉시 사이렌을 작동하세요.');
+    }
+
+    function triggerBleMeshRelay() {
+      logEvent('📶 [BLE 메시] LTE 기지국 두절 감지 ➔ 반경 45m 내 등산객 B씨 단말과 P2P 패킷 릴레이 연결 성공');
+      alert('📶 [오프라인 BLE 메시 릴레이 가동]
+
+통신 음영 구역에 진입했습니다.
+주변 45m 지점의 다른 탐방객 스마트폰과 블루투스 P2P 연결이 완료되어 조난 신호 전달 대기 중입니다.');
+    }
+
     function triggerCrimeAlert() {
       logEvent('⚠️ [치안경보] 범죄주의구역(야간 조도 취약지) 반경 50m 진입! 햅틱 진동 및 안전 우회로 권고');
-      alert('🚨 [위험알림] 범죄주의구역 진입 감지!\n\n현재 구역은 최근 야간 절도/폭행 다발 및 가로등 미설치 취약 구간입니다.\n주변 140m 지점의 [아동지킴이집] 또는 대로변으로 우회 이동하십시오.');
+      alert('🚨 [위험알림] 범죄주의구역 진입 감지!
+
+현재 구역은 최근 야간 절도/폭행 다발 및 가로등 미설치 구간입니다.
+주변 140m 지점의 [아동지킴이집] 또는 대로변으로 우회 이동하십시오.');
     }
 
     function triggerSexOffenderAlert() {
       logEvent('🛡️ [여가부 연계] 성범죄자 알림e 반경 200m 경계구역 통과 감지 (지능형 사전 주의 가이드 발송)');
-      alert('🛡️ [성범죄자 알림e 안내]\n\n반경 200m 내 신상공개 대상자 거주 구역을 통과 중입니다.\n이어폰 착용을 자제하고 대로변 및 안심 귀갓길을 이용해 주십시오.');
+      alert('🛡️ [성범죄자 알림e 안내]
+
+반경 200m 내 신상공개 대상자 거주 구역을 통과 중입니다.
+이어폰 착용을 자제하고 대로변 및 안심 귀갓길을 이용해 주십시오.');
     }
 
     function triggerSunsetTideAlert() {
       logEvent('🌅 [기상청/천문연] 오늘 일몰 시각(18:35) 30분 전! 산악 등반객 하산 권고 발송');
       logEvent('🌊 [국립해양조사원] 제주 용두암 해안 만조 40분 전! 갯바위 접근 금지 및 대피 경보');
-      alert('🌅 [기관데이터 실시간 알림]\n\n1. [천문연구원] 당일 일몰 30분 전 (18:05) 도달: 산간 조난 위험, 하산을 권고합니다.\n2. [해양조사원] 해안 만조 시간 40분 전: 갯바위 밀물 침수 위험 대피 권고.');
+      alert('🌅 [기관데이터 실시간 알림]
+
+1. [천문연구원] 당일 일몰 30분 전 도달: 산간 조난 위험, 하산 권고.
+2. [해양조사원] 해안 만조 시간 40분 전: 갯바위 밀물 침수 위험 대피 권고.');
     }
 
     function guideRoute(name, dist, min, isHospital = false) {
       logEvent(`📍 [최단경로 안내] [${name}]까지 최단 대피 경로 탐색 완료 (${dist}m, 도보 ${min}분 소요)`);
-      alert(`📍 [최단 대피로 안내]\n\n목적지: ${name}\n거리: ${dist}m (예상 소요시간: ${min}분)\n\n가장 밝은 대로변을 경유하는 최단 안전 대피 경로 내비게이션을 활성화합니다.`);
+      alert(`📍 [최단 대피로 안내]
+
+목적지: ${name}
+거리: ${dist}m (예상 소요시간: ${min}분)
+
+가장 밝은 대로변을 경유하는 최단 안전 대피 경로 내비게이션을 활성화합니다.`);
     }
 
     function triggerPeerSos() {
       logEvent('👥 [피어 SOS] 반경 1km 내 동일 가디언 앱 이용자 4명에게 긴급 원조 요청 푸시 전송 완료!');
-      const status = document.getElementById('peerStatus');
-      status.innerHTML = '<span style="color:#34d399; font-weight:700;">✓ 주변 동료 이용자 4명에게 SOS 전파 완료!</span> (1명 응답 대기 중)';
-      alert('👥 [피어 SOS 전파 완료]\n\n반경 1km 내 가디언 이용자 4명 및 인근 안심편의점 점주에게 도움 요청 알림이 발송되었습니다.');
+      alert('👥 [피어 SOS 전파 완료]
+
+반경 1km 내 가디언 이용자 4명 및 인근 안심편의점 점주에게 도움 요청 알림이 발송되었습니다.');
     }
 
     function openGuardianModal() {
       document.getElementById('guardianModal').style.display = 'flex';
     }
 
-    function closeGuardianModal() {
-      document.getElementById('guardianModal').style.display = 'none';
+    function closeModal(id) {
+      document.getElementById(id).style.display = 'none';
     }
 
-    function closeModalOnBackdrop(e) {
-      if (e.target.id === 'guardianModal') {
-        closeGuardianModal();
+    function closeModalOnBackdrop(e, id) {
+      if (e.target.id === id) {
+        closeModal(id);
       }
     }
 
     function sendGuardianAlert(type, text) {
-      closeGuardianModal();
-      logEvent(`📱 [보호자 전송] 상황: [${type}] - 좌표(33.5134° N, 126.5270° E) 및 배터리 정보 함께 전송됨`);
-      alert(`📱 [보호자 긴급 문자 전송 완료]\n\n유형: ${type}\n내용: "${text}"\n첨부: 실시간 GPS 위치 지도 링크, 배터리 잔량 78%`);
+      closeModal('guardianModal');
+      logEvent(`📱 [보호자 전송] 상황: [${type}] - 좌표(33.5134° N, 126.5270° E) 및 배터리 정보 전송됨`);
+      alert(`📱 [보호자 긴급 문자 전송 완료]
+
+유형: ${type}
+내용: "${text}"
+첨부: 실시간 GPS 위치 지도 링크, 배터리 잔량 78%`);
     }
   </script>
 </body>
-</html>
+</html>\n
