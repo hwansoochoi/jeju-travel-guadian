@@ -414,15 +414,28 @@ graph TD
 
 ## 11. 생성형 AI (Higgsfield) 멀티모달 비주얼 엔진 연동 규격 [NEW]
 
-본 플랫폼은 위기 시 여행자의 심리적 패닉을 완화하고, 지자체 관제사 및 구조대원에게 현장 지형·기상 상황을 직관적으로 시각화하기 위해 최신 생성형 AI 플랫폼인 **Higgsfield AI (each::labs API)** 파이프라인을 연동합니다.
+본 플랫폼은 야간 이동 시 여행자의 심리적 불안을 완화하기 위한 **AI 가상동행 아바타 및 앱 내 비주얼 리소스 제작 용도로만** 생성형 AI 플랫폼인 **Higgsfield AI (each::labs API)** 파이프라인을 연동합니다.
+
+> **⚠️ 적용 범위 제한 (Safety Boundary)**
+> 생성형 AI 산출물은 **실시간 구조 판단 경로에 일절 개입하지 않습니다.** 특히 119 상황실 GIS 관제 화면 및 출동 구조대원 단말에는 AI로 합성한 지형·기상 이미지를 **표출하지 않으며**, 관제 화면은 실측 데이터(Mapbox/카카오맵 실지형 타일, 기상청 실황, UTM-K 국가지점번호)만을 렌더링합니다.
+> AI 합성 지형은 실제 지형과 불일치할 수 있어 구조대원의 현장 오판 및 수색 지연을 유발할 수 있으므로, 인명 구조 경로에서 원천 배제하는 것을 설계 원칙으로 삼습니다.
 
 ### 11.1 Higgsfield 멀티모달 연동 아키텍처
-1. **AI 가상동행 페르소나 아바타 & 음성 모션 합성**:
-   - 야간 어두운 골목길 통과 시 사용자가 안도감을 느끼도록 친근한 AI 가상동행자(AI Buddy)의 프로필 및 실시간 표정 비디오 클립을 Higgsfield Text-to-Video API로 사전 렌더링.
-2. **조난 현장 지형·기상 시네마틱 3D 상황 비주얼라이징**:
-   - 119 상황실 GIS 관제 화면에 한라산/곶자왈의 현재 기상(안개, 폭우, 야간)과 UTM-K 국가지점번호 지형을 합성한 현장 조감 시뮬레이션 이미지를 Higgsfield Text-to-Image 엔진으로 10초 내 생성하여 출동 구조대원의 현장 직관성 극대화.
-3. **API 연동 스펙**:
-   - **엔드포인트**: `https://api.eachlabs.ai/v1/higgsfield/generate`
-   - **인증**: Bearer API Key (`HIGGSFIELD_API_KEY`)
-   - **주요 파라미터**: `prompt`, `negative_prompt`, `aspect_ratio`, `num_inference_steps`, `style_preset`
-   - **비동기 처리**: 웹훅(Webhook) 콜백 및 S3 CDN 자동 캐싱 파이프라인 탑재.
+1. **AI 가상동행 페르소나 아바타 (허용 범위)**:
+   - 야간 어두운 골목길 통과 시 사용자가 안도감을 느끼도록 AI 가상동행자(AI Buddy)의 프로필 이미지 및 표정 클립을 **사전(offline) 렌더링**하여 앱에 정적 리소스로 번들링.
+   - 실시간 생성이 아닌 사전 제작 방식이므로 네트워크 장애·API 장애가 위기 대응 기능에 영향을 주지 않음.
+2. **앱 내 비주얼 리소스 제작 (허용 범위)**:
+   - 온보딩·소개 화면용 히어로 이미지 등 **비(非)구난 UI 리소스**에 한정하여 활용.
+3. **제외 항목 (Not Applicable)**:
+   - ~~119 관제 화면 조난 현장 지형·기상 시네마틱 비주얼라이징~~ → **위 Safety Boundary에 따라 설계에서 제외.**
+
+### 11.2 API 연동 스펙 (each::labs 경유 기준)
+| 항목 | 규격 | 비고 |
+|---|---|---|
+| **엔드포인트** | `POST https://api.eachlabs.ai/v1/prediction` | 모델별 개별 경로가 아닌 **단일 엔드포인트**이며, 사용할 모델은 요청 본문의 `model` 필드로 지정 |
+| **인증** | `Authorization: Bearer $EACHLABS_API_KEY` | Higgsfield **직접** 호출 시에는 스킴이 다름 → `Authorization: Key ${HF_API_KEY_ID}:${HF_API_KEY_SECRET}` (`api.higgsfield.ai`) |
+| **요청 본문** | `{ "model": "<모델 식별자>", "input": { "prompt": "...", "aspect_ratio": "..." } }` | 생성 파라미터는 최상위가 아니라 **`input` 객체 안에 중첩** |
+| **비동기 처리** | 웹훅(Webhook) 콜백 또는 결과 폴링 | 산출물은 S3/CDN에 캐싱 후 앱 번들에 포함 |
+
+- 모델별로 `input`이 받는 파라미터 집합이 다르므로, 실제 연동 전 사용할 모델의 문서를 개별 확인해야 합니다. `[검증 필요]`
+- 참조: each::labs API 문서(`docs.eachlabs.ai`), Higgsfield API 문서(`docs.higgsfield.ai`). 요금 체계 및 모델 식별자는 변동될 수 있음 `[검증 필요]`
