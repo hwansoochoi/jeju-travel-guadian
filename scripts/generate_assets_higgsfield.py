@@ -37,31 +37,15 @@ MODEL_ID = os.getenv("EACHLABS_MODEL_ID", "higgsfield/higgsfield-ai-visual-effec
 OUTPUT_ROOT = os.getenv("ASSET_OUTPUT_ROOT", "public")
 
 # 프롬프트 프리셋 (제주 트래블 가디언 비주얼 가이드라인)
+#
+# ⚠️ filename 은 public/index.html 이 실제로 참조하는 경로와 반드시 일치해야 한다.
+#    (덱이 부르지 않는 에셋을 생성하면 배포 용량만 늘고 아무 데도 쓰이지 않는다)
+#    현재 덱이 사용하는 이미지는 슬라이드 11 'AI 가짜 통화' 모달의 아바타 1개뿐이다.
 ASSET_PRESETS = {
-    "hero_guardian": {
-        "title": "야간 제주 가디언 키 비주얼",
-        "filename": "assets/hero_jeju_guardian.png",
-        "aspect_ratio": "16:9",
-        "prompt": (
-            "Cinematic photorealistic shot of a solo female hiker walking on a misty Jeju Gotjawal forest trail at twilight, "
-            "a sleek autonomous search-and-rescue emergency drone hovering above with a subtle glowing cyan and emerald safety beacon beam, "
-            "atmospheric fog, volcanic basalt rocks, lush ferns, 8k resolution, Unreal Engine 5 render, cyberpunk naturalism"
-        ),
-        "negative_prompt": "cartoon, low quality, blurry, horror, grotesque, distorted faces, watermark"
-    },
-    "stealth_sos": {
-        "title": "주머니 속 스텔스 무음 SOS",
-        "filename": "assets/stealth_sos_macro.png",
-        "aspect_ratio": "1:1",
-        "prompt": (
-            "Dramatic close-up macro shot of a person's hand pressing a modern smartphone power button repeatedly inside a dark coat pocket, "
-            "covert subtle emerald haptic pulse indicator, tension, cinematic shallow depth of field, photorealistic, 8k"
-        ),
-        "negative_prompt": "bright screen, illuminated face, noisy, amateur"
-    },
     "virtual_companion": {
         "title": "AI 가상동행자 페르소나 아바타",
-        "filename": "assets/virtual_companion_avatar.png",
+        # public/index.html 의 <img src="assets/ai_companion_avatar.jpg"> 와 일치
+        "filename": "assets/ai_companion_avatar.jpg",
         "aspect_ratio": "1:1",
         "prompt": (
             "Friendly, reassuring, warm smiling female Korean safety assistant avatar, 3D Pixar-Disney stylized realism, "
@@ -69,16 +53,6 @@ ASSET_PRESETS = {
         ),
         "negative_prompt": "scary, uncanny valley, robotic, dark, sad"
     },
-    "last_beacon_drone": {
-        "title": "라스트 블랙박스 비콘 수색 드론",
-        "filename": "assets/last_beacon_drone.png",
-        "aspect_ratio": "16:9",
-        "prompt": (
-            "High-tech Korean fire and rescue department (119) quadcopter drone scanning a dark Hallasan mountain ridge with LiDAR and infrared sensors, "
-            "tracking a glowing pulse from a lost hiker's smartphone BLE beacon, cinematic night photography, high contrast, 8k"
-        ),
-        "negative_prompt": "military weapon, crash, war, explosion, lowres"
-    }
 }
 
 def generate_asset_higgsfield(key: str, preset: dict, api_key: str):
