@@ -1,0 +1,8 @@
+# Cloudflare Workers Static Assets 호스팅 설정
+# index.html 직접 서빙 (빌드 불필요 및 항상 최신 상태 유지)
+name = "jeju-travel-guardian"
+compatibility_date = "2024-09-01"
+
+[assets]
+directory = "."
+binding = "ASSETS"

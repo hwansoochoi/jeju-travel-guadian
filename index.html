@@ -4,6 +4,16 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>스마트 제주 트래블 가디언 - 제주 & 전국 안심 여행</title>
+  <meta name="description" content="스마트 제주 트래블 가디언 - 제주 및 전국 단독·안심 여행자를 위한 4대 안전영역 & 16대 전방위 스마트 세이프티 & 긴급 구난 통합 플랫폼" />
+  <meta name="theme-color" content="#090d16" />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="ko_KR" />
+  <meta property="og:title" content="스마트 제주 트래블 가디언 (SMART JEJU TRAVEL GUARDIAN)" />
+  <meta property="og:description" content="제주 및 전국 단독·안심 여행자를 위한 4대 안전영역 & 16대 전방위 스마트 세이프티 & 긴급 구난 통합 플랫폼" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="스마트 제주 트래블 가디언 (SMART JEJU TRAVEL GUARDIAN)" />
+  <meta name="twitter:description" content="제주 및 전국 단독·안심 여행자를 위한 4대 안전영역 & 16대 전방위 스마트 세이프티 & 긴급 구난 통합 플랫폼" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>" />
   <style>
     /* 기본 리셋 및 다크 테마 */
     * {
@@ -34,7 +44,10 @@
       flex-direction: column;
       justify-content: space-between;
       overflow-x: hidden;
+    }
+    header, footer, button, .nav-btn, .sim-btn, .badge {
       user-select: none;
+      -webkit-user-select: none;
     }
 
     /* 상단 헤더 */
@@ -533,6 +546,15 @@
       0% { background-color: #ff0033; }
       100% { background-color: #0044ff; }
     }
+    @media (prefers-reduced-motion: reduce) {
+      .screen-strobe {
+        animation: none !important;
+        display: none !important;
+      }
+      .pulse-dot, .siren-btn.on {
+        animation: none !important;
+      }
+    }
     .sim-btn {
       padding: 8px 10px;
       background: #1e293b;
@@ -601,8 +623,29 @@
     }
 
     /* 테이블 스타일 (슬라이드 14, 17) */
+    .table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-top: 6px;
+      border-radius: 10px;
+    }
+    .table-scroll-hint {
+      display: none;
+      font-size: 11px;
+      color: #38bdf8;
+      margin-bottom: 6px;
+      align-items: center;
+      gap: 4px;
+    }
+    @media (max-width: 960px) {
+      .table-scroll-hint {
+        display: flex;
+      }
+    }
     .spec-table {
       width: 100%;
+      min-width: 680px;
       border-collapse: collapse;
       font-size: 12px;
       background: #0f172a;
@@ -672,9 +715,69 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.6);
       animation: modalPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    @keyframes modalPop {
-      from { transform: scale(0.92); opacity: 0; }
-      to { transform: scale(1); opacity: 1; }
+    /* 인페이지 토스트 알림 컴포넌트 */
+    .toast-container {
+      position: fixed;
+      bottom: 74px;
+      right: 24px;
+      z-index: 1100;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 380px;
+      width: calc(100% - 48px);
+      pointer-events: none;
+    }
+    .toast {
+      background: rgba(17, 24, 39, 0.96);
+      border: 1px solid #334155;
+      border-left: 4px solid var(--emerald);
+      border-radius: 10px;
+      padding: 12px 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(12px);
+      color: #f1f5f9;
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: auto;
+      animation: toastIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .toast.toast-danger {
+      border-left-color: var(--rose);
+    }
+    .toast.toast-warning {
+      border-left-color: var(--amber);
+    }
+    .toast.toast-info {
+      border-left-color: var(--cyan);
+    }
+    .toast-header {
+      font-weight: 700;
+      font-size: 12.5px;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .toast-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      cursor: pointer;
+      font-size: 14px;
+      padding: 0 4px;
+    }
+    .toast-close:hover {
+      color: #fff;
+    }
+    @keyframes toastIn {
+      from { opacity: 0; transform: translateY(20px) scale(0.95); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+    .toast.toast-fade-out {
+      opacity: 0;
+      transform: translateY(-10px) scale(0.95);
     }
 
     /* 하단 컨트롤러 */
@@ -760,6 +863,58 @@
       h1 { font-size: 30px; }
       h2 { font-size: 22px; }
     }
+
+    /* 인쇄 스타일 (PDF 제출 및 오프라인 문서 출력) */
+    @media print {
+      body {
+        background-color: #ffffff !important;
+        color: #0f172a !important;
+        user-select: auto !important;
+      }
+      header, footer, .screen-strobe, .sim-modal, #simSafetyWarning, .btn-emergency, .route-badge, .sim-btn, .siren-btn, .table-scroll-hint {
+        display: none !important;
+      }
+      main {
+        padding: 0 !important;
+        max-width: 100% !important;
+        min-height: auto !important;
+        display: block !important;
+      }
+      .slide {
+        display: block !important;
+        page-break-after: always !important;
+        break-after: page !important;
+        padding: 36px 32px !important;
+        min-height: 95vh !important;
+        box-sizing: border-box !important;
+        border-bottom: 1px dashed #cbd5e1 !important;
+      }
+      .card, .arch-col, .arch-item, .step-box, .mockup, .sim-panel, .sim-box, .spec-table {
+        background: #f8fafc !important;
+        border-color: #cbd5e1 !important;
+        color: #0f172a !important;
+        box-shadow: none !important;
+      }
+      .card h3, .spec-table th, .arch-item strong, .sys-node strong {
+        color: #0f172a !important;
+      }
+      .card p, p.desc, .sys-node span, .arch-item {
+        color: #334155 !important;
+      }
+      .spec-table th {
+        background: #e2e8f0 !important;
+      }
+      .gradient-text {
+        background: none !important;
+        -webkit-text-fill-color: #059669 !important;
+        color: #059669 !important;
+      }
+      .badge {
+        border-color: #059669 !important;
+        color: #059669 !important;
+        background: #ecfdf5 !important;
+      }
+    }
   </style>
 </head>
 <body>
@@ -797,7 +952,7 @@
         <div class="card">
           <p style="color:#64748b; font-size:11px;">사전 위험 차단</p>
           <h3>기상·치안 레이더 & AI 동행</h3>
-          <p style="font-size:12px; margin-top:4px;">일출몰·만조·우범지대·성범죄자 알림 & 가짜 통화</p>
+          <p style="font-size:12px; margin-top:4px;">일출몰·만조·우범지대·안심귀갓길 & 가짜 통화</p>
         </div>
         <div class="card">
           <p style="color:#64748b; font-size:11px;">은밀 & 통신음영 대응</p>
@@ -831,7 +986,7 @@
         <div class="card">
           <div class="card-tag" style="color:#38bdf8; background:rgba(56,189,248,0.15);">03</div>
           <h3>외진 골목 치안 & 신변 위협 무방비</h3>
-          <p>우범지대나 성범죄자 주거지 통과 시 사전 경각심이 없고, 위기 시 폰을 꺼내 신고하기 어려운 치한 대치 상황에 대피처를 찾지 못합니다.</p>
+          <p>우범지대나 야간 조도 취약구간 통과 시 사전 경각심이 없고, 위기 시 폰을 꺼내 신고하기 어려운 치한 대치 상황에 대피처를 찾지 못합니다.</p>
         </div>
       </div>
     </section>
@@ -849,7 +1004,7 @@
           </div>
           <div class="arch-item"><strong>기관데이터 연동</strong>기상청 날씨·특보, 천문연 일출몰, 해양조사원 만조</div>
           <div class="arch-item"><strong>범죄위험 지오펜스</strong>경찰청 치안통계 기반 우범지대·취약골목 햅틱 경고</div>
-          <div class="arch-item"><strong>성범죄자 알림e 연계</strong>반경 200m 접근 시 지능형 사전 주의 가이드</div>
+          <div class="arch-item"><strong>안심귀갓길 지오펜스</strong>생활안전지도 연계 취약등급 및 안심귀갓길 가이드</div>
           <div class="arch-item"><strong>숙소 불법촬영 점검</strong>IR 적외선 렌즈 탐지 & Wi-Fi 비인가 IP 스캐닝</div>
         </div>
         <div class="arch-col">
@@ -923,16 +1078,16 @@
         </div>
         <div class="card">
           <div style="font-size:26px; margin-bottom:10px;">🛡️</div>
-          <h3>성범죄자 주거지 접근 알림</h3>
+          <h3>여성안심귀갓길 & 5대 범죄 밀집도 지오펜스</h3>
           <p>
-            여성가족부 <strong>성범죄자 알림e 데이터</strong> 기반으로 체류지 및 도보 반경 내 고위험자 주거 밀집구역 통과 시<br>
-            프라이버시를 침해하지 않는 반경 가이드로 사전 경각심을 고취합니다.
+            행정안전부 <strong>생활안전지도(Safemap) OpenAPI</strong> 기반으로 특정 개인 주거지가 아닌 행정구역 단위 통계 기반 위험등급 폴리곤 진입 시<br>
+            실시간 햅틱 경고 및 CCTV·가로등 집중 배치 안심귀갓길 우회 경로를 안내합니다.
           </p>
           <div class="api-callout">
-            <strong>🔗 연동 규격 & 컴플라이언스</strong><br>
-            • 데이터 출처: 여성가족부 성범죄자 알림e 공개정보<br>
-            • ⚠️ <strong>아청법 제55조 준수:</strong> 개인 신상 API 직접 노출 차단<br>
-            • 변환 가공: 지자체 <strong>'치안 취약등급 폴리곤(GeoJSON)'</strong>으로 익명 공간 인덱싱 변환 후 안전 알림 연동
+            <strong>🔗 연동 규격 & 컴플라이언스 (100% 합법 설계)</strong><br>
+            • 데이터 출처: 행정안전부·국립재난안전연구원 생활안전지도 WMS/WFS<br>
+            • 🛡️ <strong>아청법 리스크 원천 차단:</strong> 개인 신상·주거지 표출 배제 및 5대 범죄 통계 폴리곤 활용<br>
+            • 공간 연산: PostGIS <code>ST_Contains</code> 공간 인덱싱 기반 위험구역(주의/경고) 진입 시 능동 안내
           </div>
         </div>
       </div>
@@ -1147,7 +1302,7 @@
           <div class="mockup-row"><span style="color:#94a3b8;">배터리 / 통신</span><span style="color:#f59e0b; font-weight:600;">잔여 18% (라스트 핑 기록됨)</span></div>
           <div class="mockup-row"><span style="color:#94a3b8;">주변 안심포인트</span><span style="color:#cbd5e1;">산천단 버스정류장 지킴이집 (380m)</span></div>
           <div class="mockup-row"><span style="color:#94a3b8;">상황 분류</span><span style="color:#f43f5e; font-weight:700;">산간지역 14분 정체 (2단계 무응답)</span></div>
-          <button class="btn-emergency" onclick="alert('제주소방본부(119)에 구조 데이터 패키지가 원클릭 전송되었습니다.')">
+          <button class="btn-emergency" onclick="showToast('🚒 119 구조 패키지 전송 완료', '제주소방본부 종합상황실로 국가지점번호(다라 6245 8812) 및 환자 응급 패킷이 원클릭 전송되었습니다.', 'danger')">
             📞 제주소방본부(119) 원클릭 전송 및 직통 통화
           </button>
         </div>
@@ -1160,13 +1315,22 @@
       <h2>스마트 제주 트래블 가디언 실시간 시뮬레이션 콘솔</h2>
       <p class="desc" style="margin-bottom:12px;">발표 및 시연 시 실제 동작과 음향, 지오펜스를 브라우저에서 직접 조작해 볼 수 있는 인터랙티브 패널입니다.</p>
 
+      <!-- 시뮬레이터 안전 경고 배너 -->
+      <div id="simSafetyWarning" style="margin-bottom: 12px; background: rgba(245, 158, 11, 0.12); border: 1px solid rgba(245, 158, 11, 0.35); border-radius: 8px; padding: 9px 14px; font-size: 11.5px; color: #fde68a; display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span style="font-size:16px;">⚠️</span>
+          <span><strong>시연 안전 주의:</strong> 본 시뮬레이터는 강한 화면 점멸과 고출력 경보음을 재생합니다. 광과민성 증상이 있거나 이어폰 착용 중이면 볼륨을 낮춰 주세요.</span>
+        </div>
+        <button onclick="document.getElementById('simSafetyWarning').style.display='none'" style="background:none; border:none; color:#f59e0b; cursor:pointer; font-size:13px; font-weight:700; padding:2px 6px;">✕</button>
+      </div>
+
       <div class="sim-panel">
         <!-- 1열: 비상 경보 & 스텔스 / AI 동행 -->
         <div style="display:flex; flex-direction:column; gap:10px;">
           <div class="sim-box" style="border-color:rgba(244,63,94,0.3);">
             <div class="sim-box-title">
               <span style="color:#fb7185;">📢 최대 볼륨 사이렌</span>
-              <span style="font-size:10.5px; color:#94a3b8;">Web Audio API</span>
+              <span style="font-size:10px; color:#fb7185;">⚠️ 볼륨 주의</span>
             </div>
             <button id="sirenBtn" class="siren-btn off" onclick="toggleSiren()">
               <span id="sirenIcon" style="font-size:18px;">🚨</span>
@@ -1187,8 +1351,8 @@
               <span style="color:#38bdf8; font-size:10px;">치한 퇴치</span>
             </button>
             <button class="sim-btn" onclick="toggleAnimalFrequency()">
-              <span id="freqBtnText">🐗 야생동물 기피 고주파 (20kHz)</span>
-              <span style="color:#fbbf24; font-size:10px;">음향방출</span>
+              <span id="freqBtnText">🐗 야생동물 기피 고주파 (20kHz) ⚠️</span>
+              <span style="color:#fbbf24; font-size:10px;">볼륨주의</span>
             </button>
           </div>
         </div>
@@ -1203,9 +1367,9 @@
               <span>🚨 범죄주의구역 진입 감지</span>
               <span style="color:#fb7185; font-size:10px;">우회로 권고</span>
             </button>
-            <button class="sim-btn danger" onclick="triggerSexOffenderAlert()">
-              <span>🛡️ 성범죄자 주거지 반경 접근</span>
-              <span style="color:#fbbf24; font-size:10px;">여가부 알림e</span>
+            <button class="sim-btn danger" onclick="triggerSafeReturnZoneAlert()">
+              <span>🛡️ 여성안심귀갓길·범죄밀집 진입</span>
+              <span style="color:#fbbf24; font-size:10px;">생활안전지도</span>
             </button>
             <button class="sim-btn" onclick="triggerSunsetTideAlert()">
               <span>🌅 일몰 30분 전 & 만조 경보</span>
@@ -1288,7 +1452,7 @@
         <div class="card">
           <span class="card-tag">Phase 2 (확장)</span>
           <h3>전국 안심망 & 모빌리티</h3>
-          <p>경찰청 범죄지도, 성범죄자 알림, 택시·렌터카 e-Call, 안심포인트 24시 거점 전국 인프라 통합</p>
+          <p>경찰청 범죄지도, 안심귀갓길 지오펜스, 택시·렌터카 e-Call, 안심포인트 24시 거점 전국 인프라 통합</p>
         </div>
         <div class="card">
           <span class="card-tag">Phase 3 (글로벌)</span>
@@ -1483,7 +1647,9 @@
       </div>
 
       <!-- 7대 핵심 기능 OS별 기술·법적 제약 및 우회 해결 매트릭스 -->
-      <h3 style="font-size: 14px; color: #f1f5f9; margin-bottom: 8px;">📊 7대 핵심 기능 OS별 기술·법적 제약 및 실무 우회 해결 매트릭스</h3>
+      <h3 style="font-size: 14px; color: #f1f5f9; margin-bottom: 6px;">📊 7대 핵심 기능 OS별 기술·법적 제약 및 실무 우회 해결 매트릭스</h3>
+      <div class="table-scroll-hint"><span>👈 좌우로 밀어서 우회 해결책 확인 (가로 스크롤) 👉</span></div>
+      <div class="table-scroll">
       <table class="spec-table">
         <thead>
           <tr>
@@ -1516,7 +1682,7 @@
             <td><strong>4. 성범죄자 알림e 및 주거지 지도 표출</strong></td>
             <td><span class="tag-diff-low">기술적 구현 가능</span></td>
             <td><span class="tag-diff-low">기술적 구현 가능</span></td>
-            <td><span style="color:#f43f5e; font-weight:700;">⚠️ 법적 전면 불가 (아청법 제55조 제5항 위반 시 5년 이하 징역)</span>.<br><strong>우회책:</strong> 개인 신상·주소 노출을 전면 배제하고, 행안부/경찰청 '생활안전지도 5대 범죄 발생통계' 및 '야간 안심귀갓길 지오펜스 폴리곤'으로 100% 합법 가공 표출</td>
+            <td><span style="color:#f43f5e; font-weight:700;">⚠️ 법적 전면 불가 (아청법 제55조 제5항 위반 시 5년 이하 징역)</span>.<br><strong>[사전 리스크 해소 완료]</strong> 기획 단계에서 위법성을 사전 검토하여 개인 신상·주소 노출을 전면 배제. 행안부·국립재난안전연구원 '생활안전지도 5대 범죄 밀집도 통계' 및 '여성안심귀갓길 지오펜스'로 100% 합법 설계 전환 반영 완료</td>
           </tr>
           <tr>
             <td><strong>5. 오프라인 P2P 메시 & 라스트 비콘 (배터리 3%)</strong></td>
@@ -1538,6 +1704,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
 
       <div style="margin-top: 14px; background: rgba(30, 41, 59, 0.6); border-left: 4px solid #f59e0b; border-radius: 0 8px 8px 0; padding: 10px 14px; font-size: 11.5px; color: #cbd5e1;">
         <strong style="color: #fbbf24;">💡 실무 가이드라인 요약:</strong> 
@@ -1612,6 +1779,8 @@
       <span class="badge amber">WBS & MAN-MONTH ESTIMATION</span>
       <h2>개발 난이도, 개발 기간 및 소요 공수(MM) 산정(예상)</h2>
       <p class="desc">기능별 기술 난이도와 모바일 앱 2종(iOS/Android) + 백엔드 + 웹 관제 시스템 구축에 필요한 투입 공수입니다.</p>
+      <div class="table-scroll-hint"><span>👈 좌우로 밀어서 공수 산정 근거 확인 (가로 스크롤) 👉</span></div>
+      <div class="table-scroll">
       <table class="spec-table" style="margin-bottom:12px;">
         <thead>
           <tr>
@@ -1660,6 +1829,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
       <div style="background:#0f172a; border:1px solid #1e293b; padding:10px 16px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; font-size:12.5px;">
         <span style="color:#cbd5e1;">📌 <strong>총 개발 기간:</strong> 6개월 (MVP 3.5개월 + 관제 연동 1.5개월 + 실증 1개월)</span>
         <span style="color:#34d399; font-weight:800; font-size:14px;">총 소요 공수: 32.0 Man-Months (MM)</span>
@@ -1706,11 +1876,11 @@
   </main>
 
   <!-- 보호자 상황별 연락 모달 -->
-  <div id="guardianModal" class="sim-modal" onclick="closeModalOnBackdrop(event, 'guardianModal')">
+  <div id="guardianModal" class="sim-modal" role="dialog" aria-modal="true" aria-labelledby="guardianModalTitle" onclick="closeModalOnBackdrop(event, 'guardianModal')">
     <div class="sim-modal-content">
       <div style="display:flex; justify-content:space-between; align-items:center;">
-        <h3 style="font-size:15px; color:#fff;">📱 보호자 상황별 긴급 연락</h3>
-        <button onclick="closeModal('guardianModal')" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;">✕</button>
+        <h3 id="guardianModalTitle" style="font-size:15px; color:#fff;">📱 보호자 상황별 긴급 연락</h3>
+        <button onclick="closeModal('guardianModal')" style="background:none; border:none; color:#94a3b8; font-size:18px; cursor:pointer;" aria-label="닫기">✕</button>
       </div>
       <p style="font-size:12px; color:#94a3b8;">상황을 선택하면 현재 실시간 GPS 위치와 맞춤형 문구가 보호자에게 원클릭 전송됩니다.</p>
       <div style="display:flex; flex-direction:column; gap:8px;">
@@ -1731,10 +1901,13 @@
   </div>
 
   <!-- AI 가짜 통화 모달 -->
-  <div id="fakeCallModal" class="sim-modal" onclick="closeModalOnBackdrop(event, 'fakeCallModal')">
+  <div id="fakeCallModal" class="sim-modal" role="dialog" aria-modal="true" aria-labelledby="fakeCallModalTitle" onclick="closeModalOnBackdrop(event, 'fakeCallModal')">
     <div class="sim-modal-content" style="background:#0b1320; border-color:#38bdf8; text-align:center;">
-      <div style="font-size:42px; margin-top:8px;">📱</div>
-      <h3 style="color:#38bdf8; font-size:17px; margin-top:4px;">AI 가상 동행 통화 중...</h3>
+      <div style="display:flex; justify-content:center; margin-top:4px;">
+        <img src="assets/ai_companion_avatar.jpg" alt="AI 가상동행자" style="width:72px; height:72px; border-radius:50%; border:2px solid #38bdf8; object-fit:cover; box-shadow:0 0 16px rgba(56,189,248,0.4);" onerror="this.style.display='none'; document.getElementById('fakeCallFallbackEmoji').style.display='block';" />
+      </div>
+      <div id="fakeCallFallbackEmoji" style="font-size:42px; margin-top:8px; display:none;">📱</div>
+      <h3 id="fakeCallModalTitle" style="color:#38bdf8; font-size:17px; margin-top:4px;">AI 가상 동행 통화 중...</h3>
       <div style="font-size:13px; color:#94a3b8; margin-bottom:10px;">수신자: 엄마 (가상 음성 가이드)</div>
       
       <div style="background:#1e293b; border-radius:10px; padding:12px; text-align:left; font-size:12.5px; color:#e2e8f0; line-height:1.6;">
@@ -1772,24 +1945,48 @@
     let current = 0;
     let total = 0;
 
-    function render(idx) {
+    function getSlideFromHash() {
+      const hash = window.location.hash;
+      const match = hash.match(/^#\/(\d+)$/);
+      if (match) {
+        const slideNum = parseInt(match[1], 10);
+        if (slideNum >= 1 && slideNum <= total) {
+          return slideNum - 1;
+        }
+      }
+      return 0;
+    }
+
+    function render(idx, updateHistory = true) {
       if (!slides || slides.length === 0) return;
-      current = idx;
-      slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+      current = Math.max(0, Math.min(idx, total - 1));
+      slides.forEach((s, i) => {
+        const isActive = (i === current);
+        s.classList.toggle('active', isActive);
+        s.setAttribute('aria-hidden', !isActive);
+        if (!isActive) {
+          s.setAttribute('inert', '');
+        } else {
+          s.removeAttribute('inert');
+        }
+      });
       if (counter) {
-        counter.textContent = `${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+        counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
       }
       if (progBar) {
-        progBar.style.width = `${((idx + 1) / total) * 100}%`;
+        progBar.style.width = `${((current + 1) / total) * 100}%`;
       }
       if (firstBtn) {
-        firstBtn.disabled = (idx === 0);
+        firstBtn.disabled = (current === 0);
       }
       if (prevBtn) {
-        prevBtn.disabled = (idx === 0);
+        prevBtn.disabled = (current === 0);
       }
       if (nextBtn) {
-        nextBtn.textContent = (idx === total - 1) ? '처음으로' : '다음';
+        nextBtn.textContent = (current === total - 1) ? '처음으로' : '다음';
+      }
+      if (updateHistory) {
+        history.replaceState(null, '', `#/${current + 1}`);
       }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -1821,10 +2018,6 @@
       }
     }
 
-    window.addEventListener('DOMContentLoaded', () => {
-      initSlides();
-    });
-
     function initSlides() {
       slides = document.querySelectorAll('.slide');
       firstBtn = document.getElementById('firstBtn');
@@ -1834,37 +2027,91 @@
       counter = document.getElementById('slideCounter');
       progBar = document.getElementById('progressBar');
       total = slides.length;
-      render(0);
+      
+      const initialIdx = getSlideFromHash();
+      render(initialIdx, false);
+      history.replaceState(null, '', `#/${initialIdx + 1}`);
     }
+
+    window.addEventListener('hashchange', () => {
+      const targetIdx = getSlideFromHash();
+      if (targetIdx !== current) {
+        render(targetIdx, false);
+      }
+    });
 
     window.addEventListener('keydown', (e) => {
       if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
-      if (e.key === 'ArrowRight' || e.key === 'Space') {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.code === 'Space' || e.key === 'PageDown') {
         e.preventDefault();
         next();
-      } else if (e.key === 'ArrowLeft') {
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
         e.preventDefault();
         prev();
       } else if (e.key === 'Home') {
         e.preventDefault();
         goToFirst();
+      } else if (e.key === 'End') {
+        e.preventDefault();
+        render(total - 1);
       }
     });
 
-    // 즉시 실행
-    initSlides();
+    window.addEventListener('DOMContentLoaded', () => {
+      initSlides();
+    });
 
     /* ========================================================
        인터랙티브 가디언 콘솔 (Web Audio API 사이렌 및 시뮬레이터)
        ======================================================== */
-    let audioCtx = null;
+    let sharedAudioCtx = null;
     let sirenOsc = null;
     let sirenGain = null;
     let sirenLfo = null;
     let isSirenPlaying = false;
 
     let animalOsc = null;
+    let animalGain = null;
     let isAnimalPlaying = false;
+
+    function getSharedAudioContext() {
+      if (!sharedAudioCtx || sharedAudioCtx.state === 'closed') {
+        const AudioCtxClass = window.AudioContext || window.webkitAudioContext;
+        sharedAudioCtx = new AudioCtxClass();
+      }
+      if (sharedAudioCtx.state === 'suspended') {
+        sharedAudioCtx.resume();
+      }
+      return sharedAudioCtx;
+    }
+
+    /* 다크 테마 인페이지 토스트 UI 컴포넌트 */
+    function showToast(title, message, type = 'info') {
+      let container = document.getElementById('toastContainer');
+      if (!container) {
+        container = document.createElement('div');
+        container.id = 'toastContainer';
+        container.className = 'toast-container';
+        container.setAttribute('role', 'status');
+        container.setAttribute('aria-live', 'polite');
+        document.body.appendChild(container);
+      }
+      const toast = document.createElement('div');
+      toast.className = `toast toast-${type}`;
+      const formattedMsg = String(message).replace(/\n/g, '<br>');
+      toast.innerHTML = `
+        <div class="toast-header">
+          <span>${title}</span>
+          <button class="toast-close" onclick="this.closest('.toast').remove()" aria-label="닫기">✕</button>
+        </div>
+        <div class="toast-body">${formattedMsg}</div>
+      `;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.classList.add('toast-fade-out');
+        setTimeout(() => toast.remove(), 350);
+      }, 4000);
+    }
 
     function logEvent(msg) {
       const log = document.getElementById('simLog');
@@ -1883,28 +2130,27 @@
 
     function startSiren() {
       try {
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        audioCtx = new AudioContext();
+        const ctx = getSharedAudioContext();
 
-        sirenOsc = audioCtx.createOscillator();
-        sirenGain = audioCtx.createGain();
-        sirenLfo = audioCtx.createOscillator();
-        const lfoGain = audioCtx.createGain();
+        sirenOsc = ctx.createOscillator();
+        sirenGain = ctx.createGain();
+        sirenLfo = ctx.createOscillator();
+        const lfoGain = ctx.createGain();
 
         sirenOsc.type = 'sawtooth';
-        sirenOsc.frequency.setValueAtTime(750, audioCtx.currentTime);
+        sirenOsc.frequency.setValueAtTime(750, ctx.currentTime);
 
         sirenLfo.type = 'sine';
-        sirenLfo.frequency.setValueAtTime(1.2, audioCtx.currentTime);
-        lfoGain.gain.setValueAtTime(350, audioCtx.currentTime);
+        sirenLfo.frequency.setValueAtTime(1.2, ctx.currentTime);
+        lfoGain.gain.setValueAtTime(350, ctx.currentTime);
 
         sirenLfo.connect(lfoGain);
         lfoGain.connect(sirenOsc.frequency);
 
-        sirenGain.gain.setValueAtTime(0.4, audioCtx.currentTime);
+        sirenGain.gain.setValueAtTime(0.4, ctx.currentTime);
 
         sirenOsc.connect(sirenGain);
-        sirenGain.connect(audioCtx.destination);
+        sirenGain.connect(ctx.destination);
 
         sirenOsc.start();
         sirenLfo.start();
@@ -1916,8 +2162,9 @@
         document.getElementById('screenStrobe').style.display = 'block';
 
         logEvent('🚨 [긴급경보] 최대 볼륨 비상 사이렌 및 스트로브 플래시 작동');
+        showToast('🚨 120dB 비상 사이렌 작동', '최대 볼륨 경보음 및 적·청 스트로브 플래시가 가동되었습니다.', 'danger');
       } catch (e) {
-        alert('브라우저 오디오 권한이 필요합니다: ' + e.message);
+        showToast('⚠️ 오디오 권한 필요', '브라우저 오디오 권한이 필요합니다: ' + e.message, 'warning');
       }
     }
 
@@ -1926,7 +2173,8 @@
         try {
           sirenOsc.stop();
           sirenLfo.stop();
-          audioCtx.close();
+          sirenOsc.disconnect();
+          sirenGain.disconnect();
         } catch (e) {}
       }
       isSirenPlaying = false;
@@ -1941,35 +2189,39 @@
     function toggleAnimalFrequency() {
       if (isAnimalPlaying) {
         if (animalOsc) {
-          try { animalOsc.stop(); } catch(e){}
+          try {
+            animalOsc.stop();
+            animalOsc.disconnect();
+            animalGain.disconnect();
+          } catch(e){}
         }
         isAnimalPlaying = false;
-        document.getElementById('freqBtnText').textContent = '🐗 야생동물 기피 고주파 (20kHz)';
+        document.getElementById('freqBtnText').textContent = '🐗 야생동물 기피 고주파 (20kHz) ⚠️';
         logEvent('⏹️ [기피음 해제] 고주파 방출 중지');
       } else {
         try {
-          const AudioContext = window.AudioContext || window.webkitAudioContext;
-          const actx = new AudioContext();
-          animalOsc = actx.createOscillator();
-          const gain = actx.createGain();
+          const ctx = getSharedAudioContext();
+          animalOsc = ctx.createOscillator();
+          animalGain = ctx.createGain();
           animalOsc.type = 'sine';
-          animalOsc.frequency.setValueAtTime(19500, actx.currentTime);
-          gain.gain.setValueAtTime(0.2, actx.currentTime);
-          animalOsc.connect(gain);
-          gain.connect(actx.destination);
+          animalOsc.frequency.setValueAtTime(19500, ctx.currentTime);
+          animalGain.gain.setValueAtTime(0.2, ctx.currentTime);
+          animalOsc.connect(animalGain);
+          animalGain.connect(ctx.destination);
           animalOsc.start();
           isAnimalPlaying = true;
           document.getElementById('freqBtnText').textContent = '⏹️ 기피 고주파 방출 중 (정지)';
           logEvent('🐗 [야생동물 기피] 들개·멧돼지 기피 고주파(19.5kHz) 방출 중');
+          showToast('🐗 야생동물 기피음 방출', '제주 중산간 들개·멧돼지 퇴치용 19.5kHz 고주파 사운드가 방출 중입니다.', 'warning');
         } catch(e) {
-          alert('오디오 권한 필요: ' + e.message);
+          showToast('⚠️ 오디오 권한 필요', '오디오 재생 권한이 필요합니다: ' + e.message, 'warning');
         }
       }
     }
 
     function triggerStealthSos() {
       logEvent('🕵️ [스텔스 SOS] 화면 꺼진 상태 전원버튼 5회 감지 ➔ 30초 현장 오디오 녹음 및 좌표 백그라운드 전송 완료!');
-      alert(`🕵️ [주머니 속 스텔스 무음 SOS 작동]\n\n화면을 켜지 않은 상태에서 은밀히 작동되었습니다.\n- 30초 현장 오디오 녹음 시작\n- 실시간 좌표(33.5134° N, 126.5270° E) 112 및 보호자 자동 전송`);
+      showToast('🕵️ 주머니 속 스텔스 무음 SOS', '화면 오프 상태에서 작동: 30초 현장 녹음 및 실시간 좌표(33.5134° N, 126.5270° E)가 112 및 보호자에게 은밀 전송되었습니다.', 'danger');
     }
 
     function openFakeCallModal() {
@@ -1979,38 +2231,38 @@
 
     function triggerTaxiOffRoute() {
       logEvent('🚕 [택시 경로이탈] 권장 경로 25% 이탈 감지! 인적 드문 외딴길 진입 ➔ 보호자 알림');
-      alert(`🚕 [택시 비정상 경로 이탈 감지]\n\n설정된 목적지 권장 경로 대비 25% 이상 벗어났습니다.\n현재 경로가 보호자에게 실시간 중계되며, 위기 시 즉시 사이렌을 작동하세요.`);
+      showToast('🚕 택시 비정상 경로 이탈 감지', '권장 경로 대비 25% 이상 벗어났습니다. 현재 이동 경로가 보호자에게 실시간 중계됩니다.', 'warning');
     }
 
     function triggerBleMeshRelay() {
       logEvent('📶 [BLE 메시] LTE 기지국 두절 감지 ➔ 반경 45m 내 등산객 B씨 단말과 P2P 패킷 릴레이 연결 성공');
-      alert(`📶 [오프라인 BLE 메시 릴레이 가동]\n\n통신 음영 구역에 진입했습니다.\n주변 45m 지점의 다른 탐방객 스마트폰과 블루투스 P2P 연결이 완료되어 조난 신호 전달 대기 중입니다.`);
+      showToast('📶 오프라인 BLE 메시 릴레이 가동', '통신 음영 구역 진입 감지. 인근 45m 내 탐방객 스마트폰과 P2P 무선 그물망 연결이 수립되었습니다.', 'info');
     }
 
     function triggerCrimeAlert() {
       logEvent('⚠️ [치안경보] 범죄주의구역(야간 조도 취약지) 반경 50m 진입! 햅틱 진동 및 안전 우회로 권고');
-      alert(`🚨 [위험알림] 범죄주의구역 진입 감지!\n\n현재 구역은 최근 야간 절도/폭행 다발 및 가로등 미설치 구간입니다.\n주변 140m 지점의 [아동지킴이집] 또는 대로변으로 우회 이동하십시오.`);
+      showToast('🚨 위험알림: 범죄주의구역 진입', '야간 조도 취약 및 절도/폭행 다발 구역입니다. 인근 140m 지점의 안심지킴이집 또는 대로변으로 우회 이동하십시오.', 'danger');
     }
 
-    function triggerSexOffenderAlert() {
-      logEvent('🛡️ [여가부 연계] 성범죄자 알림e 반경 200m 경계구역 통과 감지 (지능형 사전 주의 가이드 발송)');
-      alert(`🛡️ [성범죄자 알림e 안내]\n\n반경 200m 내 신상공개 대상자 거주 구역을 통과 중입니다.\n이어폰 착용을 자제하고 대로변 및 안심 귀갓길을 이용해 주십시오.`);
+    function triggerSafeReturnZoneAlert() {
+      logEvent('🛡️ [생활안전지도] 5대 범죄 주의구역 진입 감지 (여성안심귀갓길 우회 경로 자동 추천)');
+      showToast('🛡️ 안심귀갓길 지오펜스 안내', '야간 치안 통계 주의 등급 구역입니다. CCTV와 가로등이 집중 배치된 여성안심귀갓길 추천 경로로 이동하십시오.', 'warning');
     }
 
     function triggerSunsetTideAlert() {
       logEvent('🌅 [기상청/천문연] 오늘 일몰 시각(18:35) 30분 전! 산악 등반객 하산 권고 발송');
       logEvent('🌊 [국립해양조사원] 제주 용두암 해안 만조 40분 전! 갯바위 접근 금지 및 대피 경보');
-      alert(`🌅 [기관데이터 실시간 알림]\n\n1. [천문연구원] 당일 일몰 30분 전 도달: 산간 조난 위험, 하산 권고.\n2. [해양조사원] 해안 만조 시간 40분 전: 갯바위 밀물 침수 위험 대피 권고.`);
+      showToast('🌅 기상·천문·해양 데이터 경보', '1. 당일 일몰 30분 전 도달: 산간 조난 위험 하산 권고\n2. 해안 만조 40분 전: 갯바위 밀물 침수 위험 대피 권고', 'warning');
     }
 
     function guideRoute(name, dist, min, isHospital = false) {
       logEvent(`📍 [최단경로 안내] [${name}]까지 최단 대피 경로 탐색 완료 (${dist}m, 도보 ${min}분 소요)`);
-      alert(`📍 [최단 대피로 안내]\n\n목적지: ${name}\n거리: ${dist}m (예상 소요시간: ${min}분)\n\n가장 밝은 대로변을 경유하는 최단 안전 대피 경로 내비게이션을 활성화합니다.`);
+      showToast(`📍 최단 대피로 안내: ${name}`, `거리: ${dist}m (도보 ${min}분 소요)\n대로변을 경유하는 최단 안전 대피 경로 내비게이션을 시작합니다.`, isHospital ? 'danger' : 'info');
     }
 
     function triggerPeerSos() {
       logEvent('👥 [피어 SOS] 반경 1km 내 동일 가디언 앱 이용자 4명에게 긴급 원조 요청 푸시 전송 완료!');
-      alert(`👥 [피어 SOS 전파 완료]\n\n반경 1km 내 가디언 이용자 4명 및 인근 안심편의점 점주에게 도움 요청 알림이 발송되었습니다.`);
+      showToast('👥 피어 SOS 전파 완료', '반경 1km 내 동일 앱 이용자 4명 및 인근 안심편의점에 긴급 도움 요청이 발송되었습니다.', 'danger');
     }
 
     function openGuardianModal() {
@@ -2018,7 +2270,8 @@
     }
 
     function closeModal(id) {
-      document.getElementById(id).style.display = 'none';
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
     }
 
     function closeModalOnBackdrop(e, id) {
@@ -2030,8 +2283,16 @@
     function sendGuardianAlert(type, text) {
       closeModal('guardianModal');
       logEvent(`📱 [보호자 전송] 상황: [${type}] - 좌표(33.5134° N, 126.5270° E) 및 배터리 정보 전송됨`);
-      alert(`📱 [보호자 긴급 문자 전송 완료]\n\n유형: ${type}\n내용: "${text}"\n첨부: 실시간 GPS 위치 지도 링크, 배터리 잔량 78%`);
+      showToast('📱 보호자 긴급 통보 완료', `[${type}] "${text}"\n실시간 GPS 위치 지도 링크와 배터리 잔량(78%)이 발송되었습니다.`, 'info');
     }
+
+    // Esc 키로 모달 닫기
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        closeModal('fakeCallModal');
+        closeModal('guardianModal');
+      }
+    });
   </script>
 </body>
 </html>
