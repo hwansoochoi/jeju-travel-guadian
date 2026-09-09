@@ -426,4 +426,3 @@ graph TD
    - **인증**: Bearer API Key (`HIGGSFIELD_API_KEY`)
    - **주요 파라미터**: `prompt`, `negative_prompt`, `aspect_ratio`, `num_inference_steps`, `style_preset`
    - **비동기 처리**: 웹훅(Webhook) 콜백 및 S3 CDN 자동 캐싱 파이프라인 탑재.
-   - 4대 안심포인트: 제주도 내 24시 편의점, 주유소, 지구대 좌표를 SQLite/Room/CoreData에 사전 임베딩하여 오프라인에서도 즉시 최단 피난처 안내.\n
