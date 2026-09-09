@@ -1,3 +1,31 @@
 {
-  "git.autofetch": false
+  // ─── Git 인덱스 손상 경고창 방지 ───────────────────────────────
+  //
+  // 증상: "fatal: .git/index: index file smaller than expected"
+  //
+  // 원인: VS Code Git 확장은 파일 감시 이벤트가 발생할 때마다 백그라운드에서
+  //      인덱스를 읽는다. AI 에이전트(Antigravity / Claude Code)가 다수의
+  //      파일을 빠르게 수정하면 이 갱신이 폭주하고, 바로 그 순간 CLI 의
+  //      git add / commit 이 인덱스를 새로 쓰면 읽는 쪽이 아직 다 쓰이지 않은
+  //      인덱스를 잡아 위 오류가 발생한다.
+  //
+  // 복구: 인덱스는 커밋된 이력을 담고 있지 않으므로 삭제해도 안전하다.
+  //      재발 시  rm -f .git/index && git reset   으로 HEAD 기준 재생성.
+  //
+  // 대응: 백그라운드 자동 갱신을 끈다. 소스 제어 패널은 상단 새로고침
+  //      버튼으로 수동 갱신하며, 커밋·푸시 등 명시적 조작은 그대로 동작한다.
+
+  // [핵심] 파일 변경 이벤트마다 인덱스를 읽는 백그라운드 갱신 중지
+  "git.autorefresh": false,
+
+  // 주기적 원격 fetch 중지 (인덱스·ref 동시 접근 빈도 감소)
+  "git.autofetch": false,
+
+  // git 내부 파일을 감시 대상에서 제외해 리프레시 유발 자체를 줄임
+  "files.watcherExclude": {
+    "**/.git/objects/**": true,
+    "**/.git/subtree-cache/**": true,
+    "**/.git/index": true,
+    "**/.git/index.lock": true
+  }
 }
