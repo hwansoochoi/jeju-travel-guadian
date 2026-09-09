@@ -107,27 +107,39 @@ graph TD
 
 ## 📂 프로젝트 구성
 
-- `index.html`: 18개의 인터랙티브 프레젠테이션 슬라이드 (11번 슬라이드: **라이브 가디언 시뮬레이터**, 13~18번 슬라이드: **iOS/Android 네이티브 개발 명세, 7대 기능 OS 제약 및 불법촬영 현실성 검토, 웹 관제탑(Admin), 코어 모듈 구현, 32MM WBS 공수 산정(예상)**)
-- `vercel.json`: Vercel 무설정 정적 호스팅 설정 파일
-- `cloudflare/worker.js`: Cloudflare Workers 배포용 초경량 CDN 서빙 스크립트
-- `TECHNICAL_SPEC.md`: 모바일 네이티브(iOS/Android), 백엔드, 웹 관제탑, OS별 기술적·법적 제약 우회책, 6개월 개발 WBS 및 32MM 공수 산정(예상)이 명시된 공식 엔지니어링 명세서
+공개 배포되는 정적 산출물은 **`public/` 디렉터리에만** 두고, 문서·설정·스크립트는 리포지터리 루트에 둡니다. (배포 시 명세서·작업지시서가 공개 URL로 노출되는 것을 방지)
+
+```
+public/                  # ← 정적 배포 대상 (Vercel outputDirectory / Wrangler assets)
+├── index.html           # 18장 인터랙티브 프레젠테이션 덱
+└── assets/              # 덱에서 참조하는 이미지 리소스
+vercel.json              # Vercel 정적 호스팅 + 보안 헤더(CSP 등) 설정
+wrangler.toml            # Cloudflare Workers Static Assets 배포 설정
+scripts/                 # 에셋 생성 등 개발용 스크립트 (배포 제외)
+README.md
+TECHNICAL_SPEC.md        # 공식 엔지니어링 명세서
+GEMINI_TASK_PROMPT.md    # 개선 작업 지시서
+```
+
+- `public/index.html`: 18개의 인터랙티브 프레젠테이션 슬라이드 (11번 슬라이드: **라이브 가디언 시뮬레이터**, 13~18번 슬라이드: **iOS/Android 네이티브 개발 명세, 7대 기능 OS 제약 및 불법촬영 현실성 검토, 웹 관제탑(Admin), 코어 모듈 구현, 32MM WBS 공수 산정(예상)**)
+- `TECHNICAL_SPEC.md`: 모바일 네이티브(iOS/Android), 백엔드, 웹 관제탑, OS별 기술적·법적 제약 우회책, 6개월 개발 WBS 및 32MM 공수 산정(예상), 오경보 KPI, 운영비(TCO), 경쟁 분석, 개인정보 영향평가(PIA)가 명시된 공식 엔지니어링 명세서
 
 ---
 
 ## 🚀 실행 및 배포 방법
 
 ### 1. 로컬에서 실행
-`index.html` 파일을 브라우저로 열거나, 로컬 웹서버로 실행합니다.
-- 키보드 [←], [→], [Space] 또는 하단 고정 플로팅 바를 통해 18개 슬라이드 이동
+`public/index.html` 파일을 브라우저로 열거나, 로컬 웹서버(`npx serve public`)로 실행합니다.
+- 키보드 [←], [→], [Space], [PageUp/PageDown], [Home/End] 또는 하단 고정 플로팅 바를 통해 18개 슬라이드 이동
 - **슬라이드 11**: 비상 사이렌, 스텔스 SOS, AI 가짜 통화, 야생동물 기피음, 택시 경로이탈, BLE 메시 릴레이 등 직접 체험 가능
 - **슬라이드 14**: 숙소 불법촬영(IR/Wi-Fi) 기술 현실성 및 7대 핵심 기능 OS 제약·우회 매트릭스 검토
 - **슬라이드 15~17**: 통합 관제탑(Admin) 명세, 모바일 코어 모듈 구현 기법 및 총 32MM 공수 산정(예상)표 확인
 
 ### 2. Vercel 배포 (권장)
-GitHub 저장소를 Vercel에 연동하면 별도 빌드 과정 없이 `index.html`이 전 세계 글로벌 CDN을 통해 초고속 정적 웹사이트로 자동 배포됩니다.
+GitHub 저장소를 Vercel에 연동하면 별도 빌드 과정 없이 `public/` 디렉터리(`vercel.json`의 `outputDirectory`)가 전 세계 글로벌 CDN을 통해 초고속 정적 웹사이트로 자동 배포됩니다.
 
 ### 3. Cloudflare Pages / Workers Static Assets 배포 (선택)
-Cloudflare Pages에 Git 리포지토리를 연결하거나, `wrangler.toml`을 통해 `npx wrangler deploy`를 실행하면 `index.html`이 Cloudflare 글로벌 엣지 네트워크에서 정적 자산으로 직접 서빙됩니다. (기존 98KB 문자열 복제 방식의 `worker.js`를 폐기하고 원본 직접 서빙 체계로 전환하여 항상 최신 본문과의 100% 일치를 보장합니다.)
+Cloudflare Pages에 Git 리포지토리를 연결하거나, `wrangler.toml`을 통해 `npx wrangler deploy`를 실행하면 `public/` 디렉터리가 Cloudflare 글로벌 엣지 네트워크에서 정적 자산으로 직접 서빙됩니다. (기존 98KB 문자열 복제 방식의 `worker.js`를 폐기하고 원본 직접 서빙 체계로 전환하여 항상 최신 본문과의 100% 일치를 보장합니다.)
 ---
 
 ## 🌐 연동 정부 및 민간 OpenAPI 명세 (OpenAPI Registry)

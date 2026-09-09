@@ -1,8 +1,12 @@
 # Cloudflare Workers Static Assets 호스팅 설정
-# index.html 직접 서빙 (빌드 불필요 및 항상 최신 상태 유지)
+# public/ 디렉터리만 서빙 (빌드 불필요, 항상 최신 index.html 반영)
+#
+# ⚠️ directory 를 리포지터리 루트로 두면 README.md, TECHNICAL_SPEC.md,
+#    GEMINI_TASK_PROMPT.md, LICENSE, wrangler.toml 자기 자신까지
+#    공개 URL로 노출되므로 반드시 public/ 로 한정한다.
 name = "jeju-travel-guardian"
 compatibility_date = "2024-09-01"
 
 [assets]
-directory = "."
+directory = "./public"
 binding = "ASSETS"
